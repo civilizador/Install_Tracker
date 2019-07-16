@@ -4,6 +4,7 @@ import { Redirect } from "react-router-dom";
 
 import axios from 'axios';
 
+
 class Register extends Component {
   state = {
       name: "", email: "", password: "", password2: "", username: "", phone: "",
@@ -15,7 +16,12 @@ class Register extends Component {
       this.address = React.createRef(); this.password2 = React.createRef();  this.phone = React.createRef();
       this.email = React.createRef(); this.password = React.createRef(); this.submit = React.createRef();
   }
-
+  renderRegions = ()=>{
+    const regions =['South East','South West','North East','Central','California']
+    return  regions.map((region)=>{
+     return  <option value={region} key={region}> {region} </option>
+    })
+  }
   renderHeader = ()=>{
     switch(this.state.submitted){
       case true:
@@ -120,32 +126,23 @@ class Register extends Component {
                   type="text"
                 />
               </div>
+              
               <div className="form-group">
-                <label htmlFor="address">Address</label>
-                <input
+                <label htmlFor="region">Region</label>
+                <select
                 required
                   className='form-control'
-                  ref={this.address}
-                  onKeyUp={(e)=>{this.onKeyUp(e,'address')}}
+                  ref={this.region}
+                  onKeyUp={(e)=>{this.onKeyUp(e,'region')}}
                   onChange={this.onChange}
-                  value={this.state.address}
-                  id="address"
+                   id="region"
                   type="text"
-                />
+                >
+                  {this.renderRegions()}
+                </select>
               </div>
-              <div className="form-group">
-                <label htmlFor="phone">Phone</label>
-                <input
-                required
-                  className='form-control'
-                  ref={this.phone}
-                  onKeyUp={(e)=>{this.onKeyUp(e,'phone')}}
-                   onChange={this.onChange}
-                  value={this.state.phone}
-                  id="phone"
-                  type="text"
-                />
-              </div>
+ 
+              
               <div className="form-group">
                 <label htmlFor="phone">Phone number</label>
                 <input
