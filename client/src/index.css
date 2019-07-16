@@ -1,0 +1,170 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+nav.navbar.navbar-expand-lg.navbar-light{
+  background-color: rgba(7, 7, 7,0.8);
+  position: absolute;
+  width: 100vw!important;
+  top: 0;
+  z-index: 700;
+}
+nav.navbar {
+  height: 100px !important;
+
+}
+a.nav-link{
+    color:white!important;
+}
+a.navbar-brand{
+  color:white!important;
+}
+.fa-utensils {
+  font-size: 40px;
+  margin-left: 10px;
+}
+span.navbar-toggler-icon {
+  color: white!important;
+}
+ul.authBUttons{
+  margin-right: 30px;
+}
+img.carousel_pizza{
+  width: 100%;
+  position: relative;
+  top: -100
+}
+#mainBanner{
+  overflow: hidden;
+  height: 100vh!important;
+}
+
+
+ .google-btn {
+  width: 184px;
+  height: 42px;
+  background-color: #4285f4;
+  border-radius: 2px;
+  box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.25);
+}
+.google-btn .google-icon-wrapper {
+  position: absolute;
+  margin-top: 1px;
+  margin-left: 1px;
+  width: 40px;
+  height: 40px;
+  border-radius: 2px;
+  background-color: #fff;
+}
+.google-btn .google-icon {
+  position: absolute;
+  margin-top: 11px;
+  margin-left: 11px;
+  width: 18px;
+  height: 18px;
+}
+.google-btn .btn-text {
+  float: right;
+  margin: 11px 11px 0 0;
+  color: #fff;
+  font-size: 14px;
+  letter-spacing: 0.2px;
+  font-family: "Roboto";
+}
+.google-btn:hover {
+  box-shadow: 0 0 6px #4285f4;
+}
+.google-btn:active {
+  background: #1669F2;
+}
+
+/*///// NavBar //////*/
+
+div#address{
+  color: white!important;
+  text-align: center;
+  padding-right: 5%;
+}
+
+.cartItemImage{
+  width: 5rem;
+  height: 3rem;
+}
+
+i.far.fa-times-circle {
+    font-size: 2rem;
+    color: orange;
+    padding-bottom: 0.5rem;
+    padding-top: 0.5rem;
+}
+
+.eachCartItemDiv{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.dropdown-menu.show {
+    width: 20rem;
+}
+
+/* Home Page */
+#homePage_sec2{
+  height: 100vh;
+  width: 100%;
+  margin-top: 5vh;
+}
+#menuItems{
+  margin-top: 5vh;
+  margin-left: 5%;
+  margin-right: 6%;
+}
+
+i.fa-shopping-cart {
+  font-size: 38px;
+}
+
+div.card{
+  border:none;
+}
+div.card img {
+  border-radius: 20%;
+  padding: 15px;
+}
+
+.modal-dialog {
+    max-width: 70rem!important;
+    margin: 1.75rem auto;
+}
+.card-img-top {
+  cursor: pointer;
+}
+/* If the screen size is 600px wide or less, set the font-size of <div> to 30px */
+@media screen and (max-width: 720px) {
+
+  a.btn{
+      font-size: 1.2vw!important;
+  }
+  a.nav-link{
+      font-size: 1.6vw!important;
+  }
+}
+@media screen and (max-width: 480px) {
+
+    a.btn{
+        font-size: 1vw!important;
+    }
+    a.nav-link{
+        font-size: 1.4vw!important;
+    }
+}
