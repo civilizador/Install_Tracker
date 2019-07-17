@@ -58,7 +58,7 @@ module.exports = (app) => {
     
     app.get('/api/getAllUsers', (req,res) => {
       console.log('/api/getAllUsers')
-          if(req.user && req.user.admin ) { 
+          if(req.user) { 
               User.find( {} , (err, users)=>{
                          if(err) {throw err}
                          else{ res.send(users) }

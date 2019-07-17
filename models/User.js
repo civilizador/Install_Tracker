@@ -35,7 +35,11 @@ const UserSchema = new mongoose.Schema({
     },
     projectId: {
         type: Number
-    }
+    },
+    installAddress: {
+        type: String
+    },
+    archive: Array
 })
 // Connecting passport plugin to work with Local Strategy. This step is REQUIRED!
 

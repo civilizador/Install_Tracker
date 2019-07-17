@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './user_comps.css';
  import {connect} from 'react-redux'
 import {Redirect,Link} from 'react-router-dom'
-import {updateUser,getAllOrders} from '../../actions'
+import {updateUser} from '../../actions'
 import Map from './Gmaps.js'
 import StaticMap from './GmapStatic.js'
 
@@ -19,8 +19,7 @@ class Profile extends Component {
       this.email = React.createRef(); this.password = React.createRef(); this.submit = React.createRef();
   }
   componentDidMount(){
-    this.props.getAllOrders()
-    console.log(this.props.store)
+     console.log(this.props.store)
   }
   profileComponent=()=>{
     return(
@@ -282,4 +281,4 @@ class Profile extends Component {
 
 const mapStateToProps = (store) => ({store})
 
-export default connect(mapStateToProps, {updateUser,getAllOrders})(Profile)
+export default connect(mapStateToProps, {updateUser})(Profile)

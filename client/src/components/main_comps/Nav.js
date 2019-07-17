@@ -2,8 +2,7 @@ import React from 'react';
 import {Link}  from 'react-router-dom';
 import {connect} from 'react-redux';
 import {logoutAction,searchAction} from '../../actions';
-import Cart from './Cart'
-
+ 
 
  class Nav extends React.Component {
 
@@ -69,7 +68,6 @@ import Cart from './Cart'
                       </Link>
                       {this.renderAuthItems()}
                 </li>
-                <Cart />
             </ul>
 
           </div>

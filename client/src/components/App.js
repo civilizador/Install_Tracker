@@ -7,10 +7,7 @@ import HomePage from './main_comps/HomePage';
 import Profile from './user_comps/Profile';
 import Login from './user_comps/Login';
 import Register from './user_comps/Register';
-import Create from './crud_comps/Create';
-import Edit from './crud_comps/Edit';
-import Show from './crud_comps/Show';
- 
+  
 class App extends React.Component {
 
 renderEditRoutes(){
@@ -21,20 +18,16 @@ renderEditRoutes(){
           <Route path='/' exact component={HomePage} />
           <Route path='/profile/:id' exact component={Profile} />
           <Route path='/login' exact component={Login} />
-          <Route path='/create'exact component={Create} />
-          <Route path='/edit/:id'   exact component={Edit} />
-          <Route path='/show/:id' exact component={Show} />
-         </BrowserRouter>
+          </BrowserRouter>
           )
   }else if(this.props.store.auth){
     return(
       <BrowserRouter>
         <Nav />
           <Route path='/' exact component={HomePage} />
-          <Route path='/create'exact component={Create} />
-          <Route path='/edit/:id'   exact component={Edit} />
-          <Route path='/show/:id' exact component={Show} />
-       </BrowserRouter>
+          <Route path='/profile/:id' exact component={Profile} />
+
+        </BrowserRouter>
           )
   }else{
       return(
