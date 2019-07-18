@@ -8,13 +8,13 @@ import axios from 'axios';
 class Register extends Component {
   state = {
       name: "", email: "", password: "", password2: "", username: "", phone: "",
-      address: "", phone: "", errors: {}, submitted:false
+      address: "", phone: "", errors: {}, submitted:false, region: ""
     };
   constructor(props){
     super(props)
       this.name = React.createRef(); this.phone= React.createRef();  this.username = React.createRef();
       this.address = React.createRef(); this.password2 = React.createRef();  this.phone = React.createRef();
-      this.email = React.createRef(); this.password = React.createRef(); this.submit = React.createRef();
+      this.email = React.createRef(); this.password = React.createRef(); this.submit = React.createRef(); this.region = React.createRef();
   }
   renderRegions = ()=>{
     const regions =['South East','South West','North East','Central','California']
@@ -35,6 +35,7 @@ class Register extends Component {
 
   onChange = e => {
       this.setState({ [e.target.id]: e.target.value });
+      console.log(e.target.value)
     };
 
   onSubmit = async(e) => {
@@ -135,7 +136,7 @@ class Register extends Component {
                   ref={this.region}
                   onKeyUp={(e)=>{this.onKeyUp(e,'region')}}
                   onChange={this.onChange}
-                   id="region"
+                  id="region"
                   type="text"
                 >
                   {this.renderRegions()}

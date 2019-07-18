@@ -17,7 +17,6 @@ module.exports = (app) => {
           		    password: req.body.password,
           		    phone: req.body.phone,
           		    region: req.body.region
-          		    
           	});
       	    await User.createUser(newUser, function(err, user){
           		if(err) throw err;
