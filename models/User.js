@@ -24,20 +24,24 @@ const UserSchema = new mongoose.Schema({
         required: true
     },
     lat:{
-        type: String
+        type: Number,
+        default: 00000
     },
     lng:{
-        type: String
+        type: Number,
+        default: 00000
     },
     phone:{
         type: Number,
         required: true
     },
     projectId: {
-        type: Number
+        type: String,
+        default: 'Nothing is Assigned'
     },
     installAddress: {
-        type: String
+        type: String,
+        default: 'Nothing is Assigned'
     },
     archive: Array
 })

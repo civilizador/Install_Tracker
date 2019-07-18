@@ -20,17 +20,11 @@ state={submitted:false}
       e.preventDefault();
       // Trigering login action and passing input data from the login form.
       this.props.login(this.state)
+       
     }
     //  this function will check if user loged in and if so redirect to the home page.
     getResult = () =>{
-      switch(this.props.auth.auth){
-        case false:
-          return "Please Log In using your e-mail and password."
-        case 'no_user_logged_in':
-          return "Please Log In using your e-mail and password."
-        case 'wrong_password':
-          return 'Wrong Password'
-        default:
+     if (this.props.store.auth){
              return <Redirect to='/'/>;
       }
     }
@@ -87,16 +81,11 @@ state={submitted:false}
             </div>
           </div>
 <h2> {this.getResult()} </h2>
-          <div className="google-btn">
-            <div className="google-icon-wrapper">
-              <img className="google-icon" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt=''/>
-            </div>
-            <p className="btn-text"><b>Sign in with google</b></p>
-          </div>
+       
 
         </div>
     );
   }
 }
-const mapStateToProps = (auth) => ({auth})
+const mapStateToProps = (store) => ({store})
 export default connect(mapStateToProps, { login })(Login)

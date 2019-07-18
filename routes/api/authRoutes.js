@@ -34,8 +34,8 @@ module.exports = (app) => {
   	  passport.authenticate('local'),
     	  function(req, res, err){
     	      console.log(req.user)
-            if(err){res.send(err)}
-            else{ res.send("success")}
+            if(err){res.send('Please Try again')}
+            else{ res.send(req.user)}
     	  }
   	);
 

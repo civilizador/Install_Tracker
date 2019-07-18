@@ -204,15 +204,15 @@ class Profile extends Component {
           </div>
         )
     }
-    myOrdersRender=()=>{
+    myInstallsHistory=()=>{
         return(
             <div className="row container mx-auto" style={{ padding: "120px"  }}>
 
               <div className="btn-toolbar mb-3" role="toolbar" style={{ position: "fixed", left:"10px", top: "120px"  }}>
                 <div className="btn-group-vertical mr-2" role="group" aria-label="First group">
-                  <button onClick={()=>{this.onLeftMenuClick('profile')}}    className="btn btn-lg btn-secondary">Profile Info</button>
-                  <button onClick={()=>{this.onLeftMenuClick('orders')}}    className="btn btn-lg btn-secondary">My Orders</button>
-                  <button onClick={()=>{this.onLeftMenuClick('contact')}}    className="btn btn-lg btn-secondary">Contact Us</button>
+                  <button onClick={()=>{this.onLeftMenuClick('Profile')}}    className="btn btn-lg btn-secondary">Profile Info</button>
+                  <button onClick={()=>{this.onLeftMenuClick('Installs')}}    className="btn btn-lg btn-secondary">My Orders</button>
+                  <button onClick={()=>{this.onLeftMenuClick('Contact')}}    className="btn btn-lg btn-secondary">Contact Us</button>
                 </div>
               </div>
                <div className='col-10'>
@@ -222,15 +222,14 @@ class Profile extends Component {
                  <div className="col mb-12" style={{ paddingLeft: "11.250px" }}>
                   <h1>My Orders</h1> <hr/>
                   <ul>
-                    {this.props.store.allOrders.map((order)=>{
+                    {this.props.store.auth.archive.map((archive)=>{
                       return (
-                        <div key={order._id} className='row'>
+                        <div key={archive.projectId} className='row'>
                           <div className='col-md-8'>
-                            <Link to={"/order/"+order._id} > Order # :{order._id}</Link>
+                             
                           </div>
                           <div className='col-md-4'>
-                             {order.created}
-                          </div>
+                           </div>
                           <hr/> <br/>
                         </div>
                       )
@@ -270,7 +269,7 @@ class Profile extends Component {
       return this.profileComponent()
 
     }else if(this.state.currentSection==='orders'){
-      return this.myOrdersRender()
+      return this.myInstallsHistory()
     }
     else{
       return this.contactsRender()

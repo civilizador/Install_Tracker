@@ -6,7 +6,7 @@ import {logoutAction,searchAction} from '../../actions';
 
  class Nav extends React.Component {
 
-   state = {searchValue: 'Pepperoni'}
+   state = {searchValue: 'Type Text Name'}
 
   renderAuthItems=()=>{
     // console.log('Render Auth items function',this.props.store.auth)
@@ -17,12 +17,13 @@ import {logoutAction,searchAction} from '../../actions';
                   </div>  )
       }else{
           return (<div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <Link to='/profile'  className="dropdown-item">Profile </Link>
+                        
+                        <Link to={'/profile/'+this.props.store.auth._id}  className="dropdown-item">Profile </Link>
                         <p onClick={ ()=>{this.props.logoutAction()} }  className="dropdown-item"> SignOut </p>
                   </div>  )
       }
   }
-
+  
   onSearchSubmit=(e)=>{
     e.preventDefault();
     console.log('Search for: ',this.state.searchValue)
@@ -43,16 +44,9 @@ import {logoutAction,searchAction} from '../../actions';
           </button>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav mr-auto">
-              <li className="nav-item active">
-                <a className="nav-link" href="/#menu"> Menu <span className="sr-only">(current)</span></a>
-              </li>
-              <li className="nav-item">
-                  <Link className="nav-link" to="/about">Why Our Pizza</Link>
-              </li>
+             
             </ul>
-            <div id='address' className='mx-auto'>
-              (215) 638-8082 <br/> 3665 Hulmeville Rd, Bensalem, PA 19020
-            </div>
+        
             <form className="form-inline my-2 my-lg-0" onSubmit={this.onSearchSubmit}>
               <input
                 className="form-control mr-sm-2"
@@ -64,7 +58,7 @@ import {logoutAction,searchAction} from '../../actions';
             <ul className="navbar-nav authBUttons">
                 <li className="nav-item dropdown">
                       <Link className="nav-link dropdown-toggle" to="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          <i className="fas fa-utensils"></i>
+                          <i class="fas fa-truck"></i>
                       </Link>
                       {this.renderAuthItems()}
                 </li>

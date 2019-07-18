@@ -11,16 +11,7 @@ import Register from './user_comps/Register';
 class App extends React.Component {
 
 renderEditRoutes(){
-  if(this.props.store.auth && this.props.store.auth.admin){
-    return(
-      <BrowserRouter>
-        <Nav />
-          <Route path='/' exact component={HomePage} />
-          <Route path='/profile/:id' exact component={Profile} />
-          <Route path='/login' exact component={Login} />
-          </BrowserRouter>
-          )
-  }else if(this.props.store.auth){
+  if(this.props.store.auth){
     return(
       <BrowserRouter>
         <Nav />
@@ -33,7 +24,7 @@ renderEditRoutes(){
       return(
       <BrowserRouter>
         <Nav />
-          <Route path='/login' exact component={Login} />
+          <Route path='/' exact component={Login} />
           <Route path='/register' exact component={Register} />
          </BrowserRouter>
           )

@@ -23,8 +23,9 @@ export default (activeUser=null, action)=>{
         activeUser
       }
 
-    case 'WRONG_PASSWORD':
-          return action.payload
+      case 'WRONG_PASSWORD':
+        return action.payload
+          
     default:
       return activeUser;
   }

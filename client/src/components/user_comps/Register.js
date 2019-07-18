@@ -7,8 +7,9 @@ import axios from 'axios';
 
 class Register extends Component {
   state = {
-      name: "", email: "", password: "", password2: "", username: "", phone: "",
-      address: "", phone: "", errors: {}, submitted:false, region: ""
+      name: "", email: "", password: "", password2: "",
+      username: "", phone: "", address: "", phone: "",
+      errors: {}, submitted:false, region: ""
     };
   constructor(props){
     super(props)
@@ -35,17 +36,16 @@ class Register extends Component {
 
   onChange = e => {
       this.setState({ [e.target.id]: e.target.value });
-      console.log(e.target.value)
+      console.log(e.target.id)
     };
 
   onSubmit = async(e) => {
       e.preventDefault()
-       const newUser =  this.state;
-       console.log(newUser)
+        console.log(this.state)
        const response = await axios({
             method: 'post',
             url: 'api/register',
-            data: newUser
+            data: this.state
         })
         if(response.status === 200){
            this.setState({submitted:true});

@@ -37,14 +37,7 @@ let wrongPass = false;
        const data =  await axios.get(`/api/current_user`)
      return data
   }
-  // LOGIN STATUS ACTION
-  export const loginAction = () => {
-      return async function(dispatch,getState) {
-        console.log('this message from action USER_LOGED_IN');
-          dispatch({ type: 'USER_LOGED_IN',  payload: true })
-        }
-  }
-
+ 
   // LOGOUT  ACTION
   export const logoutAction = () => {
        return async function(dispatch,getState) {
@@ -54,30 +47,22 @@ let wrongPass = false;
           dispatch({ type: 'LOGOUT',  payload: false })
        }
   }
-    // Password is wrong ACTION
-    export const wrongPassAction = () => {
-      return function(dispatch,getState) {
-        if(wrongPass){
-          dispatch({ type: 'WRONG_PASSWORD',  payload: 'wrong_password' }) }
-      }
-    }
+    
     // LOGIN
      export const login = ({ username, password }) => async (dispatch) => {
-        await axios({
+        const loginResponse = await axios({
           method:"post",
           url:"/api/login",
           data: { username, password }
         })
-          .then( (response) => {
-              console.log(response.status);
+          if(loginResponse.data){
+            console.log("RESPOOOOONSEEEEE",loginResponse.data)
               dispatch( getCurrentUser() );
-              dispatch( loginAction() );
-            })
-          .catch( (err) => {
-              wrongPass=true;
-              console.log(err,wrongPass);
-               dispatch( wrongPassAction() );
-          } )
+            }
+            else{
+               dispatch(  { type: 'WRONG_PASSWORD',  payload: 'wrong_password' }  )  
+            }
+            
       }
 
      export const fetchAllUsers = (category) => async (dispatch,getState) => {

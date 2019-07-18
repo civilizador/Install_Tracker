@@ -87,7 +87,9 @@
   background-color: #fafcfd;
   color: #5b9bd1;
 }
-
+i.fas.fa-truck{
+  font-size: 40px;
+ }
 .profile-usermenu ul li.active {
   border-bottom: none;
 }
