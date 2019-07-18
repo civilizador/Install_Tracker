@@ -44,7 +44,8 @@ import {logoutAction,searchAction} from '../../actions';
           </button>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav mr-auto">
-             
+              <li className='nav-item'>All Techs</li>
+              <li className='nav-item'>My Dashboard</li>
             </ul>
         
             <form className="form-inline my-2 my-lg-0" onSubmit={this.onSearchSubmit}>

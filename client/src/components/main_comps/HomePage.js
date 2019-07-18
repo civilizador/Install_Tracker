@@ -6,6 +6,8 @@ import UserView from '../user_comps/UserView'
 import {Redirect} from 'react-router-dom';
 
 class HomePage extends React.Component {
+  state = {view:'admin'}
+  
   componentDidMount(){
         this.props.fetchAllUsers()
         console.log(this.props.store)
@@ -13,9 +15,16 @@ class HomePage extends React.Component {
   whichScreenToShow(){
     if(this.props.store.auth.admin){
       return <UsersList/>
-    }else if(this.props.store.auth){
+    }else if(this.props.store.auth && this.state==='user'){
       return <UserView/>
-    }else{
+    }
+    else if(this.props.store.auth && this.state.view==='admin'){
+      return <UsersList/>
+    }
+    else if(this.props.store.auth){
+      return <UserView/>
+    }  
+    else{
       {this.redirectToLogin()}
     }
   }

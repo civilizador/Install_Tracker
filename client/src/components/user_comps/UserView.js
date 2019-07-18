@@ -7,7 +7,7 @@ class UserView extends React.Component {
         this.props.getCurrentUser()
     }
     getStyling(){
-        switch(this.props.auth.installAddress){
+        switch(this.props.store.auth.installAddress){
             case 'Nothing is Assigned':
                 return {width: "18rem", marginTop: "10vh", border: "3px solid silver"}
             default :
