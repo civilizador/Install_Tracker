@@ -26,11 +26,11 @@ class Register extends Component {
   renderHeader = ()=>{
     switch(this.state.submitted){
       case true:
-         return <Redirect to='/login'/>;
+         return <Redirect to='/' />;
       case false:
          return 'Please Register bellow'
       default:
-         return <Redirect to='/login'/>;
+         return <Redirect to='/' />;
     }
   }
 

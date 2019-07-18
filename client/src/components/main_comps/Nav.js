@@ -12,7 +12,7 @@ import {logoutAction,searchAction} from '../../actions';
     // console.log('Render Auth items function',this.props.store.auth)
       if( !this.props.store.auth ){
           return (<div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <Link to='/login'  className="dropdown-item">Login </Link>
+                        <Link to='/'  className="dropdown-item">Login </Link>
                         <Link to='/register'  className="dropdown-item">Register </Link>
                   </div>  )
       }else{
