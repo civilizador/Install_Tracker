@@ -29,6 +29,17 @@ let wrongPass = false;
          });
      }
   }
+  
+  // Update User LatLng
+  export const updateLatLng = (latLng) => async (dispatch) => {
+     console.log('UpdateLat Long trigerred', latLng)
+        const response = await  axios.put("/api/updateLatLng", {
+           latLng
+          })
+         
+        dispatch({type:'USER_UPDATE', payload:response.data})  
+  }
+
 
 
 

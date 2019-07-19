@@ -68,11 +68,11 @@ module.exports = (app) => {
     
 
     app.put('/api/update_user', async (req,res) => {
-      let password = req.body.password
+        let password = req.body.password
             if(req.user) {
                 bcrypt.hash(password, (hash) => {
-                  req.body.password = hash
-                   User.findByIdAndUpdate(req.user._id,req.body.updatedUser,(err, user)=>{
+                    req.body.password = hash
+                    User.findByIdAndUpdate(req.user._id,req.body.updatedUser,(err, user)=>{
                          if(err) {throw err}
                          else{ res.send(req.user) }
                      })
@@ -80,7 +80,25 @@ module.exports = (app) => {
             }
             else{res.send(false)}
     })
-
+    
+    app.post('/api/updateLatLng', async(req,res)=>{
+        if(req.user){
+            // console.log('Some One is trying to remove from Cart ', req.body.index)
+            console.log(req.body,'REQUUUESSSTTTTTTTT BODDYYYYYYYYy')
+            const latLng = req.body.latLng 
+               User.findByIdAndUpdate(req.user._id,
+                { "$set": { "lat": latLng.latitude } },
+                function(err) {
+                    if (err) throw err;
+                    res.status(200)
+                    res.send(req.user);
+                });
+        }else{
+            res.send('noUserLoggedIn')
+        }
+    })
+    
+   
 
 
 

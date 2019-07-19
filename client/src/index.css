@@ -49,7 +49,9 @@ img.carousel_pizza{
   height: 100vh!important;
 }
 
-
+button.btn.btn-xs.btn-outline-light{
+  margin-left: 3vw;
+}
  .google-btn {
   width: 184px;
   height: 42px;

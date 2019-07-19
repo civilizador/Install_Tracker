@@ -26,7 +26,7 @@ class UserView extends React.Component {
                         <p className="card-text">{this.props.store.auth.installAddress}</p>
                       </div>
                       <ul className="list-group list-group-flush">
-                        <li className="list-group-item">Cras justo odio</li>
+                        <li className="list-group-item">{this.props.store.auth.lat}{this.props.store.auth.lng}</li>
                         <li className="list-group-item">{this.props.store.auth.phone}</li>
                         <li className="list-group-item">{this.props.store.auth.email}</li>
                       </ul>
