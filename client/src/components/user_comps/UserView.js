@@ -1,10 +1,14 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {getCurrentUser} from '../../actions'
+import {getCurrentUser,updateUserStatus} from '../../actions'
 
 class UserView extends React.Component {
+  
+    state={status: this.props.store.auth.status}
+    
     componentDidMount(){
         this.props.getCurrentUser()
+        console.log(this.state)
     }
     getStyling(){
         switch(this.props.store.auth.installAddress){
@@ -15,6 +19,12 @@ class UserView extends React.Component {
         }
          
     }
+    onStatusChange=async(e)=>{
+        const value= e.target.value
+       await this.setState({status:value})
+        await this.props.updateUserStatus(value)
+        console.log(this.state)
+    }
     render(){
         if(this.props.store.auth)
         console.log(this.props.store.auth)
@@ -23,14 +33,20 @@ class UserView extends React.Component {
                       <h1>{this.props.store.auth.name}</h1>
                       <div className="card-body">
                         <h5 className="card-title">{this.props.store.auth.region}</h5>
-                        <input value={this.props.store.auth.projectId}  />
+                        <p > {this.props.store.auth.projectId} </p>
                         <p className="card-text">{this.props.store.auth.installAddress}</p>
                       </div>
                       <ul className="list-group list-group-flush">
-                        <select>
-                            <option>Heading To site</option>
-                            <option>Arrived to the site</option>
-                            <option>Running late</option>
+                        <select 
+                            className='form-control'
+                            onChange={this.onStatusChange}
+                            id="status"
+                            type="text"
+                            value={this.state.status}
+                                >
+                            <option value="Heading To site" >Heading To site</option>
+                            <option value="Arrived to the site">Arrived to the site</option>
+                            <option value="Running late">Running late</option>
                         </select>
                         <li className="list-group-item">{this.props.store.auth.lat}{this.props.store.auth.lng}</li>
                         <li className="list-group-item">{this.props.store.auth.phone}</li>
@@ -49,4 +65,4 @@ class UserView extends React.Component {
 
 const mapStateToProps = (store) => ({store})
 
-export default connect(mapStateToProps,{getCurrentUser})(UserView)
+export default connect(mapStateToProps,{getCurrentUser,updateUserStatus})(UserView)

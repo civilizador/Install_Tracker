@@ -83,8 +83,6 @@ module.exports = (app) => {
     
     app.post('/api/updateLatLng', async(req,res)=>{
         if(req.user){
-            // console.log('Some One is trying to remove from Cart ', req.body.index)
-            console.log(req.body,'REQUUUESSSTTTTTTTT BODDYYYYYYYYy')
             const latlng = req.body.latlng 
                User.findByIdAndUpdate(req.user._id,
                 { "$set": { "lat": latlng.latitude, "lng":latlng.longitude } },
@@ -98,8 +96,20 @@ module.exports = (app) => {
         }
     })
     
+    app.post('/api/updateUserStatus', async(req,res)=>{
+        if(req.user){
+               User.findByIdAndUpdate(req.user._id,
+                { "$set": { "status": req.body.status } },
+                function(err) {
+                    if (err) throw err;
+                    res.status(200)
+                    res.send(req.user);
+                });
+        }else{
+            res.send('noUserLoggedIn')
+        }
+    })
    
-
 
 
 

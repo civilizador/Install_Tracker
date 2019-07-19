@@ -1,8 +1,11 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {fetchAllUsers} from '../../actions'
+import {fetchAllUsers,updateUserStatus} from '../../actions'
 
 class UsersList extends React.Component {
+    
+    state={status: this.props.store.auth.status}
+
     componentDidMount(){
         this.props.fetchAllUsers()
     }
@@ -16,7 +19,12 @@ class UsersList extends React.Component {
                 return {width: "70%", marginTop: "12vh", border: "3px solid lime"}    
         }
     }
-    
+    onStatusChange=async(e)=>{
+        const value= e.target.value
+       await this.setState({status:value})
+        await this.props.updateUserStatus(value)
+        console.log(this.state)
+    }
     render(){
             
         if(this.props.store.auth.admin){
@@ -30,10 +38,16 @@ class UsersList extends React.Component {
                             <p className="card-text">{user.installAddress}</p>
                           </div>
                           <ul className="list-group list-group-flush">
-                            <select>
-                                <option>Heading To site</option>
-                                <option>Arrived to the site</option>
-                                <option>Running late</option>
+                            <select 
+                                className='form-control'
+                                onChange={this.onStatusChange}
+                                id="status"
+                                type="text"
+                                value={this.state.status}
+                                    >
+                                <option value="Heading To site" >Heading To site</option>
+                                <option value="Arrived to the site">Arrived to the site</option>
+                                <option value="Running late">Running late</option>
                             </select>
                             <li className="list-group-item">lat: {user.lat} lng: {user.lng}</li>
                             <li className="list-group-item">{user.phone}</li>
@@ -60,11 +74,7 @@ class UsersList extends React.Component {
                             <p className="card-text">{user.installAddress}</p>
                           </div>
                           <ul className="list-group list-group-flush">
-                            <select>
-                                <option>Heading To site</option>
-                                <option>Arrived to the site</option>
-                                <option>Running late</option>
-                            </select>
+                            <li className="list-group-item">{user.status}</li> 
                             <li className="list-group-item">lat: {user.lat} lng: {user.lng}</li>
                             <li className="list-group-item">{user.phone}</li>
                             <li className="list-group-item">{user.email}</li>
@@ -84,6 +94,6 @@ class UsersList extends React.Component {
 
 const mapStateToProps = (store) => ({store})
 
-export default connect(mapStateToProps,{fetchAllUsers})(UsersList)
+export default connect(mapStateToProps,{fetchAllUsers,updateUserStatus})(UsersList)
 
 

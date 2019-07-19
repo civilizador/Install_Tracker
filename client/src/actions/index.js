@@ -40,6 +40,15 @@ let wrongPass = false;
           dispatch({type:'GET_USER_DATA', payload:response.data})  
   }
 
+  // Update User Status
+  export const updateUserStatus = (status) => async (dispatch) => {
+     console.log('Update User Status trigerred', status)
+        const response = await  axios.post("/api/updateUserStatus", {
+           status
+          })
+         if(response.data) 
+          dispatch({type:'GET_USER_DATA', payload:response.data})  
+  }
 
 
 

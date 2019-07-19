@@ -39,6 +39,10 @@ const UserSchema = new mongoose.Schema({
         type: String,
         default: 'Nothing is Assigned'
     },
+    status:{
+        type: String,
+        default: 'Not started'
+    },
     installAddress: {
         type: String,
         default: 'Nothing is Assigned'
