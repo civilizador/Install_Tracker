@@ -1,36 +1,35 @@
 import React  from 'react';
 import {connect} from 'react-redux';
-import {fetchAllUsers,updateUser} from '../../actions';
+import {fetchAllUsers,updateLatLng} from '../../actions';
 import UsersList from '../user_comps/UsersList';
 import UserView from '../user_comps/UserView'
 import {Redirect} from 'react-router-dom';
  
  class HomePage extends React.Component {
-  state = {view:'user'}
+  state = {view:'user', locationAllowed:''}
   
   componentDidMount() {
-        this.props.fetchAllUsers()
-        console.log(this.props.store)
-        // Getting User's current location information from window object and passing it as a  'position' object to callback function.
+        
         window.navigator.geolocation.getCurrentPosition(
-              (position) => {
+            async (position) => {
+              if(position.coords.latitude){
+                  let  latlng = await {
+                        latitude: position.coords.latitude,
+                        longitude: position.coords.longitude,
+                    }
+                  console.log(latlng)
+                  await this.props.updateLatLng(latlng)
+                  await this.props.fetchAllUsers() 
+              }
               
-                const latlng = {
-                    latitude: position.coords.latitude,
-                    longtitude: position.coords.longtitude}
-                console.log(latlng)
-                this.props.updateUser(latlng)
-                console.log(position)
-                
-        // Making an API call to get weather data and saving result to data_weather variable.
-             },
+            },
             (err) => { 
-                 this.setState({errMessage: err.message});
+                 this.setState({locationAllowed: err.message});
              }
         )
+    }
+    
         
-  }
-  
   whichScreenToShow(){
     if(this.props.store.auth.admin){
       return <UsersList/>
@@ -67,4 +66,4 @@ import {Redirect} from 'react-router-dom';
 
 const mapStateToProps = (store) => ({store})
 
-export default connect(mapStateToProps, {fetchAllUsers,updateUser})(HomePage)
+export default connect(mapStateToProps, {fetchAllUsers,updateLatLng})(HomePage)

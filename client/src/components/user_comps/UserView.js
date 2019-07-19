@@ -23,9 +23,15 @@ class UserView extends React.Component {
                       <h1>{this.props.store.auth.name}</h1>
                       <div className="card-body">
                         <h5 className="card-title">{this.props.store.auth.region}</h5>
+                        <input value={this.props.store.auth.projectId}  />
                         <p className="card-text">{this.props.store.auth.installAddress}</p>
                       </div>
                       <ul className="list-group list-group-flush">
+                        <select>
+                            <option>Heading To site</option>
+                            <option>Arrived to the site</option>
+                            <option>Running late</option>
+                        </select>
                         <li className="list-group-item">{this.props.store.auth.lat}{this.props.store.auth.lng}</li>
                         <li className="list-group-item">{this.props.store.auth.phone}</li>
                         <li className="list-group-item">{this.props.store.auth.email}</li>

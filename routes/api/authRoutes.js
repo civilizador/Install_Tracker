@@ -85,9 +85,9 @@ module.exports = (app) => {
         if(req.user){
             // console.log('Some One is trying to remove from Cart ', req.body.index)
             console.log(req.body,'REQUUUESSSTTTTTTTT BODDYYYYYYYYy')
-            const latLng = req.body.latLng 
+            const latlng = req.body.latlng 
                User.findByIdAndUpdate(req.user._id,
-                { "$set": { "lat": latLng.latitude } },
+                { "$set": { "lat": latlng.latitude, "lng":latlng.longitude } },
                 function(err) {
                     if (err) throw err;
                     res.status(200)

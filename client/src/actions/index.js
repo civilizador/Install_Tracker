@@ -31,13 +31,13 @@ let wrongPass = false;
   }
   
   // Update User LatLng
-  export const updateLatLng = (latLng) => async (dispatch) => {
-     console.log('UpdateLat Long trigerred', latLng)
-        const response = await  axios.put("/api/updateLatLng", {
-           latLng
+  export const updateLatLng = (latlng) => async (dispatch) => {
+     console.log('UpdateLat Long trigerred', latlng)
+        const response = await  axios.post("/api/updateLatLng", {
+           latlng
           })
-         
-        dispatch({type:'USER_UPDATE', payload:response.data})  
+         if(response.data) 
+          dispatch({type:'GET_USER_DATA', payload:response.data})  
   }
 
 
