@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link}  from 'react-router-dom';
+import {Link,Redirect}  from 'react-router-dom';
 import {connect} from 'react-redux';
 import {logoutAction,searchAction} from '../../actions';
  
@@ -19,7 +19,7 @@ import {logoutAction,searchAction} from '../../actions';
           return (<div className="dropdown-menu" aria-labelledby="navbarDropdown">
                         
                         <Link to={'/profile/'+this.props.store.auth._id}  className="dropdown-item">Profile </Link>
-                        <p onClick={ ()=>{this.props.logoutAction()} }  className="dropdown-item"> SignOut </p>
+                        <p onClick={ ()=>{this.props.logoutAction(); return(< Redirect to='/' />)} }  className="dropdown-item"> SignOut </p>
                   </div>  )
       }
   }

@@ -52,13 +52,13 @@ import {Redirect} from 'react-router-dom';
     <div className="HomePage text-center">
         <div id='menuItems' className='row'>
           {this.whichScreenToShow()}
-         <div className="btn-toolbar mb-3" role="toolbar" style={{ position: "fixed", left:"10px", top: "120px"  }}>
-          <div className="btn-group-vertical mr-2" role="group" aria-label="First group">
-            <button onClick={ () => {  this.setState({view:'user'}) } }    className="btn btn-lg btn-secondary">My Install</button>
-            <button onClick={ () => {  this.setState({view:'admin'}) } }    className="btn btn-lg btn-secondary">All Techs</button>
-           </div>
+          <div className="btn-toolbar mb-3" role="toolbar" style={{ position: "fixed", right:"5px", top: "140px"  }}>
+            <div className="btn-group-vertical mr-2" role="group" aria-label="First group">
+              <button onClick={ () => {  this.setState({view:'user'}) } }    className="btn btn-md btn-secondary">Me</button>
+              <button onClick={ () => {  this.setState({view:'admin'}) } }    className="btn btn-md btn-secondary">All</button>
+            </div>
+          </div>
         </div>
-         </div>
     </div>
     );
   }
