@@ -120,6 +120,13 @@ div.contactUsDiv {
   margin-top: 3%;
   height: 40%
 }
+div.card.mx-auto {
+  width: 70%;
+  margin-top: 12vh;
+}
+#status{
+  text-align-last:center;
+}
 
 .HomePage {
   height: 100vh;

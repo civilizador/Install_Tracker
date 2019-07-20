@@ -13,6 +13,9 @@ module.exports = (app) => {
             const newUser = await new User({
           		    name: req.body.name, 
           		    email: req.body.email,
+          		    directManagerName: req.body.directManagerName,
+          		    directManagerEmail: req.body.directManagerName,
+          		    status: "No status set",
           		    username: req.body.username,
           		    password: req.body.password,
           		    phone: req.body.phone,

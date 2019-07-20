@@ -9,20 +9,16 @@ class Register extends Component {
   state = {
       name: "", email: "", password: "", password2: "",
       username: "", phone: "", address: "", phone: "",
-      errors: {}, submitted:false, region: ""
+      errors: {}, submitted:false, region: "South East", directManagerEmail: "", directManagerName: ""
     };
   constructor(props){
     super(props)
       this.name = React.createRef(); this.phone= React.createRef();  this.username = React.createRef();
       this.address = React.createRef(); this.password2 = React.createRef();  this.phone = React.createRef();
       this.email = React.createRef(); this.password = React.createRef(); this.submit = React.createRef(); this.region = React.createRef();
+      this.directManagerEmail = React.createRef(); this.directManagerName = React.createRef();
   }
-  renderRegions = ()=>{
-    const regions =['South East','South West','North East','Central','California']
-    return  regions.map((region)=>{
-     return  <option value={region} key={region}> {region} </option>
-    })
-  }
+  
   renderHeader = ()=>{
     switch(this.state.submitted){
       case true:
@@ -36,9 +32,11 @@ class Register extends Component {
 
   onChange = e => {
       this.setState({ [e.target.id]: e.target.value });
-      console.log(e.target.id)
     };
-
+  onChangeForRegion = e => {
+     this.setState({ region : e.target.value });
+     console.log( this.state.region ," Is selected region ","for: ", e.target.id )
+  }
   onSubmit = async(e) => {
       e.preventDefault()
         console.log(this.state)
@@ -135,11 +133,17 @@ class Register extends Component {
                   className='form-control'
                   ref={this.region}
                   onKeyUp={(e)=>{this.onKeyUp(e,'region')}}
-                  onChange={this.onChange}
+                  onChange={this.onChangeForRegion}
+                  value={this.state.region}
+                  defaultValue={this.state.region}
                   id="region"
                   type="text"
                 >
-                  {this.renderRegions()}
+                  <option  value='South East'> South East </option>
+                  <option value='South West'> South West </option>
+                  <option value='North East'> North East </option>
+                  <option value='Central'> Central</option>
+                  <option value='California'> California</option>
                 </select>
               </div>
  
@@ -157,6 +161,7 @@ class Register extends Component {
                   type="text"
                 />
               </div>
+               
                <div className="form-group">
                 <label htmlFor="email">Email</label>
                 <input
@@ -170,6 +175,35 @@ class Register extends Component {
                   type="email"
                 />
               </div>
+              
+              <div className="form-group">
+                <label htmlFor="directManagerName">Direct Manager Name</label>
+                <input
+                required
+                  className='form-control'
+                  ref={this.directManagerName}
+                  onKeyUp={(e)=>{this.onKeyUp(e,'directManagerName')}}
+                  onChange={this.onChange}
+                  value={this.state.directManagerName}
+                  id="directManagerName"
+                  type="directManagerName"
+                />
+              </div>
+              
+              <div className="form-group">
+                <label htmlFor="directManagerEmail">Direct Manager Email</label>
+                <input
+                required
+                  className='form-control'
+                  ref={this.directManagerEmail}
+                  onKeyUp={(e)=>{this.onKeyUp(e,'directManagerEmail')}}
+                  onChange={this.onChange}
+                  value={this.state.directManagerEmail}
+                  id="directManagerEmail"
+                  type="directManagerEmail"
+                />
+              </div>
+              
               <div className="form-group">
                 <label htmlFor="password">Password</label>
                 <input

@@ -15,6 +15,16 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    projectName: {
+        type: String,
+        default: 'Nothing is Assigned'
+    },
+    directManagerName: {
+        type: String
+    },
+    directManagerEmail: {
+        type: String
+    },
     region: {
        type: String,
        required: true

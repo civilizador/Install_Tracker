@@ -14,14 +14,14 @@ class UsersList extends React.Component {
     getStyling(){
         switch(this.props.store.auth.installAddress){
             case 'Nothing is Assigned':
-                return {width: "70%", marginTop: "12vh", border: "3px solid silver"}
+                return { marginTop: "12vh", border: "3px solid silver"}
             default :
-                return {width: "70%", marginTop: "12vh", border: "3px solid lime"}    
+                return {  marginTop: "12vh", border: "3px solid lime"}    
         }
     }
     onStatusChange=async(e)=>{
         const value= e.target.value
-       await this.setState({status:value})
+        await this.setState({status:value})
         await this.props.updateUserStatus(value)
         console.log(this.state)
     }
@@ -30,25 +30,24 @@ class UsersList extends React.Component {
         if(this.props.store.auth.admin){
             return (this.props.store.allUsers.map((user)=>{
                     return (
-                         <div key={user._id} class="card mx-auto" style={this.getStyling()}>
+                         <div key={user._id} class="card mx-auto col-lg-3 col-md-4 col-sm-12 col-xs-12" style={this.getStyling()}>
                           <h1>{user.name}</h1>
                           <div className="card-body">
                             <h5 className="card-title">{user.region}</h5>
-                            <input value={user.projectId}  />
+                            <div class="input-group mb-3">
+                                <input 
+                                    className='form-control' 
+                                    value={user.projectId}  
+                                />                              
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" type="button" id="button-addon2">Assign</button>
+                                </div>
+                            </div>
+                            
                             <p className="card-text">{user.installAddress}</p>
                           </div>
                           <ul className="list-group list-group-flush">
-                            <select 
-                                className='form-control'
-                                onChange={this.onStatusChange}
-                                id="status"
-                                type="text"
-                                value={this.state.status}
-                                    >
-                                <option value="Heading To site" >Heading To site</option>
-                                <option value="Arrived to the site">Arrived to the site</option>
-                                <option value="Running late">Running late</option>
-                            </select>
+                            <li className="list-group-item">{user.status}</li> 
                             <li className="list-group-item">lat: {user.lat} lng: {user.lng}</li>
                             <li className="list-group-item">{user.phone}</li>
                             <li className="list-group-item">{user.email}</li>
@@ -66,7 +65,7 @@ class UsersList extends React.Component {
             return(
                 this.props.store.allUsers.map((user)=>{
                     return (
-                         <div key={user._id} class="card mx-auto" style={this.getStyling()}>
+                         <div key={user._id} class="card mx-auto col-lg-3 col-md-4 col-sm-12 col-xs-12" style={this.getStyling()}>
                           <h1>{user.name}</h1>
                           <div className="card-body">
                             <h5 className="card-title">{user.region}</h5>

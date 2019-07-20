@@ -58,7 +58,7 @@ import {logoutAction,searchAction} from '../../actions';
             <ul className="navbar-nav authBUttons">
                 <li className="nav-item dropdown">
                       <Link className="nav-link dropdown-toggle" to="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          <i class="fas fa-truck"></i>
+                          <i className="fas fa-truck"></i>
                       </Link>
                       {this.renderAuthItems()}
                 </li>
