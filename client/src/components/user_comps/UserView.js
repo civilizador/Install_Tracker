@@ -32,6 +32,7 @@ class UserView extends React.Component {
         console.log(this.props.store.auth)
         return(
                  <div key={this.props.store.auth._id} className="card mx-auto" style={this.getColorOnStatus()}>
+                    <div className='btn btn-lg btn-outline-info'>{this.props.store.auth.projects.slice(-1)[0].projectStartTime} -- {this.props.store.auth.projects.slice(-1)[0].projectStartDate} </div>
                       <h1>{this.props.store.auth.name}</h1>
                       <div className="card-body">
                         <h5 className="card-title"><i class="fas fa-globe-americas"></i>{this.props.store.auth.region}</h5>
