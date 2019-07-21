@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import './user_comps.css';
- import {connect} from 'react-redux'
+import {connect} from 'react-redux'
 import {Redirect,Link} from 'react-router-dom'
 import {updateUser} from '../../actions'
-import Map from './Gmaps.js'
 import StaticMap from './GmapStatic.js'
 
 class Profile extends Component {
@@ -26,13 +25,12 @@ class Profile extends Component {
       <div className="row container mx-auto" style={{ padding: "120px"  }}>
          <div className="btn-toolbar mb-3" role="toolbar" style={{ position: "fixed", left:"10px", top: "120px"  }}>
           <div className="btn-group-vertical mr-2" role="group" aria-label="First group">
-            <button onClick={()=>{this.onLeftMenuClick('profile')}}    className="btn btn-lg btn-secondary">Profile Info</button>
-            <button onClick={()=>{this.onLeftMenuClick('orders')}}     className="btn btn-lg btn-secondary">My Orders</button>
-            <button onClick={()=>{this.onLeftMenuClick('contact')}}    className="btn btn-lg btn-secondary">Contact Us</button>
-          </div>
+            <button onClick={()=>{this.onLeftMenuClick('profile')}}    className="btn btn-md btn-secondary">Profile Info</button>
+            <button onClick={()=>{this.onLeftMenuClick('orders')}}     className="btn btn-md btn-secondary">My Orders</button>
+           </div>
         </div>
 
-      <div className='col-7'>
+      <div className='col-10'>
 
           {this.renderHeader()}
 
@@ -135,85 +133,21 @@ class Profile extends Component {
     </div>
 
 
-    <div className="col-5 float-left" >
-        <Map/>
-
-        <div className="form-group" style={{marginTop: '22rem'}}>
-                <label htmlFor="address">Address</label>
-                <input
-                  className='form-control'
-                  ref={this.address}
-                  // onKeyUp={(e)=>{this.onKeyUp(e,'addr')}}
-                   onChange={this.onChange}
-                  value={this.state.address}
-                  id="address"
-                  type="text"
-                />
-              </div>
-    </div>
+     
 
   </div>
         )
   }
 
-  contactsRender=()=>{
-      return(
-          <div className="row container mx-auto" style={{ padding: "120px"  }}>
-
-            <div className="btn-toolbar mb-3" role="toolbar" style={{ position: "fixed", left:"10px", top: "120px"  }}>
-              <div className="btn-group-vertical mr-2" role="group" aria-label="First group">
-                <button onClick={()=>{this.onLeftMenuClick('profile')}}    className="btn btn-lg btn-secondary">Profile Info</button>
-                <button onClick={()=>{this.onLeftMenuClick('orders')}}    className="btn btn-lg btn-secondary">My Orders</button>
-                <button onClick={()=>{this.onLeftMenuClick('contact')}}    className="btn btn-lg btn-secondary">Contact Us</button>
-              </div>
-            </div>
-             <div className='col-12'>
-                <div className="col s12" style={{ paddingLeft: "11.250px" }}>
-                 <h4> <b><h2> {this.renderHeader()} </h2></b> </h4>
-                </div>
-                <div className="col mb-10" style={{ paddingLeft: "11.250px" }}>
-                  <h1>Contact Us</h1> <hr/>
-                </div>
-                <div className="row">
-                    <div  className='col-xs-12 col-sm-12 col-md-6 col-lg-6 constactLeftside'>
-                      <p>OLD FRIENDS PIZZA<br/>
-                        3665 Hulmeville Rd, Bensalem, PA 19020</p>
-                        <div className="row" style={{height:'50%'}}>
-                            <div className="col-lg-10 col-md-10 col-sm-10 col-xs-10 mx-auto contactUsDiv">
-                							<a className="contactCircles" href="tel:+1-265-638-8082"><i className="fas fa-phone"></i></a>
-                              <span>(215) 638-8082</span>
-                						</div>
-                            <div className="col-lg-10 col-md-10 col-sm-10 col-xs-10 mx-auto contactUsDiv">
-                            <a className="contactCircles" href="tel:+1-265-638-8082"><i className="fas fa-phone"></i></a>
-                            <span>(215) 638-8082</span>
-                						</div>
-                            <div className="col-lg-10 col-md-10 col-sm-10 col-xs-10 mx-auto contactUsDiv" style={{textAlign:'center'}}>
-                              Sunday-Thursday 11AM–9:30PM <br/>
-                              Friday-Saturday	11AM–11:30PM
-                            </div>
-                        </div>
-                      </div>
-                  <div className='col-xs-12 col-sm-12 col-md-6 col-lg-6'>
-                    <StaticMap/>
-                  </div>
-
-                </div>
-
-             </div>
-
-          </div>
-        )
-    }
     myInstallsHistory=()=>{
         return(
             <div className="row container mx-auto" style={{ padding: "120px"  }}>
 
-              <div className="btn-toolbar mb-3" role="toolbar" style={{ position: "fixed", left:"10px", top: "120px"  }}>
+              <div className="btn-toolbar mb-3" role="toolbar" style={{ position: "fixed", right:"5px", top: "140px"  }}>
                 <div className="btn-group-vertical mr-2" role="group" aria-label="First group">
-                  <button onClick={()=>{this.onLeftMenuClick('Profile')}}    className="btn btn-lg btn-secondary">Profile Info</button>
-                  <button onClick={()=>{this.onLeftMenuClick('Installs')}}    className="btn btn-lg btn-secondary">My Orders</button>
-                  <button onClick={()=>{this.onLeftMenuClick('Contact')}}    className="btn btn-lg btn-secondary">Contact Us</button>
-                </div>
+                  <button onClick={()=>{this.onLeftMenuClick('Profile')}}    className="btn btn-lg btn-secondary">Profile</button>
+                  <button onClick={()=>{this.onLeftMenuClick('Installs')}}    className="btn btn-lg btn-secondary">History</button>
+                 </div>
               </div>
                <div className='col-10'>
                  <div className="col mb-12" style={{ paddingLeft: "11.250px" }}>
@@ -270,9 +204,6 @@ class Profile extends Component {
 
     }else if(this.state.currentSection==='orders'){
       return this.myInstallsHistory()
-    }
-    else{
-      return this.contactsRender()
     }
   }
 }
