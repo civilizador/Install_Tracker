@@ -15,9 +15,9 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    projectName: {
-        type: String,
-        default: 'Nothing is Assigned'
+    projects: {
+        type: Array,
+        default: [{projectId:'Nothing here yet', projectName: 'Nothing is assigned', projectDate: 'No date', projectStartTime: 'No Start Time assigned'}]
     },
     directManagerName: {
         type: String

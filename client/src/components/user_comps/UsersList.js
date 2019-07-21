@@ -25,6 +25,9 @@ class UsersList extends React.Component {
         await this.props.updateUserStatus(value)
         console.log(this.state)
     }
+    assignJob=async(userId)=>{
+        console.log('AssignJob to User : ',userId)
+    }
     render(){
             
         if(this.props.store.auth.admin){
@@ -34,13 +37,15 @@ class UsersList extends React.Component {
                           <h1>{user.name}</h1>
                           <div className="card-body">
                             <h5 className="card-title">{user.region}</h5>
+                            <p >Project ID#:  {user.projects.slice(-1)[0].projectId} </p>
+                            <p >Project Name: {user.projects.slice(-1)[0].projectName} </p>
                             <div class="input-group mb-3">
                                 <input 
                                     className='form-control' 
                                     value={user.projectId}  
                                 />                              
                                 <div class="input-group-append">
-                                    <button class="btn btn-outline-secondary" type="button" id="button-addon2">Assign</button>
+                                    <button onClick={()=>{this.assignJob(user._id)}} class="btn btn-outline-secondary" type="button" id="button-addon2">Assign</button>
                                 </div>
                             </div>
                             
@@ -53,8 +58,9 @@ class UsersList extends React.Component {
                             <li className="list-group-item">{user.email}</li>
                           </ul>
                           <div className="card-body">
-                            <a href="#" className="card-link">Card link</a>
-                            <a href="#" className="card-link">Another link</a>
+                            <a href={`mailto: ${user.email}?Subject=${'Issue with install : '}${this.props.store.auth.projectId}${this.props.store.auth.projectName}` } className="card-link"> Email Tech: <i class="far fa-envelope-open"></i> </a>
+                            <a href={`mailto: ${this.props.store.auth.directManagerEmail}?Subject=${'Issue with install : '}${this.props.store.auth.projectId}${this.props.store.auth.projectName}` } className="card-link">
+                                Manager: <i class="far fa-envelope-open"></i> {this.props.store.auth.directManagerName}</a>
                           </div>
                     </div>
                     )
@@ -79,8 +85,7 @@ class UsersList extends React.Component {
                             <li className="list-group-item">{user.email}</li>
                           </ul>
                           <div className="card-body">
-                            <a href="#" className="card-link">Card link</a>
-                            <a href="#" className="card-link">Another link</a>
+                             
                           </div>
                     </div>
                          )

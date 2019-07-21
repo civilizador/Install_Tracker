@@ -35,8 +35,8 @@ class UserView extends React.Component {
                       <h1>{this.props.store.auth.name}</h1>
                       <div className="card-body">
                         <h5 className="card-title"><i class="fas fa-globe-americas"></i>{this.props.store.auth.region}</h5>
-                        <p >Project ID#:  {this.props.store.auth.projectId} </p>
-                        <p >Project Name:  {this.props.store.auth.projectName} </p>
+                        <p >Project ID#:  {this.props.store.auth.projects.slice(-1)[0].projectId} </p>
+                        <p >Project Name: {this.props.store.auth.projects.slice(-1)[0].projectName} </p>
                         <p className="card-text"><i class="fas fa-map-marked-alt"></i>{this.props.store.auth.installAddress}</p>
                       </div>
                       <ul className="list-group list-group-flush">

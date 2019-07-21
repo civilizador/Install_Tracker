@@ -103,6 +103,10 @@ div#address{
   height: 3rem;
 }
 
+div#navbarSupportedContent {
+    background-color: #393939;
+}
+
 i.far.fa-times-circle {
     font-size: 2rem;
     color: orange;
