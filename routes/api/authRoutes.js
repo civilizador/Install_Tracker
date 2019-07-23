@@ -52,11 +52,12 @@ module.exports = (app) => {
 
 // Endpoint to get current user
   	app.get('/api/current_user', (req,res) => {
-
       console.log('api/current_user called')
           if(req.user) {res.send(req.user)}
           else{res.send(false)}
     })
+    
+    
     
     app.get('/api/getAllUsers', (req,res) => {
       console.log('/api/getAllUsers')
@@ -69,7 +70,16 @@ module.exports = (app) => {
           else{res.send(false)}
     })
     
-
+    app.get('/api/getAllUsers/:id', (req,res) => {
+        if(req.user) { 
+            User.find(req.params.id , (err, user)=>{
+                         if(err) {throw err}
+                         else{ res.send(user) }
+                     })
+          }
+          else{res.send(false)}
+    })
+    
     app.put('/api/update_user', async (req,res) => {
         let password = req.body.password
             if(req.user) {

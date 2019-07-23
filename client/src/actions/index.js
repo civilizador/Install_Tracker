@@ -4,16 +4,24 @@ let wrongPass = false;
 // USER LOGIN ACTIONS
 
   // Get Current User Data ACTION
-  export const getCurrentUser = () => {
-      return async function(dispatch,getState) {
-          const data = await getProfileData();
+    export const getCurrentUser = () => {
+        return async function(dispatch,getState) {
+            const data = await getProfileData();
                 if (data!=='no_user_logged_in') {
-                    dispatch({ type: 'GET_USER_DATA',  payload: data.data })
-
+                        dispatch({ type: 'GET_USER_DATA',  payload: data.data })
+    
+                }else dispatch({ type: 'GET_USER_DATA',  payload: 'no user_logged_in' })
+           }
+    }
+    export const getSelectedUser = (userId) => {
+        return async function(dispatch,getState) {
+            const response = await axios.get(`/api/getAllUsers/${userId}`)
+                if (response.data) {
+                    dispatch({ type: 'GET_SELECTED_USER_DATA',  payload: response.data })
                 }
-                else dispatch({ type: 'GET_USER_DATA',  payload: 'no user_logged_in' })
        }
-  }
+    }
+  
 
   // Update User Information
   export const updateUser = (updatedUser) => {

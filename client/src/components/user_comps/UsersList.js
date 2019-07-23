@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {fetchAllUsers,updateUserStatus} from '../../actions'
 
@@ -11,13 +12,15 @@ class UsersList extends React.Component {
     }
     
     
-    getStyling(){
-        switch(this.props.store.auth.installAddress){
-            case 'Nothing is Assigned':
-                return { marginTop: "12vh", border: "3px solid silver"}
-            default :
-                return {  marginTop: "12vh", border: "3px solid lime"}    
-        }
+    getStyling = async(status)=>{
+        switch(status){
+                    case 'Running late':
+                        return { marginTop: "12vh", border: "3px solid red"}
+                    case 'Arrived to the site':
+                        return { marginTop: "12vh", border: "3px solid #0ead0e3b"}
+                    default :
+                        return {  marginTop: "12vh", border: "3px solid red"}    
+                    }
     }
     onStatusChange=async(e)=>{
         const value= e.target.value
@@ -32,10 +35,11 @@ class UsersList extends React.Component {
             
         if(this.props.store.auth.admin){
             return (this.props.store.allUsers.map((user)=>{
+                
                     return (
-                         <div key={user._id} class="card mx-auto col-lg-3 col-md-4 col-sm-12 col-xs-12" style={this.getStyling()}>
+                         <div key={user._id} class="card mx-auto col-lg-3 col-md-4 col-sm-12 col-xs-12" style={this.getStyling(user.status)}>
                          <div className='btn btn-lg btn-outline-info'>{user.projects.slice(-1)[0].projectStartTime} -- {this.props.store.auth.projects.slice(-1)[0].projectStartDate} </div>
-                          <h1>{user.name}</h1>
+                          <Link to={ `/tech/${user._id}` } > <h1>{user.name}</h1> </Link>
                           <div className="card-body">
                             <h5 className="card-title">{user.region}</h5>
                             <p >Project ID#:  {user.projects.slice(-1)[0].projectId} </p>

@@ -7,11 +7,21 @@ import HomePage from './main_comps/HomePage';
 import Profile from './user_comps/Profile';
 import Login from './user_comps/Login';
 import Register from './user_comps/Register';
-  
+import SelectedTech from './user_comps/SelectedTech';
+
 class App extends React.Component {
 
 renderEditRoutes(){
-  if(this.props.store.auth){
+  if(this.props.store.auth && this.props.store.auth.admin){
+    return(
+      <BrowserRouter>
+        <Nav />
+          <Route path='/' exact component={HomePage} />
+          <Route path='/profile/:id' exact component={Profile} />
+          <Route path='/tech/:id' exact component={SelectedTech} />
+        </BrowserRouter>
+          )
+  }else if(this.props.store.auth){
     return(
       <BrowserRouter>
         <Nav />
