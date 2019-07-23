@@ -42,7 +42,6 @@ class UserView extends React.Component {
                       </div>
                       <ul className="list-group list-group-flush">
                         <select 
-                        
                             style = {this.getColorOnStatus() }
                             className='form-control'
                             onChange={this.onStatusChange}

@@ -11,7 +11,7 @@
     const   cookieParser =     require('cookie-parser');
     const   cookieSession   =  require("cookie-session");
     const   path =             require("path")
-
+   
 //  Connecting to DB
     mongoose.connect(process.env.MONGO_URI)
         .then(() => console.log("MongoDB successfully connected"))

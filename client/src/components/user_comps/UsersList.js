@@ -31,29 +31,24 @@ class UsersList extends React.Component {
     assignJob=async(userId)=>{
         console.log('AssignJob to User : ',userId)
     }
+    renderLink=(name,id)=>{
+        if(this.props.store.auth && this.props.store.auth.admin){
+            return <Link to={ `/tech/${id}` } > <h1>{name}</h1> </Link>
+        }else if(this.props.store.auth){
+            return   <h1>{name}</h1>  
+        }
+    }
+  
     render(){
-            
-        if(this.props.store.auth.admin){
             return (this.props.store.allUsers.map((user)=>{
-                
                     return (
                          <div key={user._id} class="card mx-auto col-lg-3 col-md-4 col-sm-12 col-xs-12" style={this.getStyling(user.status)}>
                          <div className='btn btn-lg btn-outline-info'>{user.projects.slice(-1)[0].projectStartTime} -- {this.props.store.auth.projects.slice(-1)[0].projectStartDate} </div>
-                          <Link to={ `/tech/${user._id}` } > <h1>{user.name}</h1> </Link>
+                          {this.renderLink(user.name,user._id)}
                           <div className="card-body">
                             <h5 className="card-title">{user.region}</h5>
                             <p >Project ID#:  {user.projects.slice(-1)[0].projectId} </p>
                             <p >Project Name: {user.projects.slice(-1)[0].projectName} </p>
-                            <div class="input-group mb-3">
-                                <input 
-                                    className='form-control' 
-                                    value={user.projectId}  
-                                />                              
-                                <div class="input-group-append">
-                                    <button onClick={()=>{this.assignJob(user._id)}} class="btn btn-outline-secondary" type="button" id="button-addon2">Assign</button>
-                                </div>
-                            </div>
-                            
                             <p className="card-text">{user.installAddress}</p>
                           </div>
                           <ul className="list-group list-group-flush">
@@ -71,34 +66,7 @@ class UsersList extends React.Component {
                     )
                 })
             )
-        }else if(this.props.store.auth){
-            console.log(this.props.store.auth)
-            return(
-                this.props.store.allUsers.map((user)=>{
-                    return (
-                         <div key={user._id} class="card mx-auto col-lg-3 col-md-4 col-sm-12 col-xs-12" style={this.getStyling()}>
-                         <div className='btn btn-lg btn-outline-info'>{user.projects.slice(-1)[0].projectStartTime} -- {this.props.store.auth.projects.slice(-1)[0].projectStartDate} </div>
-                          <h1>{user.name}</h1>
-                          <div className="card-body">
-                            <h5 className="card-title">{user.region}</h5>
-                            <p className="card-text">{user.projectId}</p>
-                            <p className="card-text">{user.installAddress}</p>
-                          </div>
-                          <ul className="list-group list-group-flush">
-                            <li className="list-group-item">{user.status}</li> 
-                            <li className="list-group-item">lat: {user.lat} lng: {user.lng}</li>
-                            <li className="list-group-item">{user.phone}</li>
-                            <li className="list-group-item">{user.email}</li>
-                          </ul>
-                          <div className="card-body">
-                             
-                          </div>
-                    </div>
-                         )
-                })
-            )
-        }
-    }
+        } 
    
 }
 

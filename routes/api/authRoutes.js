@@ -1,6 +1,8 @@
 const passport  = require("passport");
 const User      = require("../../models/User");
 const bcrypt = require('bcryptjs');
+const moment = require("moment")
+
 // Passing express to our routes function
 
 module.exports = (app) => {
@@ -69,6 +71,22 @@ module.exports = (app) => {
           }
           else{res.send(false)}
     })
+    
+    // app.get('/api/getAllUsers',async (req,res) => {
+    //   console.log('/api/getAllUsers')
+    //       if(req.user) { 
+    //         await User.find( {} , (err, users)=>{
+    //             if(err) {throw err} 
+    //             else{ 
+    //                 users.projects.find((project)=>{
+    //                   return moment(project.date).format("MMM Do YY")==moment(Date.now()).format("MMM Do YY")
+    //                 })
+    //             }  
+            
+    //         })
+          
+    //       }else{res.send(false)}
+    // })
     
     app.get('/api/getAllUsers/:id', (req,res) => {
         if(req.user) { 

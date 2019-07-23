@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {getSelectedUser,updateUserStatus} from '../../actions'
+import {Link} from 'react-router-dom';
 
 class UserView extends React.Component {
   
@@ -29,18 +30,39 @@ class UserView extends React.Component {
         console.log(this.state)
     }
     render(){
-        if(this.props.store.auth)
+        if(this.props.store.auth && this.props.store.auth.admin)
         console.log(this.props.store.auth)
         return(
                  <div key={this.props.store.auth._id} className="card mx-auto" style={this.getColorOnStatus()}>
+                    <div className="btn-toolbar mb-3" role="toolbar" style={{ position: "fixed", right:"5px", top: "140px"  }}>
+                        <div className="btn-group-vertical mr-2" role="group" aria-label="First group">
+                           <Link to='/' className="btn btn-md btn-secondary">All</Link>
+                        </div>
+                    </div>
                     <div className='btn btn-lg btn-outline-info'>{this.props.store.auth.projects.slice(-1)[0].projectStartTime} -- {this.props.store.auth.projects.slice(-1)[0].projectStartDate} </div>
                       <h1>{this.props.store.auth.name}</h1>
                       <div className="card-body">
-                        <h5 className="card-title"><i class="fas fa-globe-americas"></i>{this.props.store.auth.region}</h5>
-                        <p >Project ID#:  {this.props.store.auth.projects.slice(-1)[0].projectId} </p>
-                        <p >Project Name: {this.props.store.auth.projects.slice(-1)[0].projectName} </p>
-                        <p className="card-text"><i class="fas fa-map-marked-alt"></i>{this.props.store.auth.installAddress}</p>
+                        <h4 className="card-title"><i class="fas fa-globe-americas"></i>{this.props.store.auth.region}</h4>
+                        <h4 >Project ID#:  {this.props.store.auth.projects.slice(-1)[0].projectId} </h4>
+                        <h5 >Project Name: {this.props.store.auth.projects.slice(-1)[0].projectName} </h5>
+                        <h5 className="card-text"><i class="fas fa-map-marked-alt"></i>{this.props.store.auth.installAddress}</h5>
+                        <form className='col-md-9 col-sm-9 col-lg-9 mx-auto'>
+                          <div class="form-group">
+                            Project ID: <input  class="form-control" id="projectId" />
+                           </div>
+                          <div class="form-group">
+                            Project Name <input class="form-control" id="projectName" />
+                          </div>
+                          <div class="form-group">
+                            Start Date <input class="form-control" id="projectStartDate"/>
+                          </div>
+                          <div class="form-group">
+                            Start Time <input class="form-control" id="projectStartTime" />
+                          </div>
+                          <button type="submit" class="btn btn-outline-info">Assign Install</button>
+                        </form>
                       </div>
+                      
                       <ul className="list-group list-group-flush">
                         <select 
                         

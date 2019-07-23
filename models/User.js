@@ -48,10 +48,6 @@ const UserSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    projectId: {
-        type: String,
-        default: 'Nothing is Assigned'
-    },
     status:{
         type: String,
         default: 'Not started'
