@@ -10,7 +10,36 @@ class UsersList extends React.Component {
     componentDidMount(){
         this.props.fetchAllUsers()
     }
-    
+    renderAllTechs= (region)=>{
+        const alltechs =  this.props.store.allUsers.filter((user)=>{return user.region==region})
+        console.log(alltechs)
+        if(alltechs.length>0)
+           return  alltechs.map((user)=>{
+                    return (
+                        <div key={user._id} class="card col-lg-3 col-md-4 col-sm-12 col-xs-12" style={this.getStyling(user.status)}>
+                            <div className='btn btn-lg btn-outline-info'>{user.projects.slice(-1)[0].projectStartTime} -- {this.props.store.auth.projects.slice(-1)[0].projectStartDate} </div>
+                                  {this.renderLink(user.name,user._id)}
+                                  <div className="card-body">
+                                    <h5 className="card-title">{user.region}</h5>
+                                    <p >Project ID#:  {user.projects.slice(-1)[0].projectId} </p>
+                                    <p >Project Name: {user.projects.slice(-1)[0].projectName} </p>
+                                    <p className="card-text">{user.installAddress}</p>
+                                  </div>
+                                  <ul className="list-group list-group-flush">
+                                    <li className="list-group-item btn btn-outline-info" >{user.status}</li> 
+                                  
+                                  </ul>
+                                  <div className="card-body">
+                                    <a href={`mailto: ${user.email}?Subject=${'Issue with install : '}${this.props.store.auth.projectId}${this.props.store.auth.projectName}` } className="card-link"> Email Tech: <i class="far fa-envelope-open"></i> </a>
+                                    <a href={`mailto: ${this.props.store.auth.directManagerEmail}?Subject=${'Issue with install : '}${this.props.store.auth.projectId}${this.props.store.auth.projectName}` } className="card-link">
+                                        Manager: <i class="far fa-envelope-open"></i> {this.props.store.auth.directManagerName}</a>
+                             </div>
+                        </div>
+                )
+            })
+     
+    }
+        
     
     getStyling = async(status)=>{
         switch(status){
@@ -40,34 +69,33 @@ class UsersList extends React.Component {
     }
   
     render(){
-            return (this.props.store.allUsers.map((user)=>{
-                    return (
-                         <div key={user._id} class="card mx-auto col-lg-3 col-md-4 col-sm-12 col-xs-12" style={this.getStyling(user.status)}>
-                         <div className='btn btn-lg btn-outline-info'>{user.projects.slice(-1)[0].projectStartTime} -- {this.props.store.auth.projects.slice(-1)[0].projectStartDate} </div>
-                          {this.renderLink(user.name,user._id)}
-                          <div className="card-body">
-                            <h5 className="card-title">{user.region}</h5>
-                            <p >Project ID#:  {user.projects.slice(-1)[0].projectId} </p>
-                            <p >Project Name: {user.projects.slice(-1)[0].projectName} </p>
-                            <p className="card-text">{user.installAddress}</p>
-                          </div>
-                          <ul className="list-group list-group-flush">
-                            <li className="list-group-item">{user.status}</li> 
-                            <li className="list-group-item">lat: {user.lat} lng: {user.lng}</li>
-                            <li className="list-group-item">{user.phone}</li>
-                            <li className="list-group-item">{user.email}</li>
-                          </ul>
-                          <div className="card-body">
-                            <a href={`mailto: ${user.email}?Subject=${'Issue with install : '}${this.props.store.auth.projectId}${this.props.store.auth.projectName}` } className="card-link"> Email Tech: <i class="far fa-envelope-open"></i> </a>
-                            <a href={`mailto: ${this.props.store.auth.directManagerEmail}?Subject=${'Issue with install : '}${this.props.store.auth.projectId}${this.props.store.auth.projectName}` } className="card-link">
-                                Manager: <i class="far fa-envelope-open"></i> {this.props.store.auth.directManagerName}</a>
-                          </div>
-                    </div>
-                    )
-                })
-            )
-        } 
-   
+            return(
+                <div className='container' style={{width: "100%", paddingTop: "15vh"}}>
+                    <h1>South East</h1><hr/>
+                    <div className='row' style={{width: "100%"}}>
+                        {this.renderAllTechs('South East')}
+                    </div><br/>
+                    <h1>South West</h1><hr/>
+                    <div className='row' style={{width: "100%"}}>
+                         {this.renderAllTechs('South West')}
+                    </div><br/>
+                    <h1>North East</h1><hr/>
+                    <div className='row' style={{width: "100%"}}>
+                        {this.renderAllTechs('North East')}
+                    </div><br/>
+                    <div className='row' style={{width: "100%"}}>
+                        <h1>Central</h1><hr/>
+                        {this.renderAllTechs('Central')}
+                    </div><br/>    
+                    <div className='row' style={{width: "100%"}}>
+                        <h1>California</h1><hr/>
+                        {this.renderAllTechs('California')}
+                    </div><br/>     
+                </div>
+                )
+           
+     }       
+      
 }
 
 const mapStateToProps = (store) => ({store})
