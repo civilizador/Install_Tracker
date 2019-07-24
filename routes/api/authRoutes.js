@@ -141,6 +141,28 @@ module.exports = (app) => {
         }
     })
    
+   app.post('/api/addProjectToTech', async(req,res) => {
+       if(req.user && req.user.admin){
+           const userCurrentProjects=await User.find(req.body.dataToSend.userId , (err, user)=>{
+                         if(err) {throw err}
+                         else{return user.projects }
+                     })
+            const updatedProjects = await userCurrentProjects.push(req.body.dataToSend.project)         
+            User.findByIdAndUpdate(req.body.dataToSend.usedrId,
+                { "$set": { "projects": updatedProjects } },
+                function(err) {
+                    if (err) throw err;
+                    else{
+                         User.find( {} , (err, users)=>{
+                         if(err) {throw err}
+                         else{ res.send(users) }
+                     })
+                    }
+                    
+                });       
+           
+       }
+   })
 
 
 

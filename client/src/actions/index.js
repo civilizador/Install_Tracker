@@ -49,15 +49,25 @@ let wrongPass = false;
   }
 
   // Update User Status
-  export const updateUserStatus = (status) => async (dispatch) => {
-     console.log('Update User Status trigerred', status)
-        const response = await  axios.post("/api/updateUserStatus", {
-           status
+    export const updateUserStatus = (status) => async (dispatch) => {
+        console.log('Update User Status trigerred', status)
+            const response = await  axios.post("/api/updateUserStatus", {
+                status
+            })
+            if(response.data) 
+            dispatch({type:'GET_USER_DATA', payload:response.data})  
+  }
+  // Add New Project to User
+    export const addProjectToTech = (project,userId) => async (dispatch) => {
+     console.log('Add project to User Action was  triggered with #: ', project)
+     const dataToSend= {project,userId}
+        const response = await  axios.post("/api/addProjectToTech", {
+           dataToSend
           })
          if(response.data) 
-          dispatch({type:'GET_USER_DATA', payload:response.data})  
+          dispatch({type:'GET_ALL_USERS', payload:response.data})  
   }
-
+  
 
 
   // Get current User DATA helper function

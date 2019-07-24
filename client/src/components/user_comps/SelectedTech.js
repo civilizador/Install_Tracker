@@ -5,13 +5,18 @@ import {Link} from 'react-router-dom';
 
 class UserView extends React.Component {
   
-    state={selectedUser: null}
+    state={selectedUser: null, projectId:'',projectName: '',projectStartDate:'',projectStartTime:''  }
     
     componentDidMount(){
         
     }
-    
-   
+    onInputChange=(e)=>{
+        this.setState({[e.target.id]:e.target.value})
+        console.log(this.state)
+    }
+    onFormSubmit=()=>{
+        
+    }
     renderTech=()=>{
         const userId=   window.location.href.split('/').slice(-1)[0]
         console.log('USER ID is : ', userId)
@@ -43,16 +48,16 @@ class UserView extends React.Component {
                         <h5 className="card-text"><i class="fas fa-map-marked-alt"></i>{selectedUser.installAddress}</h5>
                         <form className='col-md-9 col-sm-9 col-lg-9 mx-auto'>
                           <div class="form-group">
-                            Project ID: <input  class="form-control" id="projectId" />
+                            Project ID: <input value={this.state.projectId} onChange={this.onInputChange} class="form-control" id="projectId" />
                            </div>
                           <div class="form-group">
-                            Project Name <input class="form-control" id="projectName" />
+                            Project Name <input value={this.state.projectName} onChange={this.onInputChange} class="form-control" id="projectName" />
                           </div>
                           <div class="form-group">
-                            Start Date <input class="form-control" id="projectStartDate"/>
+                            Start Date <input type='date' value={this.state.projectStartDate} onChange={this.onInputChange} class="form-control" id="projectStartDate"/>
                           </div>
                           <div class="form-group">
-                            Start Time <input class="form-control" id="projectStartTime" />
+                            Start Time <input type='time' value={this.state.projectStartTime} onChange={this.onInputChange}  class="form-control" id="projectStartTime" />
                           </div>
                           <button type="submit" class="btn btn-outline-info">Assign Install</button>
                         </form>
