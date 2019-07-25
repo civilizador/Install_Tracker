@@ -57,10 +57,12 @@ let wrongPass = false;
             if(response.data) 
             dispatch({type:'GET_USER_DATA', payload:response.data})  
   }
+  
   // Add New Project to User
     export const addProjectToTech = (project,userId) => async (dispatch) => {
      console.log('Add project to User Action was  triggered with #: ', project)
-     const dataToSend= {project,userId}
+    //  const newProject = await delete project["submitted"]
+     const dataToSend= {project:project,userId:userId}
         const response = await  axios.post("/api/addProjectToTech", {
            dataToSend
           })

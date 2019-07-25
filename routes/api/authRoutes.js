@@ -38,7 +38,6 @@ module.exports = (app) => {
   	app.post('/api/login',
   	  passport.authenticate('local'),
     	  function(req, res, err){
-    	      console.log(req.user)
             if(err){res.send('Please Try again')}
             else{ res.send(req.user)}
     	  }
@@ -61,15 +60,15 @@ module.exports = (app) => {
     
     
     
-    app.get('/api/getAllUsers', (req,res) => {
+    app.get('/api/getAllUsers', async (req,res) => {
       console.log('/api/getAllUsers')
-          if(req.user) { 
-              User.find( {} , (err, users)=>{
-                         if(err) {throw err}
-                         else{ res.send(users) }
-                     })
-          }
-          else{res.send(false)}
+            if(req.user) { 
+                const  allUsersNoAdmin  = await User.find( {"admin":false}  ,(err, users)=>{
+                        if(err) {throw err}
+                         else{return users}
+                    }) 
+                res.send(allUsersNoAdmin)    
+            } else{res.send(false)}
     })
     
     // app.get('/api/getAllUsers',async (req,res) => {
@@ -142,13 +141,14 @@ module.exports = (app) => {
     })
    
    app.post('/api/addProjectToTech', async(req,res) => {
-       if(req.user && req.user.admin){
-           const userCurrentProjects=await User.find(req.body.dataToSend.userId , (err, user)=>{
+        if(req.user && req.user.admin){
+            console.log('YAY! we triggered Adding Project to the tech route',req.body.dataToSend)
+           const userCurrentProjects=await User.find({id:req.body.dataToSend.userId} , (err, user)=>{
                          if(err) {throw err}
                          else{return user.projects }
                      })
             const updatedProjects = await userCurrentProjects.push(req.body.dataToSend.project)         
-            User.findByIdAndUpdate(req.body.dataToSend.usedrId,
+            User.findOneAndUpdate({id:req.body.dataToSend.usedrId},
                 { "$set": { "projects": updatedProjects } },
                 function(err) {
                     if (err) throw err;

@@ -20,7 +20,10 @@ const UserSchema = new mongoose.Schema({
         default: [{projectId:'Nothing here yet', 
                 projectName: 'Nothing is assigned', 
                 projectStartDate: 'No date assigned', 
-                projectStartTime: 'No Start Time assigned'}]
+                projectStartTime: 'No Start Time assigned',
+                installAddress:  'No Address is Assigned',
+                orderStatus: 'Not Started'
+        }]
     },
     directManagerName: {
         type: String
@@ -45,17 +48,14 @@ const UserSchema = new mongoose.Schema({
         default: 00000
     },
     phone:{
-        type: Number,
+        type: String,
         required: true
     },
     status:{
         type: String,
         default: 'Not started'
     },
-    installAddress: {
-        type: String,
-        default: 'Nothing is Assigned'
-    },
+ 
     archive: Array
 })
 // Connecting passport plugin to work with Local Strategy. This step is REQUIRED!

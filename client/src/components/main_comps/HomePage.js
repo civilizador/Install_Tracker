@@ -46,7 +46,19 @@ import {Redirect} from 'react-router-dom';
       {this.redirectToLogin()}
     }
   }
-  
+  returnSwitchButtons(){
+    if(this.props.store.auth && this.props.store.auth.admin){
+      return( <div>
+              </div>
+              )
+    }else if(this.props.store.auth){
+       return( <div className="btn-group-vertical mr-2" role="group" aria-label="First group">
+                <button onClick={ () => {  this.setState({view:'user'}) } }    className="btn btn-md btn-secondary">Me</button>
+                <button onClick={ () => {  this.setState({view:'admin'}) } }    className="btn btn-md btn-secondary">All</button>
+              </div>
+              )
+    } 
+  }
   render() {
     return (
     <div className="HomePage">
@@ -54,10 +66,7 @@ import {Redirect} from 'react-router-dom';
           {this.whichScreenToShow()}
         </div>  
           <div className="btn-toolbar mb-3" role="toolbar" style={{ position: "fixed", right:"5px", top: "140px"  }}>
-            <div className="btn-group-vertical mr-2" role="group" aria-label="First group">
-              <button onClick={ () => {  this.setState({view:'user'}) } }    className="btn btn-md btn-secondary">Me</button>
-              <button onClick={ () => {  this.setState({view:'admin'}) } }    className="btn btn-md btn-secondary">All</button>
-            </div>
+             {this.returnSwitchButtons()}
           </div>
     </div>
     );

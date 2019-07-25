@@ -1,21 +1,25 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {getSelectedUser,updateUserStatus} from '../../actions'
-import {Link} from 'react-router-dom';
+import {getSelectedUser,addProjectToTech} from '../../actions'
+import {Link,Redirect} from 'react-router-dom';
 
 class UserView extends React.Component {
   
-    state={selectedUser: null, projectId:'',projectName: '',projectStartDate:'',projectStartTime:''  }
-    
-    componentDidMount(){
-        
-    }
+    state={submitted:false,projectId:'',projectName: '',projectStartDate:'',projectStartTime:'',installAddress:''  }
+ 
     onInputChange=(e)=>{
         this.setState({[e.target.id]:e.target.value})
         console.log(this.state)
     }
-    onFormSubmit=()=>{
+    onFormSubmit=(userId)=>{
         
+        console.log(userId)
+        this.props.addProjectToTech(this.state,userId)
+    }
+    redirectOnSubmit(){
+       if(this.state.submitted) {
+           return <Redirect to='/'/>
+       }
     }
     renderTech=()=>{
         const userId=   window.location.href.split('/').slice(-1)[0]
@@ -32,12 +36,14 @@ class UserView extends React.Component {
             } 
         }
         console.log(selectedUser)
-        return(
+        if(this.props.store.auth && this.props.store.auth.admin){
+             return(
                  <div key={selectedUser._id} className="card mx-auto" style={style()}>
                     <div className="btn-toolbar mb-3" role="toolbar" style={{ position: "fixed", right:"5px", top: "140px"  }}>
                         <div className="btn-group-vertical mr-2" role="group" aria-label="First group">
                            <Link to='/' className="btn btn-md btn-secondary">All</Link>
                         </div>
+                        {this.redirectOnSubmit()}
                     </div>
                     <div className='btn btn-lg btn-outline-info'>{selectedUser.projects.slice(-1)[0].projectStartTime} -- {selectedUser.projects.slice(-1)[0].projectStartDate} </div>
                       <h1>{selectedUser.name}</h1>
@@ -46,12 +52,15 @@ class UserView extends React.Component {
                         <h4 >Project ID#:  {selectedUser.projects.slice(-1)[0].projectId} </h4>
                         <h5 >Project Name: {selectedUser.projects.slice(-1)[0].projectName} </h5>
                         <h5 className="card-text"><i class="fas fa-map-marked-alt"></i>{selectedUser.installAddress}</h5>
-                        <form className='col-md-9 col-sm-9 col-lg-9 mx-auto'>
+                        <form  className='col-md-9 col-sm-9 col-lg-9 mx-auto'>
                           <div class="form-group">
                             Project ID: <input value={this.state.projectId} onChange={this.onInputChange} class="form-control" id="projectId" />
                            </div>
                           <div class="form-group">
-                            Project Name <input value={this.state.projectName} onChange={this.onInputChange} class="form-control" id="projectName" />
+                            Project Name: <input value={this.state.projectName} onChange={this.onInputChange} class="form-control" id="projectName" />
+                          </div>
+                          <div class="form-group">
+                            Project Address: <input type='text' value={this.state.installAddress} onChange={this.onInputChange}  class="form-control" id="installAddress" />
                           </div>
                           <div class="form-group">
                             Start Date <input type='date' value={this.state.projectStartDate} onChange={this.onInputChange} class="form-control" id="projectStartDate"/>
@@ -59,8 +68,10 @@ class UserView extends React.Component {
                           <div class="form-group">
                             Start Time <input type='time' value={this.state.projectStartTime} onChange={this.onInputChange}  class="form-control" id="projectStartTime" />
                           </div>
-                          <button type="submit" class="btn btn-outline-info">Assign Install</button>
+                          
                         </form>
+                         <button onClick={()=>{this.onFormSubmit(selectedUser._id)} } class="btn btn-outline-info">Assign Install</button>
+
                       </div>
                       
                       <ul className="list-group list-group-flush">
@@ -75,9 +86,10 @@ class UserView extends React.Component {
                             Direct Manager: <i class="far fa-envelope-open"></i> {selectedUser.directManagerName}</a>
                       </div>
                 </div>
-          
             
             )
+        }
+        else{ return <Redirect to='/'/> }
     }
     
     onStatusChange=async(e)=>{
@@ -95,4 +107,4 @@ class UserView extends React.Component {
 
 const mapStateToProps = (store) => ({store})
 
-export default connect(mapStateToProps,{getSelectedUser,updateUserStatus})(UserView)
+export default connect(mapStateToProps,{getSelectedUser,addProjectToTech})(UserView)

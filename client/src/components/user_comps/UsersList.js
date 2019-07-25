@@ -23,6 +23,7 @@ class UsersList extends React.Component {
                                     <h5 className="card-title">{user.region}</h5>
                                     <p >Project ID#:  {user.projects.slice(-1)[0].projectId} </p>
                                     <p >Project Name: {user.projects.slice(-1)[0].projectName} </p>
+                                    <p >Install Address: {user.projects.slice(-1)[0].installAddress} </p>
                                     <p className="card-text">{user.installAddress}</p>
                                   </div>
                                   <ul className="list-group list-group-flush">
@@ -83,12 +84,12 @@ class UsersList extends React.Component {
                     <div className='row' style={{width: "100%"}}>
                         {this.renderAllTechs('North East')}
                     </div><br/>
+                    <h1>Central</h1><hr/>
                     <div className='row' style={{width: "100%"}}>
-                        <h1>Central</h1><hr/>
                         {this.renderAllTechs('Central')}
-                    </div><br/>    
+                    </div><br/>  
+                    <h1>California</h1><hr/>
                     <div className='row' style={{width: "100%"}}>
-                        <h1>California</h1><hr/>
                         {this.renderAllTechs('California')}
                     </div><br/>     
                 </div>
