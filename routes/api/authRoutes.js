@@ -7,7 +7,10 @@ const moment = require("moment")
 
 module.exports = (app) => {
 
-// When submitting a form on register page we create a new entry in DB.
+
+    // REGISTER ROUTE 
+    
+    // When submitting a form on register page we create a new entry in DB.
     app.post('/api/register', async (req, res)=>{
 	    const password = req.body.password;
 	    const password2 = req.body.password2;
@@ -34,7 +37,9 @@ module.exports = (app) => {
     });
 
 
-// When submitting a form on Login page , we pass values from inputs to passport local strategy.
+   	
+    // LOGIN ROUTE   
+
   	app.post('/api/login',
   	  passport.authenticate('local'),
     	  function(req, res, err){
@@ -42,7 +47,9 @@ module.exports = (app) => {
             else{ res.send(req.user)}
     	  }
   	);
-
+    
+    // LOGOUT ROUTE
+    
     app.get('/api/logout',
         function(req, res){
             req.logout(),
@@ -51,7 +58,8 @@ module.exports = (app) => {
   	    }
     );
 
-// Endpoint to get current user
+    // GET CURRENT LOGGED IN USER
+    
   	app.get('/api/current_user', (req,res) => {
       console.log('api/current_user called')
           if(req.user) {res.send(req.user)}
@@ -59,6 +67,7 @@ module.exports = (app) => {
     })
     
     
+    // GET ALL TECHS except the ADMIN
     
     app.get('/api/getAllUsers', async (req,res) => {
       console.log('/api/getAllUsers')
@@ -71,21 +80,8 @@ module.exports = (app) => {
             } else{res.send(false)}
     })
     
-    // app.get('/api/getAllUsers',async (req,res) => {
-    //   console.log('/api/getAllUsers')
-    //       if(req.user) { 
-    //         await User.find( {} , (err, users)=>{
-    //             if(err) {throw err} 
-    //             else{ 
-    //                 users.projects.find((project)=>{
-    //                   return moment(project.date).format("MMM Do YY")==moment(Date.now()).format("MMM Do YY")
-    //                 })
-    //             }  
-            
-    //         })
-          
-    //       }else{res.send(false)}
-    // })
+    
+    // GET A PARTICULAR USER DATA 
     
     app.get('/api/getAllUsers/:id', (req,res) => {
         if(req.user) { 
@@ -96,6 +92,9 @@ module.exports = (app) => {
           }
           else{res.send(false)}
     })
+    
+    
+    // UPDATE USER ACCOUNT INFO
     
     app.put('/api/update_user', async (req,res) => {
         let password = req.body.password
@@ -110,6 +109,9 @@ module.exports = (app) => {
             }
             else{res.send(false)}
     })
+    
+    
+    // UPDATE USER LOCATION
     
     app.post('/api/updateLatLng', async(req,res)=>{
         if(req.user){
@@ -126,6 +128,9 @@ module.exports = (app) => {
         }
     })
     
+    
+    // UPDATE USER STATUS. 
+    
     app.post('/api/updateUserStatus', async(req,res)=>{
         if(req.user){
                User.findByIdAndUpdate(req.user._id,
@@ -139,28 +144,25 @@ module.exports = (app) => {
             res.send('noUserLoggedIn')
         }
     })
-   
-   app.post('/api/addProjectToTech', async(req,res) => {
+    
+    
+    // ADD PROJECT. Pushing a new project into the array with all projects
+    
+    app.post('/api/addProjectToTech', async(req,res) => {
         if(req.user && req.user.admin){
-            console.log('YAY! we triggered Adding Project to the tech route',req.body.dataToSend)
-           const userCurrentProjects=await User.find({id:req.body.dataToSend.userId} , (err, user)=>{
-                         if(err) {throw err}
-                         else{return user.projects }
-                     })
-            const updatedProjects = await userCurrentProjects.push(req.body.dataToSend.project)         
-            User.findOneAndUpdate({id:req.body.dataToSend.usedrId},
-                { "$set": { "projects": updatedProjects } },
-                function(err) {
-                    if (err) throw err;
-                    else{
-                         User.find( {} , (err, users)=>{
-                         if(err) {throw err}
-                         else{ res.send(users) }
-                     })
-                    }
+            const userId = req.body.dataToSend.userId;
+            const projectToAdd = req.body.dataToSend.project;
+            console.log('YAY! we triggered Adding Project to the tech route',userId,projectToAdd)
+            User.findOneAndUpdate(
+                { _id: userId }, 
+                { $push: { projects: projectToAdd } },
+                function(err){
+                    if(err){console.log(err)}
+                    else{console.log('success')}
                     
-                });       
-           
+                }
+            );
+            User.save
        }
    })
 
