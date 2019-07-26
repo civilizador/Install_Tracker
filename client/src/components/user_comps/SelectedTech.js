@@ -15,12 +15,14 @@ class UserView extends React.Component {
         
         console.log(userId)
         this.props.addProjectToTech(this.state,userId)
+        this.setState({submitted:true})
     }
     redirectOnSubmit(){
-       if(this.state.submitted) {
+        if(this.state.submitted) {
            return <Redirect to='/'/>
        }
     }
+    
     renderTech=()=>{
         const userId=   window.location.href.split('/').slice(-1)[0]
         console.log('USER ID is : ', userId)
@@ -36,7 +38,7 @@ class UserView extends React.Component {
             } 
         }
         console.log(selectedUser)
-        if(this.props.store.auth && this.props.store.auth.admin){
+        if(this.props.store.auth && selectedUser){
              return(
                  <div key={selectedUser._id} className="card mx-auto" style={style()}>
                     <div className="btn-toolbar mb-3" role="toolbar" style={{ position: "fixed", right:"5px", top: "140px"  }}>

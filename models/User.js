@@ -25,6 +25,10 @@ const UserSchema = new mongoose.Schema({
                 orderStatus: 'Not Started'
         }]
     },
+    projectForToday:{
+        type: Array,
+        default: []
+    },
     directManagerName: {
         type: String
     },

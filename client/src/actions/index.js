@@ -105,8 +105,9 @@ let wrongPass = false;
             
       }
 
-     export const fetchAllUsers = (category) => async (dispatch,getState) => {
-       const res = await axios.get("/api/getAllUsers")
+    export const fetchAllUsers = (category) => async (dispatch,getState) => {
+        const res = await axios.get("/api/getAllUsers")
+        console.log('Updated Response',res.data)
             dispatch( {type: "GET_ALL_USERS", payload: res.data} )
      }
 
@@ -115,6 +116,7 @@ let wrongPass = false;
         const idSelected = res.data.filter((items)=>{return items._id===id})
        dispatch( {type: "GET_USERS_BY_NAME", payload: idSelected} )
      }
+    
 
 
  // SEARCH ITEM actions

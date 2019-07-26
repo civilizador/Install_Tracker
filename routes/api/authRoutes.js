@@ -61,7 +61,6 @@ module.exports = (app) => {
     // GET CURRENT LOGGED IN USER
     
   	app.get('/api/current_user', (req,res) => {
-      console.log('api/current_user called')
           if(req.user) {res.send(req.user)}
           else{res.send(false)}
     })
@@ -72,10 +71,16 @@ module.exports = (app) => {
     app.get('/api/getAllUsers', async (req,res) => {
       console.log('/api/getAllUsers')
             if(req.user) { 
-                const  allUsersNoAdmin  = await User.find( {"admin":false}  ,(err, users)=>{
+                const   allUsersNoAdmin  = await User.find( {"admin":false}  ,(err, users)=>{
                         if(err) {throw err}
                          else{return users}
                     }) 
+                const   todayProjectTechs =  allUsersNoAdmin.map((tech) => ({
+                    ...tech,
+                    todayProject: tech.projects.filter( (proj) => proj.startDate === "2019-07-26"   )
+                }) )
+                    
+                console.log(todayProjectTechs)    
                 res.send(allUsersNoAdmin)    
             } else{res.send(false)}
     })
@@ -83,12 +88,17 @@ module.exports = (app) => {
     
     // GET A PARTICULAR USER DATA 
     
-    app.get('/api/getAllUsers/:id', (req,res) => {
+    app.get('/api/getAllUsers/:id', async (req,res) => {
         if(req.user) { 
-            User.find(req.params.id , (err, user)=>{
+            const   userData  = await User.find(req.params.id , (err, user)=>{
                          if(err) {throw err}
-                         else{ res.send(user) }
+                         else{ return user  }
                      })
+            const   todayProject = await userData.project.find( (project) => {project.projectStartDate==moment().format('YYYY MM Do').slice(0,-2) } )    
+               if(todayProject) {console.log(todayProject)}
+               else{console.log('nothing was found')}
+               
+                    res.send(userData) 
           }
           else{res.send(false)}
     })
