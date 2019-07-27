@@ -47,6 +47,7 @@
 
   //   Creating a function that will check if user loged in or not.
       app.use(function(req, res, next){
+          
           res.locals.currentUser = req.user;// req.user will either be empty or contain information about user from the request
           res.locals.error = req.flash("error");
           res.locals.success = req.flash("success");

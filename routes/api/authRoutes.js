@@ -2,6 +2,7 @@ const passport  = require("passport");
 const User      = require("../../models/User");
 const bcrypt = require('bcryptjs');
 const moment = require("moment")
+  	    const today = new Date().getDate().toString()
 
 // Passing express to our routes function
 
@@ -60,8 +61,24 @@ module.exports = (app) => {
 
     // GET CURRENT LOGGED IN USER
     
-  	app.get('/api/current_user', (req,res) => {
-          if(req.user) {res.send(req.user)}
+  	app.get('/api/current_user', async (req,res) => {
+          if(req.user) {
+            const projectsForToday  = await req.user.projects.filter(  (project)   => {    return project.projectStartDate == today}    )   
+                if(projectsForToday.length>0){
+                    req.user.projects = projectsForToday
+                        res.send(req.user)
+                }else{
+                     req.user.projects = [{
+                            projectId : "Nothing for today",
+                            projectName : "Nothing for today",
+                            projectStartDate : "Nothing for today",
+                            projectStartTime : "Nothing for today",
+                            installAddress : "Nothing for today",
+                        }]
+                        res.send(req.user)
+                }
+          }
+            
           else{res.send(false)}
     })
     
@@ -75,13 +92,13 @@ module.exports = (app) => {
                         if(err) {throw err}
                          else{return users}
                     }) 
-                const   todayProjectTechs =  allUsersNoAdmin.map((tech) => ({
-                    ...tech,
-                    todayProject: tech.projects.filter( (proj) => proj.startDate === "2019-07-26"   )
-                }) )
+                const   todayProjectTechs =  allUsersNoAdmin.map((tech) => {
+                    tech.projects.filter( (proj) =>{  proj.startDate == "27" }  )
+                    return tech
+                } )
                     
                 console.log(todayProjectTechs)    
-                res.send(allUsersNoAdmin)    
+                res.send(todayProjectTechs)    
             } else{res.send(false)}
     })
     
@@ -130,8 +147,25 @@ module.exports = (app) => {
                 { "$set": { "lat": latlng.latitude, "lng":latlng.longitude } },
                 function(err) {
                     if (err) throw err;
-                    res.status(200)
-                    res.send(req.user);
+                    else{
+            const projectsForToday  =  req.user.projects.filter(  (project)   => {    return project.projectStartDate == today}    )   
+                if(projectsForToday.length>0){
+                    const updatedUser = req.user ;
+                        updatedUser.projects = projectsForToday
+                        res.send(updatedUser)
+                }else{
+                    const updatedUser = req.user ;
+                        updatedUser.projects = [{
+                            projectId : "Nothing for today",
+                            projectName : "Nothing for today",
+                            projectStartDate : "Nothing for today",
+                            projectStartTime : "Nothing for today",
+                            installAddress : "Nothing for today",
+                        }]
+                        res.send(updatedUser)
+                }
+       
+                    }
                 });
         }else{
             res.send('noUserLoggedIn')

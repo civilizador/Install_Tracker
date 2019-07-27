@@ -32,13 +32,23 @@ class UserView extends React.Component {
         console.log(this.props.store.auth)
         return(
                  <div key={this.props.store.auth._id} className="card mx-auto" style={this.getColorOnStatus()}>
-                    <div className='btn btn-lg btn-outline-info'>{this.props.store.auth.projects.slice(-1)[0].projectStartTime} -- {this.props.store.auth.projects.slice(-1)[0].projectStartDate} </div>
+                    {this.props.store.auth.projects.map((project)=>{return (
+                       <div className='btn btn-lg btn-outline-info'> {project.projectStartTime} </div>
+                    )})}
                       <h1>{this.props.store.auth.name}</h1>
                       <div className="card-body">
                         <h5 className="card-title"><i class="fas fa-globe-americas"></i>{this.props.store.auth.region}</h5>
-                        <p >Project ID#:  {this.props.store.auth.projects.slice(-1)[0].projectId} </p>
-                        <p >Project Name: {this.props.store.auth.projects.slice(-1)[0].projectName} </p>
-                        <p className="card-text"><i class="fas fa-map-marked-alt"></i>{this.props.store.auth.installAddress}</p>
+                        Total Projects Today: {this.props.store.auth.projects.length}
+                        {this.props.store.auth.projects.map((project)=>{return (
+                            <div>    
+                                <p >Project ID#:  {project.projectId} </p>
+                                <p >Project Name: {project.projectName} </p>
+                                <p className="card-text"><i class="fas fa-map-marked-alt"></i>{project.installAddress}</p>
+                                <p><i class="fas fa-clock"></i> {project.projectStartTime} -- {project.projectStartDate} </p>
+                                <hr/>
+                            </div>    
+                        )})}
+                       
                       </div>
                       <ul className="list-group list-group-flush">
                         <select 

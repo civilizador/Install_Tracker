@@ -13,6 +13,14 @@ let wrongPass = false;
                 }else dispatch({ type: 'GET_USER_DATA',  payload: 'no user_logged_in' })
            }
     }
+    export const getTodayJob = (userId) => {
+        return async function(dispatch,getState) {
+            const data = await axios.post("/api/getTodayJob", userId);
+                if (data!=='no_job_for_today') {
+                        dispatch({ type: 'GET_USER_JOB',  payload: data.data })
+                }else dispatch({ type: 'GET_USER_JOB',  payload: 'no_job_for_today' })
+           }
+    }
     export const getSelectedUser = (userId) => {
         return async function(dispatch,getState) {
             const response = await axios.get(`/api/getAllUsers/${userId}`)
