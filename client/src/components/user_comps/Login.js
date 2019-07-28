@@ -59,7 +59,7 @@ state={submitted:false}
                     onChange={this.onChange}
                     value={this.state.password}
                     id="password"
-                    type="text"
+                    type="password"
                   />
                   <label htmlFor="password">Password</label>
                 </div>

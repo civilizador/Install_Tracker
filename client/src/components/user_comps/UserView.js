@@ -32,14 +32,14 @@ class UserView extends React.Component {
         console.log(this.props.store.auth)
         return(
                  <div key={this.props.store.auth._id} className="card mx-auto" style={this.getColorOnStatus()}>
-                    {this.props.store.auth.projects.map((project)=>{return (
+                    {this.props.store.auth.projectForToday.map((project)=>{return (
                        <div className='btn btn-lg btn-outline-info'> {project.projectStartTime} </div>
                     )})}
                       <h1>{this.props.store.auth.name}</h1>
                       <div className="card-body">
                         <h5 className="card-title"><i class="fas fa-globe-americas"></i>{this.props.store.auth.region}</h5>
-                        Total Projects Today: {this.props.store.auth.projects.length}
-                        {this.props.store.auth.projects.map((project)=>{return (
+                        Total Projects Today: {this.props.store.auth.projectForToday.length}
+                        {this.props.store.auth.projectForToday.map((project)=>{return (
                             <div>    
                                 <p >Project ID#:  {project.projectId} </p>
                                 <p >Project Name: {project.projectName} </p>

@@ -17,7 +17,7 @@ class UsersList extends React.Component {
            return  alltechs.map((user)=>{
                     return (
                         <div key={user._id} class="card col-lg-3 col-md-4 col-sm-12 col-xs-12" style={this.getStyling(user.status)}>
-                            <div className='btn btn-md btn-outline-info'>{user.projects.slice(-1)[0].projectStartTime} -- {this.props.store.auth.projects.slice(-1)[0].projectStartDate} </div>
+                            <div className='btn btn-md btn-outline-info'>{user.projects.slice(-1)[0].projectStartTime} -- {user.projects.slice(-1)[0].projectStartDate} </div>
                                   {this.renderLink(user.name,user._id)}
                                   <div className="card-body">
                                     <h5 className="card-title">{user.region}</h5>

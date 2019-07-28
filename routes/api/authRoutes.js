@@ -2,8 +2,9 @@ const passport  = require("passport");
 const User      = require("../../models/User");
 const bcrypt = require('bcryptjs');
 const moment = require("moment")
-  	    const today = new Date().getDate().toString()
-
+const today = new Date().getDate().toString()
+const today1 = moment().format("YYYY-MM-Do").slice(0,-2);  
+console.log('Today DATE: ',today1)
 // Passing express to our routes function
 
 module.exports = (app) => {
@@ -63,12 +64,12 @@ module.exports = (app) => {
     
   	app.get('/api/current_user', async (req,res) => {
           if(req.user) {
-            const projectsForToday  = await req.user.projects.filter(  (project)   => {    return project.projectStartDate == today}    )   
+            const projectsForToday  = await req.user.projects.filter(  (project)   => {    return project.projectStartDate == today1}    )   
                 if(projectsForToday.length>0){
-                    req.user.projects = projectsForToday
+                    req.user.projectForToday = projectsForToday
                         res.send(req.user)
                 }else{
-                     req.user.projects = [{
+                     req.user.projectForToday = [{
                             projectId : "Nothing for today",
                             projectName : "Nothing for today",
                             projectStartDate : "Nothing for today",
@@ -90,15 +91,17 @@ module.exports = (app) => {
             if(req.user) { 
                 const   allUsersNoAdmin  = await User.find( {"admin":false}  ,(err, users)=>{
                         if(err) {throw err}
-                         else{return users}
+                         else{ 
+                             return users.map((user) => {
+                                return user.projectForToday = user.projects.filter(  (project)   => { 
+                                            console.log('PROJECT START DATEEEE!!!: ',project.projectStartDate); 
+                                            return project.projectStartDate === '28' 
+                                        } )
+                             })
+                         }
                     }) 
-                const   todayProjectTechs =  allUsersNoAdmin.map((tech) => {
-                    tech.projects.filter( (proj) =>{  proj.startDate == "27" }  )
-                    return tech
-                } )
-                    
-                console.log(todayProjectTechs)    
-                res.send(todayProjectTechs)    
+                console.log('FILTERED USERS: ',allUsersNoAdmin)
+                res.send(allUsersNoAdmin)    
             } else{res.send(false)}
     })
     
@@ -148,23 +151,22 @@ module.exports = (app) => {
                 function(err) {
                     if (err) throw err;
                     else{
-            const projectsForToday  =  req.user.projects.filter(  (project)   => {    return project.projectStartDate == today}    )   
-                if(projectsForToday.length>0){
-                    const updatedUser = req.user ;
-                        updatedUser.projects = projectsForToday
-                        res.send(updatedUser)
-                }else{
-                    const updatedUser = req.user ;
-                        updatedUser.projects = [{
-                            projectId : "Nothing for today",
-                            projectName : "Nothing for today",
-                            projectStartDate : "Nothing for today",
-                            projectStartTime : "Nothing for today",
-                            installAddress : "Nothing for today",
-                        }]
-                        res.send(updatedUser)
-                }
-       
+                        const projectsForToday  =  req.user.projects.filter(  (project)   => {    return project.projectStartDate == today1}    )   
+                            if(projectsForToday.length>0){
+                                const updatedUser = req.user ;
+                                    updatedUser.projectForToday = projectsForToday
+                                    res.send(updatedUser)
+                            }else{
+                                const updatedUser = req.user ;
+                                    updatedUser.projectForToday = [{
+                                        projectId : "Nothing for today",
+                                        projectName : "Nothing for today",
+                                        projectStartDate : "Nothing for today",
+                                        projectStartTime : "Nothing for today",
+                                        installAddress : "Nothing for today",
+                                    }]
+                                    res.send(updatedUser)
+                            }
                     }
                 });
         }else{
@@ -181,8 +183,24 @@ module.exports = (app) => {
                 { "$set": { "status": req.body.status } },
                 function(err) {
                     if (err) throw err;
-                    res.status(200)
-                    res.send(req.user);
+                    else{
+                        const projectsForToday  =  req.user.projects.filter(  (project)   => {    return project.projectStartDate == today1}    )   
+                            if(projectsForToday.length>0){
+                                const updatedUser = req.user ;
+                                    updatedUser.projectForToday = projectsForToday
+                                    res.send(updatedUser)
+                            }else{
+                                const updatedUser = req.user ;
+                                    updatedUser.projectForToday = [{
+                                        projectId : "Nothing for today",
+                                        projectName : "Nothing for today",
+                                        projectStartDate : "Nothing for today",
+                                        projectStartTime : "Nothing for today",
+                                        installAddress : "Nothing for today",
+                                    }]
+                                    res.send(updatedUser)
+                            }
+                    }
                 });
         }else{
             res.send('noUserLoggedIn')

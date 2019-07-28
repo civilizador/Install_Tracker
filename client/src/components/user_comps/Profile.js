@@ -20,7 +20,11 @@ class Profile extends Component {
   componentDidMount(){
      console.log(this.props.store)
   }
-  profileComponent=()=>{
+  onLeftMenuClick = (status) => {
+    this.setState({currentSection:status})
+  }
+
+  profileComponent=()=>{ 
     return(
       <div className="row container mx-auto" style={{ padding: "120px"  }}>
          <div className="btn-toolbar mb-3" role="toolbar" style={{ position: "fixed", left:"10px", top: "120px"  }}>
@@ -145,9 +149,8 @@ class Profile extends Component {
 
               <div className="btn-toolbar mb-3" role="toolbar" style={{ position: "fixed", right:"5px", top: "140px"  }}>
                 <div className="btn-group-vertical mr-2" role="group" aria-label="First group">
-                  <button onClick={()=>{this.onLeftMenuClick('Profile')}}    className="btn btn-lg btn-secondary">Profile</button>
-                  <button onClick={()=>{this.onLeftMenuClick('Installs')}}    className="btn btn-lg btn-secondary">History</button>
-                 </div>
+                  <button id="profile" onClick={()=>{this.onLeftMenuClick('profile')}}    className="btn btn-lg btn-secondary">Profile</button>
+                  </div>
               </div>
                <div className='col-10'>
                  <div className="col mb-12" style={{ paddingLeft: "11.250px" }}>
@@ -155,20 +158,22 @@ class Profile extends Component {
                  </div>
                  <div className="col mb-12" style={{ paddingLeft: "11.250px" }}>
                   <h1>My Orders</h1> <hr/>
-                  <ul>
-                    {this.props.store.auth.archive.map((archive)=>{
-                      return (
-                        <div key={archive.projectId} className='row'>
-                          <div className='col-md-8'>
-                             
-                          </div>
-                          <div className='col-md-4'>
-                           </div>
-                          <hr/> <br/>
-                        </div>
-                      )
-                    })}
-                  </ul>
+                    
+                    <div class="list-group col-md-9 mx-auto">
+                      {
+                        this.props.store.auth.projects.map((project)=>{
+                          return (
+                              <button  class="list-group-item list-group-item-action btn btn-outline-dark">{project.projectId} - {project.projectName} 
+                                <br/> 
+                                <span className="float-left">{project.installAddress} </span>
+                                <span className="float-right">{project.projectStartDate} </span>
+                              </button>
+                           )
+                        })
+                      }
+                    </div>
+                  
+                   
                  </div>
                </div>
 
@@ -194,10 +199,7 @@ class Profile extends Component {
          return <Redirect to='/'/>;
     }
   }
-  onLeftMenuClick = (e) => {
-    this.setState({currentSection:e})
-  }
-
+  
   render() {
     if(this.state.currentSection==='profile'){
       return this.profileComponent()
