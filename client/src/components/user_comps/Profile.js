@@ -163,7 +163,8 @@ class Profile extends Component {
                       {
                         this.props.store.auth.projects.map((project)=>{
                           return (
-                              <button  class="list-group-item list-group-item-action btn btn-outline-dark">{project.projectId} - {project.projectName} 
+                              <button  class="list-group-item list-group-item-action btn btn-outline-dark">
+                                {project.projectId} - {project.projectName} 
                                 <br/> 
                                 <span className="float-left">{project.installAddress} </span>
                                 <span className="float-right">{project.projectStartDate} </span>

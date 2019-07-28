@@ -93,11 +93,12 @@ module.exports = (app) => {
                         if(err) {throw err}
                          else{ 
                              return users.map((user) => {
-                                return user.projectForToday = user.projects.filter(  (project)   => { 
+                                const temp = user.projects.filter(  (project)   => { 
                                             console.log('PROJECT START DATEEEE!!!: ',project.projectStartDate); 
-                                            return project.projectStartDate === '28' 
+                                            return project.projectStartDate == "28" 
                                         } )
-                             })
+                                return  { ...user, projectForToday: temp }
+                              })
                          }
                     }) 
                 console.log('FILTERED USERS: ',allUsersNoAdmin)
