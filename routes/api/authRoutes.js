@@ -216,14 +216,16 @@ module.exports = (app) => {
             const userId = req.body.dataToSend.userId;
             const projectToAdd = req.body.dataToSend.project;
             console.log('YAY! we triggered Adding Project to the tech route',userId,projectToAdd)
-            await User.findOneAndUpdate(
+            User.findOneAndUpdate(
                 { _id: userId }, 
                 { $push: { projects: projectToAdd } },
                 function(err){
                     if(err){console.log(err)}
                     else{console.log('success')}
+                    
                 }
             );
+            await User.save
             const allUsers = await User.find({},
                 (err,users)=>{
                     if(err){

@@ -17,13 +17,9 @@ class UserView extends React.Component {
     onFormSubmit=(userId)=>{
         console.log(userId)
         this.props.addProjectToTech(this.state,userId)
-        this.setState({submitted:true})
-    }
-    redirectOnSubmit(){
-        if(this.state.submitted) {
-           return <Redirect to='/'/>
-       }
-    }
+        this.setState({projectId:'',projectName: '',projectStartDate:'',projectStartTime:'',installAddress:''})
+     }
+ 
     renderOrderHistory=(selectedUser)=>{
         if(this.state.orderHistory){
             return selectedUser.projects.map((project)=>{
@@ -43,7 +39,7 @@ class UserView extends React.Component {
     }
     
     renderTech= ()=>{
-    if(this.props.store.auth){
+    if(this.props.store.allUsers){
         console.log("TODAYS DATE:  ",fullTodaysDate )
         const userId=   window.location.href.split('/').slice(-1)[0]
         console.log('USER ID is : ', userId)
@@ -69,8 +65,7 @@ class UserView extends React.Component {
                         <div className="btn-group-vertical mr-2" role="group" aria-label="First group">
                            <Link to='/' className="btn btn-md btn-secondary">All</Link>
                         </div>
-                        {this.redirectOnSubmit()}
-                    </div>
+                     </div>
                     <div className='btn btn-lg btn-outline-info'>{
                         <div>
                             <h1>{selectedUser.name}</h1>
@@ -149,7 +144,9 @@ class UserView extends React.Component {
                 </div>
             
             )
-        }}else{ return <Redirect to='/'/> }
+        }
+        
+        }else{ return <Redirect to='/'/> }
     }
     
     onStatusChange=async(e)=>{
