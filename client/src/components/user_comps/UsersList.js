@@ -4,20 +4,23 @@ import {connect} from 'react-redux';
 import {fetchAllUsers,updateUserStatus} from '../../actions'
 
 
- const year = new Date().getFullYear()
+    const year = new Date().getFullYear()
         const month = ()=>{ if(new Date().getMonth()<10) {return "0" + (new Date().getMonth()+1) } else {return new Date().getMonth()+1 } }
         const day = ()=>{ if(new Date().getDate()<10) {return "0" + new Date().getDate() } else {return new Date().getDate() } }
         const fullTodaysDate = year + "-" + month() + "-" + day()
-
+    let alltechs =[]
+    
 class UsersList extends React.Component {
     
-    state={status: this.props.store.auth.status}
+    state={status: this.props.store.auth.status ,alltechs:[]}
 
     componentDidMount(){
         this.props.fetchAllUsers()
+        
     }
     renderAllTechs= (region)=>{
-        const alltechs =  this.props.store.allUsers.filter((user)=>{return user.region==region})
+        if(this.props.store.allUsers)
+         alltechs =  this.props.store.allUsers.filter((user)=>{return user.region==region})
          if(alltechs.length>0)
            return  alltechs.map((user)=>{
                const jobForToday = user.projects.filter((project)=>{return project.projectStartDate == fullTodaysDate}) 
@@ -26,7 +29,7 @@ class UsersList extends React.Component {
                     return (
                         <div key={user._id} className="card col-lg-3 col-md-4 col-sm-12 col-xs-12" style={this.getStyling(user.status)}>
                             <div className='btn btn-md btn-outline-info'>
-                                    {user.projectForToday[0].projectStartTime} -- {user.projectForToday[0].projectStartDate} 
+                                    {user.projects.filter((project)=>{return project.projectStartDate == fullTodaysDate})[0].projectStartTime} -- {user.projects.filter((project)=>{return project.projectStartDate == fullTodaysDate})[0].projectStartDate} 
                                      <h5 className="card-title">{user.region}</h5>
                             </div>
                                   {this.renderLink(user.name,user._id)}

@@ -216,16 +216,24 @@ module.exports = (app) => {
             const userId = req.body.dataToSend.userId;
             const projectToAdd = req.body.dataToSend.project;
             console.log('YAY! we triggered Adding Project to the tech route',userId,projectToAdd)
-            User.findOneAndUpdate(
+            await User.findOneAndUpdate(
                 { _id: userId }, 
                 { $push: { projects: projectToAdd } },
                 function(err){
                     if(err){console.log(err)}
                     else{console.log('success')}
-                    
                 }
             );
-            User.save
+            const allUsers = await User.find({},
+                (err,users)=>{
+                    if(err){
+                        console.log("removeJob route. Failed to fetch all users after removing job")
+                    }else{
+                        return users
+                    }
+                }) 
+            res.send(allUsers)  
+            
        }
    })
    
@@ -234,6 +242,35 @@ module.exports = (app) => {
     app.post("/api/removeJob", async(req,res)=>{
         console.log(req.body.dataToSend.userId)
         console.log(req.body.dataToSend.projectId)
+        if(req.user && req.user.admin){
+            const userId = req.body.dataToSend.userId;
+            const projectId = req.body.dataToSend.projectId;
+            const userToRemoveFrom = await User.findById(userId,(err,user)=>{
+                if(err){console.log("Failed to look up a user by ID")}
+                else{return user}
+            })
+            const updatedProjects = await userToRemoveFrom.projects.filter((project)=>{return project.projectId !== projectId})
+            
+            console.log('YAY! we triggered Adding Project to the tech with ID: ',userId,'updated Projects list: ',updatedProjects,'Project ID to Remove : ',projectId)
+            await User.findOneAndUpdate(
+                { _id: userId }, 
+                { $set: { projects: updatedProjects } },
+                function(err){
+                    if(err){console.log(err)}
+                    else{console.log('success')}
+                }
+            );
+            await User.save
+            const allUsers = await User.find({},
+                (err,users)=>{
+                    if(err){
+                        console.log("removeJob route. Failed to fetch all users after removing job")
+                    }else{
+                        return users
+                    }
+                }) 
+            res.send(allUsers)    
+       }
     })   
 
 

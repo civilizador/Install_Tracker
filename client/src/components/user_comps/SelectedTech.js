@@ -2,7 +2,10 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {getSelectedUser,addProjectToTech,removeJob} from '../../actions'
 import {Link,Redirect} from 'react-router-dom';
-
+const year = new Date().getFullYear()
+        const month = ()=>{ if(new Date().getMonth()<10) {return "0" + (new Date().getMonth()+1) } else {return new Date().getMonth()+1 } }
+        const day = ()=>{ if(new Date().getDate()<10) {return "0" + new Date().getDate() } else {return new Date().getDate() } }
+        const fullTodaysDate = year + "-" + month() + "-" + day()
 class UserView extends React.Component {
   
     state={submitted:false,projectId:'',projectName: '',projectStartDate:'',projectStartTime:'',installAddress:'',orderHistory:false  }
@@ -12,7 +15,6 @@ class UserView extends React.Component {
         console.log(this.state)
     }
     onFormSubmit=(userId)=>{
-        
         console.log(userId)
         this.props.addProjectToTech(this.state,userId)
         this.setState({submitted:true})
@@ -38,16 +40,10 @@ class UserView extends React.Component {
         }else{
             return
         }
-         
-                               
     }
     
     renderTech= ()=>{
-    if(this.props.store.allUsers){
-        const year = new Date().getFullYear()
-        const month = ()=>{ if(new Date().getMonth()<10) {return "0" + (new Date().getMonth()+1) } else {return new Date().getMonth()+1 } }
-        const day = ()=>{ if(new Date().getDate()<10) {return "0" + new Date().getDate() } else {return new Date().getDate() } }
-        const fullTodaysDate = year + "-" + month() + "-" + day()
+    if(this.props.store.auth){
         console.log("TODAYS DATE:  ",fullTodaysDate )
         const userId=   window.location.href.split('/').slice(-1)[0]
         console.log('USER ID is : ', userId)
