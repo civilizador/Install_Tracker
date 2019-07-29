@@ -43,10 +43,17 @@ class UserView extends React.Component {
     }
     
     renderTech= ()=>{
+    if(this.props.store.allUsers){
+        const year = new Date().getFullYear()
+        const month = ()=>{ if(new Date().getMonth()<10) {return "0" + (new Date().getMonth()+1) } else {return new Date().getMonth()+1 } }
+        const day = ()=>{ if(new Date().getDate()<10) {return "0" + new Date().getDate() } else {return new Date().getDate() } }
+        const fullTodaysDate = year + "-" + month() + "-" + day()
+        console.log("TODAYS DATE:  ",fullTodaysDate )
         const userId=   window.location.href.split('/').slice(-1)[0]
         console.log('USER ID is : ', userId)
         const selectedUser =    this.props.store.allUsers.find( (user)=>{return user._id===userId} )
-        selectedUser.projectForToday  =  selectedUser.projects.filter((project)=>{return project.projectStartDate == new Date().getFullYear()})
+        
+        selectedUser.projectForToday  =  this.props.store.allUsers.find( (user)=>{return user._id===userId} ).projects.filter((project)=>{return project.projectStartDate == fullTodaysDate })
         console.log('PROJECT FOR TODAY:   ', selectedUser.projectForToday)
         const style = ()=>{
             switch(selectedUser.status){
@@ -146,8 +153,7 @@ class UserView extends React.Component {
                 </div>
             
             )
-        }
-        else{ return <Redirect to='/'/> }
+        }}else{ return <Redirect to='/'/> }
     }
     
     onStatusChange=async(e)=>{

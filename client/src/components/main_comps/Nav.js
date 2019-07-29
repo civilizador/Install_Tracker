@@ -33,8 +33,7 @@ import {logoutAction,searchAction} from '../../actions';
 
 
   render(){
-    console.log(this.state.searchValue)
-    return (
+     return (
       <nav className="navbar navbar-expand-lg navbar-light">
           <Link  className="navbar-brand" to="/">
             <img  src="logo_transparent.png" width="100"  className="d-inline-block align-top" alt="" />
