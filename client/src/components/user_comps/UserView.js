@@ -23,6 +23,8 @@ class UserView extends React.Component {
     }
     onStatusChange=async(e)=>{
         const value= e.target.value
+        const projectId = e.target.value.split(":")
+        console.log(projectId[1])
         await this.setState({status:value})
         await this.props.updateUserStatus(value)
         console.log(this.state)
@@ -46,6 +48,19 @@ class UserView extends React.Component {
                                 <p >Project Name: {project.projectName} </p>
                                 <p className="card-text"><i class="fas fa-map-marked-alt"></i>{project.installAddress}</p>
                                 <p><i class="fas fa-clock"></i> {project.projectStartTime} -- {project.projectStartDate} </p>
+                                <select 
+                                    style = {this.getColorOnStatus() }
+                                    className='form-control'
+                                    onChange={this.onStatusChange}
+                                    onKeyUp ={()=>{console.log(project.projectId)}}
+                                    id="status"
+                                    type="text"
+                                    value={this.state.status}
+                                        >
+                                    <option value="Heading To site" >Heading To :  { project.projectId }  </option>
+                                    <option value="Arrived to the site">Arrived to : { project.projectId }</option>
+                                    <option value="Running late">Running late to : { project.projectId }</option>
+                                </select>
                                 <hr/>
                             </div>    
                         )})}
