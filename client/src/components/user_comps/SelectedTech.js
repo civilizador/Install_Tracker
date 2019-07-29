@@ -46,7 +46,7 @@ class UserView extends React.Component {
         const userId=   window.location.href.split('/').slice(-1)[0]
         console.log('USER ID is : ', userId)
         const selectedUser =    this.props.store.allUsers.find( (user)=>{return user._id===userId} )
-        selectedUser.projectForToday  =  selectedUser.projects.filter((project)=>{return project.projectStartDate == "28"})
+        selectedUser.projectForToday  =  selectedUser.projects.filter((project)=>{return project.projectStartDate == new Date().getFullYear()})
         console.log('PROJECT FOR TODAY:   ', selectedUser.projectForToday)
         const style = ()=>{
             switch(selectedUser.status){
