@@ -228,7 +228,13 @@ module.exports = (app) => {
             User.save
        }
    })
-
+   
+    // REMOVE PROJECT 
+    
+    app.post("/api/removeJob", async(req,res)=>{
+        console.log(req.body.dataToSend.userId)
+        console.log(req.body.dataToSend.projectId)
+    })   
 
 
 }

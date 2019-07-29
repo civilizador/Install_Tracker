@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {getSelectedUser,addProjectToTech} from '../../actions'
+import {getSelectedUser,addProjectToTech,removeJob} from '../../actions'
 import {Link,Redirect} from 'react-router-dom';
 
 class UserView extends React.Component {
@@ -31,7 +31,7 @@ class UserView extends React.Component {
                                         <br/> 
                                         <span className="float-left">{project.installAddress} </span>
                                         <span className="float-left">{project.projectStartDate} </span>
-                                        <i style={{fontSize:'22px'}} class="fas fa-times-circle float-right"></i>
+                                        <i style={{fontSize:'22px'}} class="fas fa-times-circle float-right" onClick={()=>{this.props.removeJob(selectedUser._id,project.projectId)}}></i>
                                       </button>
                                    )
                                 })
@@ -171,4 +171,4 @@ class UserView extends React.Component {
 
 const mapStateToProps = (store) => ({store})
 
-export default connect(mapStateToProps,{getSelectedUser,addProjectToTech})(UserView)
+export default connect(mapStateToProps,{getSelectedUser,addProjectToTech,removeJob})(UserView)

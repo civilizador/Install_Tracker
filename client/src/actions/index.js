@@ -76,8 +76,17 @@ let wrongPass = false;
           })
          if(response.data) 
           dispatch({type:'GET_ALL_USERS', payload:response.data})  
-  }
-  
+    }
+    
+    export const removeJob = (userId,projectId) => async (dispatch) => {
+     console.log('Add project to User Action was  triggered with #: ', projectId,"for user with ID:",userId)
+      const dataToSend= {projectId:projectId,userId:userId}
+        const response = await  axios.post("/api/removeJob", {
+           dataToSend
+          })
+         if(response.data) 
+          dispatch({type:'GET_ALL_USERS', payload:response.data})  
+    }
 
 
   // Get current User DATA helper function
