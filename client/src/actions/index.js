@@ -37,12 +37,8 @@ let wrongPass = false;
         const response = await  axios.put("/api/update_user", {
            updatedUser
           })
-         .then(function (response) {
-           console.log('User updated as following: ' , response.data);
-         })
-         .catch(function (error) {
-           console.log(error);
-         });
+       if(response.data) 
+          dispatch({type:'GET_USER_DATA', payload:response.data})  
      }
   }
   

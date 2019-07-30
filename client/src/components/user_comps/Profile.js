@@ -23,6 +23,27 @@ class Profile extends Component {
   onLeftMenuClick = (status) => {
     this.setState({currentSection:status})
   }
+  onSubmit=(e)=>{
+    e.preventDefault()
+    const updatedUser1 = this.state
+    console.log(updatedUser1)
+    this.props.updateUser(updatedUser1)
+    this.setState({submitted:true})
+  }
+  onChange=(e)=>{
+        this.setState({ [e.target.id]: e.target.value });
+  }
+  renderHeader = ()=>{
+    switch(this.state.submitted){
+      case true:
+         return <Redirect to='/'/>;
+      case false:
+         return
+      default:
+         return <Redirect to='/'/>;
+    }
+  }
+  
 
   profileComponent=()=>{ 
     return(
@@ -181,25 +202,6 @@ class Profile extends Component {
             </div>
           )
       }
-  onSubmit=(e)=>{
-    e.preventDefault()
-    const updatedUser1 = this.state
-    console.log(updatedUser1)
-    this.props.updateUser(updatedUser1)
-  }
-  onChange=(e)=>{
-        this.setState({ [e.target.id]: e.target.value });
-  }
-  renderHeader = ()=>{
-    switch(this.state.submitted){
-      case true:
-         return <Redirect to='/'/>;
-      case false:
-         return
-      default:
-         return <Redirect to='/'/>;
-    }
-  }
   
   render() {
     if(this.state.currentSection==='profile'){
