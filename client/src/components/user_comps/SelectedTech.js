@@ -8,12 +8,16 @@ const year = new Date().getFullYear()
         const fullTodaysDate = year + "-" + month() + "-" + day()
 class UserView extends React.Component {
   
-    state={submitted:false,projectId:'',projectName: '',projectStartDate:'',projectStartTime:'',installAddress:'',orderHistory:false  }
+    state={submitted:false,projectId:'',projectName: '',projectStartDate:'',projectStartTime:'',
+            installAddress:'',orderHistory:false,
+            status:[{projectStatus:"Awaiting tech", timeStamp: new Date(), location:{lat:'not provided',lng:'not provided'} }]  
+    }
  
     onInputChange=(e)=>{
         this.setState({[e.target.id]:e.target.value})
         console.log(this.state)
     }
+    
     onFormSubmit=(userId)=>{
         console.log(userId)
         this.props.addProjectToTech(this.state,userId)
@@ -45,7 +49,7 @@ class UserView extends React.Component {
         console.log('USER ID is : ', userId)
         const selectedUser =    this.props.store.allUsers.find( (user)=>{return user._id===userId} )
         
-        selectedUser.projectForToday  =  this.props.store.allUsers.find( (user)=>{return user._id===userId} ).projects.filter((project)=>{return project.projectStartDate == fullTodaysDate })
+        selectedUser.projectForToday  =  this.props.store.allUsers.find( (user)=>{return user._id===userId} ).projects.filter((project)=>{return project.projectStartDate === fullTodaysDate })
         console.log('PROJECT FOR TODAY:   ', selectedUser.projectForToday)
         const style = ()=>{
             switch(selectedUser.status){

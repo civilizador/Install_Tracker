@@ -78,6 +78,7 @@ let wrongPass = false;
           dispatch({type:'GET_ALL_USERS', payload:response.data})  
     }
     
+    // Remove Job from the tech
     export const removeJob = (userId,projectId) => async (dispatch) => {
      console.log('Add project to User Action was  triggered with #: ', projectId,"for user with ID:",userId)
       const dataToSend= {projectId:projectId,userId:userId}
@@ -88,7 +89,15 @@ let wrongPass = false;
           dispatch({type:'GET_ALL_USERS', payload:response.data})  
     }
 
-
+    // Update status on Project
+    export const changeProjectStatus =(value,projectId) => async (dispatch) => {
+        console.log('changeProjectStatus:  ',value,projectId)
+        const response = await axios.post('/api/updateProjectStatus',{value,projectId})
+        if(response.data){
+            dispatch({type:'GET_USER_DATA',payload:response.data})
+        }
+    }
+    
   // Get current User DATA helper function
   async function getProfileData() {
        const data =  await axios.get(`/api/current_user`)

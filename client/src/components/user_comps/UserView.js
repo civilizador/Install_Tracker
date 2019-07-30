@@ -1,7 +1,8 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {getCurrentUser,updateUserStatus} from '../../actions'
+import {getCurrentUser,updateUserStatus,changeProjectStatus} from '../../actions'
 
+        
 class UserView extends React.Component {
   
     state={status: this.props.store.auth.status}
@@ -10,7 +11,6 @@ class UserView extends React.Component {
         this.props.getCurrentUser()
         console.log(this.state)
     }
-    
     getColorOnStatus(){
         switch(this.state.status){
             case 'Running late':
@@ -21,14 +21,49 @@ class UserView extends React.Component {
                 return {border: "3px solid silver", textAlign: "center"}   
         }
     }
-    onStatusChange=async(e)=>{
-        const value= e.target.value
-        const projectId = e.target.value.split(":")
-        console.log(projectId[1])
-        await this.setState({status:value})
-        await this.props.updateUserStatus(value)
-        console.log(this.state)
+    renderStatusButtons=(status,projectId)=>{
+        console.log(status)
+        switch(status){
+            case "Awaiting tech":
+                return (
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                      <button type="button" class="btn btn-secondary">{status}</button>
+                      <button onClick={()=>{this.onButtonClick('Arrived to the site',projectId)}}  type="button" class="btn btn-outline-success">Arrived to the site</button>
+                      <button onClick={()=>{this.onButtonClick('Arriving Late',projectId)}} type="button" class="btn btn-outline-warning">Arriving Late</button>
+                    </div>
+                )
+            case "Arrived to the site":
+                return (
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                      <button onClick={()=>{this.onButtonClick('Awaiting tech',projectId)}} type="button" class="btn btn-outline-secondary">Awaiting tech</button>
+                      <button type="button" class="btn btn-success">{status}</button>
+                      <button onClick={()=>{this.onButtonClick('Arriving Late',projectId)}}  type="button" class="btn btn-outline-warning">Arriving Late</button>
+                    </div>
+                )
+            case "Arriving Late":
+                return (
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                      <button type="button" class="btn btn-secondary">Awaiting tech</button>
+                      <button type="button" class="btn btn-outline-success">Arrived to the site</button>
+                      <button type="button" class="btn btn-warning">{status}</button>
+                    </div>
+                )    
+            default :
+            return (
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                      <button type="button" class="btn btn-secondary">status</button>
+                      <button type="button" class="btn btn-outline-secondary">Middle</button>
+                      <button type="button" class="btn btn-outline-secondary">Right</button>
+                    </div>
+                )
+        }
     }
+    onButtonClick=(value,projectId)=>{
+        console.log(value,projectId)
+        this.props.changeProjectStatus(value,projectId)
+    }
+    
+    
     render(){
         if(this.props.store.auth)
         console.log(this.props.store.auth)
@@ -48,37 +83,13 @@ class UserView extends React.Component {
                                 <p >Project Name: {project.projectName} </p>
                                 <p className="card-text"><i class="fas fa-map-marked-alt"></i>{project.installAddress}</p>
                                 <p><i class="fas fa-clock"></i> {project.projectStartTime} -- {project.projectStartDate} </p>
-                                <select 
-                                    style = {this.getColorOnStatus() }
-                                    className='form-control'
-                                    onChange={this.onStatusChange}
-                                    onKeyUp ={()=>{console.log(project.projectId)}}
-                                    id="status"
-                                    type="text"
-                                    value={this.state.status}
-                                        >
-                                    <option value="Heading To site" >Heading To :  { project.projectId }  </option>
-                                    <option value="Arrived to the site">Arrived to : { project.projectId }</option>
-                                    <option value="Running late">Running late to : { project.projectId }</option>
-                                </select>
+                                     { this.renderStatusButtons(project.status[project.status.length-1].projectStatus,project.projectId) }
                                 <hr/>
                             </div>    
                         )})}
                        
                       </div>
                       <ul className="list-group list-group-flush">
-                        <select 
-                            style = {this.getColorOnStatus() }
-                            className='form-control'
-                            onChange={this.onStatusChange}
-                            id="status"
-                            type="text"
-                            value={this.state.status}
-                                >
-                            <option value="Heading To site" >Heading To site</option>
-                            <option value="Arrived to the site">Arrived to the site</option>
-                            <option value="Running late">Running late</option>
-                        </select>
                         <li className="list-group-item">lat: {this.props.store.auth.lat}, lng: {this.props.store.auth.lng}</li>
                         <li className="list-group-item"><i class="fas fa-phone"></i> : {this.props.store.auth.phone}</li>
                         <li className="list-group-item"><i class="fas fa-envelope-open"></i>: {this.props.store.auth.email}</li>
@@ -97,4 +108,4 @@ class UserView extends React.Component {
 
 const mapStateToProps = (store) => ({store})
 
-export default connect(mapStateToProps,{getCurrentUser,updateUserStatus})(UserView)
+export default connect(mapStateToProps,{getCurrentUser,updateUserStatus,changeProjectStatus})(UserView)

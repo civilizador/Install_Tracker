@@ -242,9 +242,7 @@ module.exports = (app) => {
     // REMOVE PROJECT 
     
     app.post("/api/removeJob", async(req,res)=>{
-        console.log(req.body.dataToSend.userId)
-        console.log(req.body.dataToSend.projectId)
-        if(req.user && req.user.admin){
+         if(req.user && req.user.admin){
             const userId = req.body.dataToSend.userId;
             const projectId = req.body.dataToSend.projectId;
             const userToRemoveFrom = await User.findById(userId,(err,user)=>{
@@ -252,9 +250,7 @@ module.exports = (app) => {
                 else{return user}
             })
             const updatedProjects = await userToRemoveFrom.projects.filter((project)=>{return project.projectId !== projectId})
-            
-            console.log('YAY! we triggered Adding Project to the tech with ID: ',userId,'updated Projects list: ',updatedProjects,'Project ID to Remove : ',projectId)
-            await User.findOneAndUpdate(
+             await User.findOneAndUpdate(
                 { _id: userId }, 
                 { $set: { projects: updatedProjects } },
                 function(err){
@@ -274,6 +270,48 @@ module.exports = (app) => {
             res.send(allUsers)    
        }
     })   
+    
+    // UPDATE STATUS ON PROJECT
+    
+    app.post('/api/updateProjectStatus',async(req,res)=>{
+        if(req.user) {
+            
+            console.log('UPDATING STATUS OF THE INSTALL   ',req.body)
+            const userProjects = await req.user.projects
+            userProjects.find((project)=>{return project.projectId == req.body.projectId}).status.push({
+                projectStatus: req.body.value,
+                timeStamp: new Date(),
+                location: {lat:req.user.lat , lng:req.user.lng} 
+            })
+            
+            console.log('UPDATING STATUS OF THE INSTALL WITH  ',req.body, 'PROJECT to modify: ', userProjects)
 
+             await User.findOneAndUpdate(
+                { _id: req.user._id }, 
+                { $set: { projects: userProjects } },
+                function(err){
+                    if(err){console.log(err)}
+                    else{console.log('success')}
+                }
+            );
+            await User.save
+            // Sending currently logged in user with projectForToday 
+            const projectsForToday  = await req.user.projects.filter(  (project)   => {    return project.projectStartDate == today1}    )   
+                if(projectsForToday.length>0){
+                    req.user.projectForToday = projectsForToday
+                        res.send(req.user)
+                }else{
+                     req.user.projectForToday = [{
+                            projectId : "Nothing for today",
+                            projectName : "Nothing for today",
+                            projectStartDate : "Nothing for today",
+                            projectStartTime : "Nothing for today",
+                            installAddress : "Nothing for today",
+                        }]
+                        res.send(req.user)
+                }
+          }else{res.send(false)}
+  
+    })
 
 }

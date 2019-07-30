@@ -27,7 +27,7 @@ renderEditRoutes(){
         <Nav />
           <Route path='/' exact component={HomePage} />
           <Route path='/profile/:id' exact component={Profile} />
-
+          <Route path='/tech/:id' exact component={HomePage} />
         </BrowserRouter>
           )
   }else{
@@ -36,6 +36,7 @@ renderEditRoutes(){
         <Nav />
           <Route path='/' exact component={Login} />
           <Route path='/register' exact component={Register} />
+          <Route path='/tech/:id' exact component={Login} />
          </BrowserRouter>
           )
   }
