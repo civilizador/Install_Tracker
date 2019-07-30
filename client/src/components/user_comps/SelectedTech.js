@@ -41,16 +41,42 @@ class UserView extends React.Component {
             return
         }
     }
-    
+     renderStatusButtons=(status,projectId)=>{
+        console.log(status)
+        switch(status){
+              
+            case "Arrived to the site":
+                return (
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                      <button type="button" class="btn btn-outline-secondary">Awaiting tech</button>
+                      <button type="button" class="btn btn-success">{status}</button>
+                      <button type="button" class="btn btn-outline-warning">Arriving Late</button>
+                    </div>
+                )
+            case "Arriving Late":
+                return (
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                      <button type="button" class="btn btn-outline-secondary">Awaiting tech</button>
+                      <button type="button" class="btn btn-outline-success">Arrived to the site</button>
+                      <button type="button" class="btn btn-warning">{status}</button>
+                    </div>
+                )    
+            default :
+            return ( 
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                      <button type="button" class="btn btn-secondary">{status}</button>
+                      <button type="button" class="btn btn-outline-success">Arrived to the site</button>
+                      <button type="button" class="btn btn-outline-warning">Arriving Late</button>
+                    </div>
+                )
+        }
+    }
     renderTech= ()=>{
     if(this.props.store.allUsers){
-        console.log("TODAYS DATE:  ",fullTodaysDate )
+         
         const userId=   window.location.href.split('/').slice(-1)[0]
-        console.log('USER ID is : ', userId)
         const selectedUser =    this.props.store.allUsers.find( (user)=>{return user._id===userId} )
         
-        selectedUser.projectForToday  =  this.props.store.allUsers.find( (user)=>{return user._id===userId} ).projects.filter((project)=>{return project.projectStartDate === fullTodaysDate })
-        console.log('PROJECT FOR TODAY:   ', selectedUser.projectForToday)
         const style = ()=>{
             switch(selectedUser.status){
                 case 'Running late':
@@ -61,8 +87,48 @@ class UserView extends React.Component {
                     return {marginTop:'15vh', border: "3px solid silver", textAlign: "center"}   
             } 
         }
-        console.log(selectedUser)
         if(this.props.store.auth && selectedUser){
+            const todayProjects = ()=>{if(this.props.store.allUsers.find( (user)=>{return user._id===userId} ).projects.filter((project)=>{return project.projectStartDate === fullTodaysDate }).length>0){
+                 
+                        return(
+                            <div className="btn btn-outline-dark col-md-8 col-xs-12 col-lg-8">
+                                <h3> Installs for Today : {selectedUser.projectForToday.length}</h3><hr/>
+                                            {
+                                                selectedUser.projectForToday.map((todaysProject)=>{
+                                                    return(
+                                                        <div>
+                                                            <h4 >Project ID#:  {todaysProject.projectId} </h4>
+                                                            <h5 >Project Name: {todaysProject.projectName} </h5>
+                                                            <h5 className="card-text"><i class="fas fa-map-marked-alt"></i>Install Address: {todaysProject.installAddress}</h5>
+                                                            <h5 >Project Start Time: {todaysProject.projectStartTime} </h5>
+                                                            { this.renderStatusButtons(todaysProject.status[todaysProject.status.length-1].projectStatus,todaysProject.projectId) }
+                                                            <hr/>
+                                                        </div>
+                                                    )
+                                                })
+                                            }
+                                    <br/>
+                             </div>   
+                            )
+                   
+            }else{
+                
+                        return(
+                            <div className="btn btn-outline-dark col-md-8 col-xs-12 col-lg-8">
+                                <h3> Installs for Today : 0</h3><hr/>
+                                                        <div>
+                                                            <h4 >Project ID#:   "No installs for today" </h4>
+                                                            <h5 >Project Name:  "No installs for today" </h5>
+                                                            <h5 className="card-text"><i class="fas fa-map-marked-alt"></i>Install Address:  "No installs for today"</h5>
+                                                            <h5 >Project Start Time:  "No installs for today" </h5>
+                                                            <hr/>
+                                                        </div>
+                                    <br/>
+                             </div>   
+                            )
+                   
+            }
+            }
              return(
                  <div key={selectedUser._id} className="card mx-auto" style={style()}>
                     <div className="btn-toolbar mb-3" role="toolbar" style={{ position: "fixed", right:"5px", top: "140px"  }}>
@@ -78,26 +144,11 @@ class UserView extends React.Component {
                     } </div>
                       
                       <div className="card-body ">
-                        <div className="btn btn-outline-dark col-md-8 col-xs-12 col-lg-8">
-                            <h3> Installs for Today : {selectedUser.projectForToday.length}</h3><hr/>
-                                
-                                {
-                                    selectedUser.projectForToday.map((todaysProject)=>{
-                                        return(
-                                            <div>
-                                                <h4 >Project ID#:  {todaysProject.projectId} </h4>
-                                                <h5 >Project Name: {todaysProject.projectName} </h5>
-                                                <h5 className="card-text"><i class="fas fa-map-marked-alt"></i>Install Address: {todaysProject.installAddress}</h5>
-                                                <h5 >Project Start Time: {todaysProject.projectStartTime} </h5>
-                                                <hr/>
-                                            </div>
-                                            
-                                        )
-                                    })
-                                }
-                                
-                        <br/>
-                        </div>
+                        
+                            
+                            {todayProjects()}
+                            
+                        
                         <div class="list-group col-md-9 mx-auto" style={{marginTop:"2vh",marginBottom:"2vh"}}>
                         <button onClick={   
                                     ()  =>  {   

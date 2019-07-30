@@ -22,7 +22,17 @@ const UserSchema = new mongoose.Schema({
                 projectStartDate: 'No date assigned', 
                 projectStartTime: 'No Start Time assigned',
                 installAddress:  'No Address is Assigned',
-                orderStatus: 'Not Started'
+                orderStatus: 'Not Started',
+                status: [
+                {
+                    projectStatus: "Awaiting tech",
+                    timeStamp: new Date(),
+                    location: {
+                        lat: "not provided",
+                        lng: "not provided"
+                    }
+                }
+            ]
         }]
     },
     projectForToday:{

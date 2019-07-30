@@ -1,7 +1,10 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {getCurrentUser,updateUserStatus,changeProjectStatus} from '../../actions'
-
+const year = new Date().getFullYear()
+        const month = ()=>{ if(new Date().getMonth()<10) {return "0" + (new Date().getMonth()+1) } else {return new Date().getMonth()+1 } }
+        const day = ()=>{ if(new Date().getDate()<10) {return "0" + new Date().getDate() } else {return new Date().getDate() } }
+        const fullTodaysDate = year + "-" + month() + "-" + day()
         
 class UserView extends React.Component {
   
@@ -24,14 +27,7 @@ class UserView extends React.Component {
     renderStatusButtons=(status,projectId)=>{
         console.log(status)
         switch(status){
-            case "Awaiting tech":
-                return (
-                    <div class="btn-group" role="group" aria-label="Basic example">
-                      <button type="button" class="btn btn-secondary">{status}</button>
-                      <button onClick={()=>{this.onButtonClick('Arrived to the site',projectId)}}  type="button" class="btn btn-outline-success">Arrived to the site</button>
-                      <button onClick={()=>{this.onButtonClick('Arriving Late',projectId)}} type="button" class="btn btn-outline-warning">Arriving Late</button>
-                    </div>
-                )
+            
             case "Arrived to the site":
                 return (
                     <div class="btn-group" role="group" aria-label="Basic example">
@@ -43,7 +39,7 @@ class UserView extends React.Component {
             case "Arriving Late":
                 return (
                     <div class="btn-group" role="group" aria-label="Basic example">
-                      <button type="button" class="btn btn-secondary">Awaiting tech</button>
+                      <button type="button" class="btn btn-outline-secondary">Awaiting tech</button>
                       <button type="button" class="btn btn-outline-success">Arrived to the site</button>
                       <button type="button" class="btn btn-warning">{status}</button>
                     </div>
@@ -51,9 +47,9 @@ class UserView extends React.Component {
             default :
             return (
                     <div class="btn-group" role="group" aria-label="Basic example">
-                      <button type="button" class="btn btn-secondary">status</button>
-                      <button type="button" class="btn btn-outline-secondary">Middle</button>
-                      <button type="button" class="btn btn-outline-secondary">Right</button>
+                      <button type="button" class="btn btn-secondary">{status}</button>
+                      <button onClick={()=>{this.onButtonClick('Arrived to the site',projectId)}}  type="button" class="btn btn-outline-success">Arrived to the site</button>
+                      <button onClick={()=>{this.onButtonClick('Arriving Late',projectId)}} type="button" class="btn btn-outline-warning">Arriving Late</button>
                     </div>
                 )
         }
@@ -62,7 +58,31 @@ class UserView extends React.Component {
         console.log(value,projectId)
         this.props.changeProjectStatus(value,projectId)
     }
-    
+    renderTodayProjectInfo=()=>{
+        if(this.props.store.auth){
+           if(this.props.store.auth.projects.filter((project)=>{return project.projectStartDate == fullTodaysDate}).length > 0 ){
+               console.log('WE HAVE PROJECTS for TODAY')
+                return this.props.store.auth.projects.filter((project)=>{return project.projectStartDate == fullTodaysDate}).map((project)=>{return (
+                            <div className="btn btn-outline-dark col-md-8 col-xs-12 col-lg-8">  
+                                <p >Project ID#:  {project.projectId} </p>
+                                <p >Project Name: {project.projectName} </p>
+                                <p className="card-text"><i class="fas fa-map-marked-alt"></i>{project.installAddress}</p>
+                                <p><i class="fas fa-clock"></i> {project.projectStartTime} -- {project.projectStartDate} </p>
+                                     { this.renderStatusButtons(project.status[project.status.length-1].projectStatus,project.projectId) }
+                                <hr/>
+                            </div>    
+                        )})
+           }else{
+               return( <div className="btn btn-outline-dark col-md-8 col-xs-12 col-lg-8">  
+                                <p >Project ID#:  "No installs for today" </p>
+                                <p >Project Name: "No installs for today"  </p>
+                                <p className="card-text"><i class="fas fa-map-marked-alt"></i>"No installs for today" </p>
+                                <p><i class="fas fa-clock"></i> "No installs for today"  -- "No installs for today"  </p>
+                            </div>   
+                            )
+           }
+        }
+    }
     
     render(){
         if(this.props.store.auth)
@@ -75,18 +95,10 @@ class UserView extends React.Component {
                       <h1>{this.props.store.auth.name}</h1>
                       <div className="card-body">
                         <h5 className="card-title"><i class="fas fa-globe-americas"></i>{this.props.store.auth.region}</h5>
-                        <h5>Total Projects Today: {this.props.store.auth.projectForToday.length}</h5>
                         
-                        {this.props.store.auth.projectForToday.map((project)=>{return (
-                            <div className="btn btn-outline-dark col-md-8 col-xs-12 col-lg-8">  
-                                <p >Project ID#:  {project.projectId} </p>
-                                <p >Project Name: {project.projectName} </p>
-                                <p className="card-text"><i class="fas fa-map-marked-alt"></i>{project.installAddress}</p>
-                                <p><i class="fas fa-clock"></i> {project.projectStartTime} -- {project.projectStartDate} </p>
-                                     { this.renderStatusButtons(project.status[project.status.length-1].projectStatus,project.projectId) }
-                                <hr/>
-                            </div>    
-                        )})}
+                        <h5>Total Projects Today: {this.props.store.auth.projectForToday.length}</h5>
+                        {this.renderTodayProjectInfo()}
+                        
                        
                       </div>
                       <ul className="list-group list-group-flush">

@@ -18,53 +18,93 @@ class UsersList extends React.Component {
         this.props.fetchAllUsers()
         
     }
+    
     renderAllTechs= (region)=>{
         if(this.props.store.allUsers)
          alltechs =  this.props.store.allUsers.filter((user)=>{return user.region==region})
          if(alltechs.length>0)
-           return  alltechs.map((user)=>{
-               const jobForToday = user.projects.filter((project)=>{return project.projectStartDate == fullTodaysDate}) 
-               user.projectForToday = jobForToday
-               console.log(jobForToday)
-                    return (
-                        <div key={user._id} className="card col-lg-3 col-md-4 col-sm-12 col-xs-12" style={this.getStyling(user.status)}>
-                            <div className='btn btn-md btn-outline-info'>
-                                    {user.projects.filter((project)=>{return project.projectStartDate == fullTodaysDate})[0].projectStartTime} -- {user.projects.filter((project)=>{return project.projectStartDate == fullTodaysDate})[0].projectStartDate} 
-                                     <h5 className="card-title">{user.region}</h5>
+            
+        return  alltechs.map((user)=>{
+            if(user.projects.filter((project)=>{return project.projectStartDate == fullTodaysDate}).length > 0){
+                         const jobForToday = user.projects.filter((project)=>{return project.projectStartDate == fullTodaysDate}) 
+                         user.projectForToday = jobForToday
+                        console.log(jobForToday)
+                        return (
+                            <div key={user._id} className="card col-lg-4 col-md-4 col-sm-12 col-xs-12"  >
+                                <center>{this.renderLink(user.name,user._id)}</center>
+                                <h5 className="card-title mx-auto"> <i class="fas fa-globe-americas"></i> {" "}{user.region}</h5>
+                                <div className='btn btn-md btn-outline-info'>
+                                   {
+                                        user.projects.filter((project)=>{return project.projectStartDate == fullTodaysDate}).map((project)=>{
+                                            switch(project.status[project.status.length-1].projectStatus){
+                                                case "Awaiting tech":
+                                                return <p>{project.projectId} -- {project.projectStartTime}  <br/> <button className='btn btn-outline-secondary'>{project.status[project.status.length-1].projectStatus}</button> </p>
+                                                case "Arrived to the site":
+                                                return <p>{project.projectId} -- {project.projectStartTime}   <br/> <button className='btn btn-outline-success'>{project.status[project.status.length-1].projectStatus}</button> </p>
+                                                case "Arriving Late":
+                                                return <p>{project.projectId} -- {project.projectStartTime}   <br/> <button className='btn btn-outline-warning'>{project.status[project.status.length-1].projectStatus}</button> </p>
+                                            }
+                                        })
+                                   }
+                                </div>
+                                      <div className="card-body">
+                                        <p ><b>Project ID#:</b>  {user.projectForToday[0].projectId} </p>
+                                        <p ><b>Project Name:</b> {user.projectForToday[0].projectName} </p>
+                                        <p ><b>Install Address:</b> {user.projectForToday[0].installAddress} </p>
+                                       </div>
+                                      <ul className="list-group list-group-flush">
+                                        <li className="list-group-item btn btn-outline-info" >{user.status}</li> 
+                                      </ul>
+                                      <div className="card-body">
+                                        <a href={`mailto: ${user.email}?Subject=${'Issue with install : '}${this.props.store.auth.projectId}${this.props.store.auth.projectName}` } className="card-link"> Email Tech: <i className="far fa-envelope-open"></i> </a>
+                                        <a href={`mailto: ${this.props.store.auth.directManagerEmail}?Subject=${'Issue with install : '}${this.props.store.auth.projectId}${this.props.store.auth.projectName}` } className="card-link">
+                                            Manager: <i className="far fa-envelope-open"></i> {this.props.store.auth.directManagerName}</a>
+                                 </div>
                             </div>
-                                  {this.renderLink(user.name,user._id)}
-                                  <div className="card-body">
-                                   
-                                    <p ><b>Project ID#:</b>  {user.projectForToday[0].projectId} </p>
-                                    <p ><b>Project Name:</b> {user.projectForToday[0].projectName} </p>
-                                    <p ><b>Install Address:</b> {user.projectForToday[0].installAddress} </p>
-                                   </div>
-                                  <ul className="list-group list-group-flush">
-                                    <li className="list-group-item btn btn-outline-info" >{user.status}</li> 
-                                  
-                                  </ul>
-                                  <div className="card-body">
-                                    <a href={`mailto: ${user.email}?Subject=${'Issue with install : '}${this.props.store.auth.projectId}${this.props.store.auth.projectName}` } className="card-link"> Email Tech: <i className="far fa-envelope-open"></i> </a>
-                                    <a href={`mailto: ${this.props.store.auth.directManagerEmail}?Subject=${'Issue with install : '}${this.props.store.auth.projectId}${this.props.store.auth.projectName}` } className="card-link">
-                                        Manager: <i className="far fa-envelope-open"></i> {this.props.store.auth.directManagerName}</a>
-                             </div>
-                        </div>
-                )
+                    ) 
+            }else{
+                   return (
+                            <div key={user._id} className="card col-lg-4 col-md-4 col-sm-12 col-xs-12"  >
+                                <center>{this.renderLink(user.name,user._id)}</center>
+                                <h5 className="card-title mx-auto"> <i class="fas fa-globe-americas"></i> {" "}{user.region}</h5>
+                                <div className='btn btn-md btn-outline-info'>
+                                   {
+                                        user.projects.filter((project)=>{return project.projectStartDate == fullTodaysDate}).map((project)=>{
+                                            switch(project.status[project.status.length-1].projectStatus){
+                                                case "Awaiting tech":
+                                                return <p>{project.projectId} -- {project.projectStartTime}  <br/> <button className='btn btn-outline-secondary'>{project.status[project.status.length-1].projectStatus}</button> </p>
+                                                case "Arrived to the site":
+                                                return <p>{project.projectId} -- {project.projectStartTime}   <br/> <button className='btn btn-outline-success'>{project.status[project.status.length-1].projectStatus}</button> </p>
+                                                case "Arriving Late":
+                                                return <p>{project.projectId} -- {project.projectStartTime}   <br/> <button className='btn btn-outline-warning'>{project.status[project.status.length-1].projectStatus}</button> </p>
+                                            }
+                                        })
+                                   }
+                                          
+                                </div>
+                                      <div className="card-body">
+                                        <p ><b>Project ID#:</b>  "No installs for today" </p>
+                                        <p ><b>Project Name:</b> "No installs for today" </p>
+                                        <p ><b>Install Address:</b> "No installs for today"  </p>
+                                       </div>
+                                      <ul className="list-group list-group-flush">
+                                        <li className="list-group-item btn btn-outline-info" >{user.status}</li> 
+                                      
+                                      </ul>
+                                      <div className="card-body">
+                                        <a href={`mailto: ${user.email}?Subject=${'Issue with install : '}${this.props.store.auth.projectId}${this.props.store.auth.projectName}` } className="card-link"> Email Tech: <i className="far fa-envelope-open"></i> </a>
+                                        <a href={`mailto: ${this.props.store.auth.directManagerEmail}?Subject=${'Issue with install : '}${this.props.store.auth.projectId}${this.props.store.auth.projectName}` } className="card-link">
+                                            Manager: <i className="far fa-envelope-open"></i> {this.props.store.auth.directManagerName}</a>
+                                 </div>
+                            </div>
+                    ) 
+            }
             })
      
     }
         
     
-    getStyling = async(status)=>{
-        switch(status){
-                    case 'Running late':
-                        return { marginTop: "12vh", border: "3px solid red"}
-                    case 'Arrived to the site':
-                        return { marginTop: "12vh", border: "3px solid #0ead0e3b"}
-                    default :
-                        return {  marginTop: "12vh", border: "3px solid red"}    
-                    }
-    }
+    
     onStatusChange=async(e)=>{
         const value= e.target.value
         await this.setState({status:value})
