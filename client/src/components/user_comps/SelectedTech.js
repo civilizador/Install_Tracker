@@ -10,7 +10,7 @@ class UserView extends React.Component {
   
   
     componentDidMount(){
-        this.props.fetchAllUsers()
+        
     }
       
     state={submitted:false,projectId:'',projectName: '',projectStartDate:'',projectStartTime:'',
