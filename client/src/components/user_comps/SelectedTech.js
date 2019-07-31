@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {getSelectedUser,addProjectToTech,removeJob} from '../../actions'
+import {getSelectedUser,addProjectToTech,removeJob,fetchAllUsers} from '../../actions'
 import {Link,Redirect} from 'react-router-dom';
 const year = new Date().getFullYear()
         const month = ()=>{ if(new Date().getMonth()<10) {return "0" + (new Date().getMonth()+1) } else {return new Date().getMonth()+1 } }
@@ -8,8 +8,13 @@ const year = new Date().getFullYear()
         const fullTodaysDate = year + "-" + month() + "-" + day()
 class UserView extends React.Component {
   
+  
+    componentDidMount(){
+        this.props.fetchAllUsers()
+    }
+      
     state={submitted:false,projectId:'',projectName: '',projectStartDate:'',projectStartTime:'',
-            installAddress:'',orderHistory:false,
+            installAddress:'',orderHistory:false,lat:'',lng:'',
             status:[{projectStatus:"Awaiting tech", timeStamp: new Date(), location:{lat:'not provided',lng:'not provided'} }]  
     }
  
@@ -126,8 +131,7 @@ class UserView extends React.Component {
                                     <br/>
                              </div>   
                             )
-                   
-            }
+                    }
             }
              return(
                  <div key={selectedUser._id} className="card mx-auto" style={style()}>
@@ -144,11 +148,7 @@ class UserView extends React.Component {
                     } </div>
                       
                       <div className="card-body ">
-                        
-                            
                             {todayProjects()}
-                            
-                        
                         <div class="list-group col-md-9 mx-auto" style={{marginTop:"2vh",marginBottom:"2vh"}}>
                         <button onClick={   
                                     ()  =>  {   
@@ -183,6 +183,10 @@ class UserView extends React.Component {
                           </div>
                           <div className="form-group col-md-6 col-sm-6 col-xs-12 col-lg-6 float-left">
                             Start Time <input type='time' value={this.state.projectStartTime} onChange={this.onInputChange}  class="form-control" id="projectStartTime" />
+                          </div>
+                          <div className="form-group col-md-6 col-sm-6 col-xs-12 col-lg-6 float-left">
+                            Lat : <input type='text' value={this.state.lat} onChange={this.onInputChange}  class="form-control" id="lat" />
+                            Lng : <input type='text' value={this.state.lng} onChange={this.onInputChange}  class="form-control" id="lng" />
                           </div>
                         </form>
                         <button onClick={()=>{this.onFormSubmit(selectedUser._id)} } class="btn btn-outline-info col-md-8 col-sm-8 col-xs-12 col-lg-8 mx-auto">Assign Install</button>
@@ -219,4 +223,4 @@ class UserView extends React.Component {
 
 const mapStateToProps = (store) => ({store})
 
-export default connect(mapStateToProps,{getSelectedUser,addProjectToTech,removeJob})(UserView)
+export default connect(mapStateToProps,{getSelectedUser,addProjectToTech,removeJob,fetchAllUsers})(UserView)

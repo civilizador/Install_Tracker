@@ -26,7 +26,8 @@ module.exports = (app) => {
           		    username: req.body.username,
           		    password: req.body.password,
           		    phone: req.body.phone,
-          		    region: req.body.region
+          		    region: req.body.region,
+          		    projects: []
           	});
       	    await User.createUser(newUser, function(err, user){
           		if(err) throw err;
@@ -64,22 +65,8 @@ module.exports = (app) => {
     
   	app.get('/api/current_user', async (req,res) => {
           if(req.user) {
-            const projectsForToday  = await req.user.projects.filter(  (project)   => {    return project.projectStartDate == today1}    )   
-                if(projectsForToday.length>0){
-                    req.user.projectForToday = projectsForToday
-                        res.send(req.user)
-                }else{
-                     req.user.projectForToday = [{
-                            projectId : "Nothing for today",
-                            projectName : "Nothing for today",
-                            projectStartDate : "Nothing for today",
-                            projectStartTime : "Nothing for today",
-                            installAddress : "Nothing for today",
-                        }]
-                        res.send(req.user)
-                }
+             res.send(req.user)
           }
-            
           else{res.send(false)}
     })
     
@@ -176,37 +163,37 @@ module.exports = (app) => {
     })
     
     
-    // UPDATE USER STATUS. 
+    // // UPDATE USER STATUS. 
     
-    app.post('/api/updateUserStatus', async(req,res)=>{
-        if(req.user){
-               User.findByIdAndUpdate(req.user._id,
-                { "$set": { "status": req.body.status } },
-                function(err) {
-                    if (err) throw err;
-                    else{
-                        const projectsForToday  =  req.user.projects.filter(  (project)   => {    return project.projectStartDate == today1}    )   
-                            if(projectsForToday.length>0){
-                                const updatedUser = req.user ;
-                                    updatedUser.projectForToday = projectsForToday
-                                    res.send(updatedUser)
-                            }else{
-                                const updatedUser = req.user ;
-                                    updatedUser.projectForToday = [{
-                                        projectId : "Nothing for today",
-                                        projectName : "Nothing for today",
-                                        projectStartDate : "Nothing for today",
-                                        projectStartTime : "Nothing for today",
-                                        installAddress : "Nothing for today",
-                                    }]
-                                    res.send(updatedUser)
-                            }
-                    }
-                });
-        }else{
-            res.send('noUserLoggedIn')
-        }
-    })
+    // app.post('/api/updateUserStatus', async(req,res)=>{
+    //     if(req.user){
+    //           User.findByIdAndUpdate(req.user._id,
+    //             { "$set": { "status": req.body.status } },
+    //             function(err) {
+    //                 if (err) throw err;
+    //                 else{
+    //                     const projectsForToday  =  req.user.projects.filter(  (project)   => {    return project.projectStartDate == today1}    )   
+    //                         if(projectsForToday.length>0){
+    //                             const updatedUser = req.user ;
+    //                                 updatedUser.projectForToday = projectsForToday
+    //                                 res.send(updatedUser)
+    //                         }else{
+    //                             const updatedUser = req.user ;
+    //                                 updatedUser.projectForToday = [{
+    //                                     projectId : "Nothing for today",
+    //                                     projectName : "Nothing for today",
+    //                                     projectStartDate : "Nothing for today",
+    //                                     projectStartTime : "Nothing for today",
+    //                                     installAddress : "Nothing for today",
+    //                                 }]
+    //                                 res.send(updatedUser)
+    //                         }
+    //                 }
+    //             });
+    //     }else{
+    //         res.send('noUserLoggedIn')
+    //     }
+    // })
     
     
     // ADD PROJECT. Pushing a new project into the array with all projects
@@ -222,7 +209,6 @@ module.exports = (app) => {
                 function(err){
                     if(err){console.log(err)}
                     else{console.log('success')}
-                    
                 }
             );
             await User.save
@@ -235,7 +221,6 @@ module.exports = (app) => {
                     }
                 }) 
             res.send(allUsers)  
-            
        }
    })
    
@@ -274,10 +259,45 @@ module.exports = (app) => {
     // UPDATE STATUS ON PROJECT
     
     app.post('/api/updateProjectStatus',async(req,res)=>{
+        
         if(req.user) {
             
             console.log('UPDATING STATUS OF THE INSTALL   ',req.body)
             const userProjects = await req.user.projects
+            const projectLatLng = {lat: userProjects.find( (project)=>{return project.projectId == req.body.projectId} ).lat, lng: userProjects.find( (project)=>{return project.projectId == req.body.projectId} ).lng }
+            const userLatLng = {lat:req.user.lat, lng:req.user.lng}
+                if(projectLatLng.lat && userLatLng.lng!=0){
+                     console.log("PROJECT LAT LONG",projectLatLng,'USER LAT LNG',userLatLng)
+                         
+                        const unit = 'M'
+                        function distance(lat1, lon1, lat2, lon2, unit ) {
+                        	if ((lat1 == lat2) && (lon1 == lon2)) {
+                        		return 0;
+                        	}
+                        	else {
+                        		var radlat1 = Math.PI * lat1/180;
+                        		var radlat2 = Math.PI * lat2/180;
+                        		var theta = lon1-lon2;
+                        		var radtheta = Math.PI * theta/180;
+                        		var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+                        		if (dist > 1) {
+                        			dist = 1;
+                        		}
+                        		dist = Math.acos(dist);
+                        		dist = dist * 180/Math.PI;
+                        		dist = dist * 60 * 1.1515;
+                        		if (unit=="K") { dist = dist * 1.609344 }
+                        		if (unit=="N") { dist = dist * 0.8684 }
+                        		return dist;
+                        	}
+                        }
+                        
+                        const result = distance(projectLatLng.lat, projectLatLng.lng,userLatLng.lat, userLatLng.lng, unit)
+                        console.log(result)
+                                             
+                }else{
+                    console.log('Location information is missing')
+                }
             userProjects.find((project)=>{return project.projectId == req.body.projectId}).status.push({
                 projectStatus: req.body.value,
                 timeStamp: new Date(),
@@ -296,20 +316,7 @@ module.exports = (app) => {
             );
             await User.save
             // Sending currently logged in user with projectForToday 
-            const projectsForToday  = await req.user.projects.filter(  (project)   => {    return project.projectStartDate == today1}    )   
-                if(projectsForToday.length>0){
-                    req.user.projectForToday = projectsForToday
-                        res.send(req.user)
-                }else{
-                     req.user.projectForToday = [{
-                            projectId : "Nothing for today",
-                            projectName : "Nothing for today",
-                            projectStartDate : "Nothing for today",
-                            projectStartTime : "Nothing for today",
-                            installAddress : "Nothing for today",
-                        }]
-                        res.send(req.user)
-                }
+               res.send(req.user)
           }else{res.send(false)}
   
     })
