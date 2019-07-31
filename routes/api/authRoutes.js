@@ -294,29 +294,38 @@ module.exports = (app) => {
                         
                         const result = distance(projectLatLng.lat, projectLatLng.lng,userLatLng.lat, userLatLng.lng, unit)
                         console.log(result)
-                                             
+                            if(result>5){
+                                 console.log("Your location is out of range")
+                                    res.send("Your location is out of range")
+                            }else{
+                                userProjects.find((project)=>{return project.projectId == req.body.projectId}).status.push({
+                                projectStatus: req.body.value,
+                                timeStamp: new Date(),
+                                location: {lat:req.user.lat , lng:req.user.lng} 
+                            })
+                            
+                            console.log('UPDATING STATUS OF THE INSTALL WITH  ',req.body, 'PROJECT to modify: ', userProjects)
+                
+                             await User.findOneAndUpdate(
+                                { _id: req.user._id }, 
+                                { $set: { projects: userProjects } },
+                                function(err){
+                                    if(err){console.log(err)}
+                                    else{console.log('success')}
+                                }
+                            );
+                            await User.save
+                            // Sending currently logged in user with projectForToday 
+                               res.send(req.user)   
+                            }
+                                               
                 }else{
                     console.log('Location information is missing')
+                     res.send('Location information is missing')
                 }
-            userProjects.find((project)=>{return project.projectId == req.body.projectId}).status.push({
-                projectStatus: req.body.value,
-                timeStamp: new Date(),
-                location: {lat:req.user.lat , lng:req.user.lng} 
-            })
-            
-            console.log('UPDATING STATUS OF THE INSTALL WITH  ',req.body, 'PROJECT to modify: ', userProjects)
-
-             await User.findOneAndUpdate(
-                { _id: req.user._id }, 
-                { $set: { projects: userProjects } },
-                function(err){
-                    if(err){console.log(err)}
-                    else{console.log('success')}
-                }
-            );
-            await User.save
-            // Sending currently logged in user with projectForToday 
-               res.send(req.user)
+                
+                
+           
           }else{res.send(false)}
   
     })

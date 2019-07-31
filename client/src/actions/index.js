@@ -89,9 +89,12 @@ let wrongPass = false;
     export const changeProjectStatus =(value,projectId) => async (dispatch) => {
         console.log('changeProjectStatus:  ',value,projectId)
         const response = await axios.post('/api/updateProjectStatus',{value,projectId})
-        if(response.data){
-            dispatch({type:'GET_USER_DATA',payload:response.data})
-        }
+        if(response.data == 'Location information is missing'){
+            dispatch({type:'FAILED_UPDATE_PROJ_STATUS',payload:'Location information is missing'})
+        }else if(response.data == 'Your location is out of range'){dispatch({type:'FAILED_UPDATE_PROJ_STATUS',payload:'Your location is out of range'})}
+         else if( response.data ){
+              dispatch({type:'GET_USER_DATA',payload:response.data})
+         }
     }
     
   // Get current User DATA helper function
