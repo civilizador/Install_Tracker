@@ -32,7 +32,7 @@ class UserView extends React.Component {
      }
     renderGenerateReportButton=(userId)=>{
          if(this.props.store.auth && this.props.store.auth.admin){
-            return(<button className="btn btn-md btn-info" onClick={()=>{this.props.genReport(userId)}}>Generate Report</button>)
+            return(<button className="btn btn-md btn-light mx-auto" onClick={()=>{this.props.genReport(userId)}}>Generate Report</button>)
          }else{
          }
     }      
@@ -156,10 +156,8 @@ class UserView extends React.Component {
                         </div>
                     } </div>
                        <div className="btn-group-vertical mr-2" role="group" aria-label="First group">
-                                
                                     {this.renderGenerateReportButton(selectedUser._id )}
-                                    
-                                </div>
+                        </div>
                       <div className="card-body ">
                             {todayProjects()}
                         <div class="list-group col-md-9 mx-auto" style={{marginTop:"2vh",marginBottom:"2vh"}}>
