@@ -1,6 +1,6 @@
 import React  from 'react';
 import {connect} from 'react-redux';
-import {fetchAllUsers,updateLatLng} from '../../actions';
+import {fetchAllUsers,updateLatLng,genReport} from '../../actions';
 import UsersList from '../user_comps/UsersList';
 import UserView from '../user_comps/UserView'
 import {Redirect} from 'react-router-dom';
@@ -29,7 +29,6 @@ import {Redirect} from 'react-router-dom';
         )
     }
     
-        
   whichScreenToShow(){
     if(this.props.store.auth.admin){
       return <UsersList/>
@@ -48,8 +47,8 @@ import {Redirect} from 'react-router-dom';
   }
   returnSwitchButtons(){
     if(this.props.store.auth && this.props.store.auth.admin){
-      return( <div>
-              </div>
+      return( 
+        <div></div>
               )
     }else if(this.props.store.auth){
        return( <div className="btn-group-vertical mr-2" role="group" aria-label="First group">
@@ -61,7 +60,7 @@ import {Redirect} from 'react-router-dom';
   }
   render() {
     return (
-    <div className="HomePage">
+    <div className="HomePage container">
         <div className='row'>
           {this.whichScreenToShow()}
         </div>  
@@ -75,4 +74,4 @@ import {Redirect} from 'react-router-dom';
 
 const mapStateToProps = (store) => ({store})
 
-export default connect(mapStateToProps, {fetchAllUsers,updateLatLng})(HomePage)
+export default connect(mapStateToProps, {fetchAllUsers,updateLatLng,genReport})(HomePage)

@@ -1,0 +1,5 @@
+name,startDate,id,LastStatus,LastCoordinatesLat,LastCoordinatesLng
+MEINEKE CAR CARE,2019-07-30,2476718,Awaiting tech,not provided,not provided
+Fayetteville Technical Community College,2019-07-29,2477235,Awaiting tech,not provided,not provided
+Rusty Nail Saloon,2019-07-30,2473217,Arriving Late,40.107314599999995,-75.0399061
+Rusty Nail Saloon TEST,2019-07-29,2473217,Awaiting tech,not provided,not provided

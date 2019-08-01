@@ -52,6 +52,7 @@ class Profile extends Component {
           <div className="btn-group-vertical mr-2" role="group" aria-label="First group">
             <button onClick={()=>{this.onLeftMenuClick('profile')}}    className="btn btn-md btn-secondary">Profile Info</button>
             <button onClick={()=>{this.onLeftMenuClick('orders')}}     className="btn btn-md btn-secondary">My Orders</button>
+              <Link className="btn btn-md btn-secondary" to="/" >Back to Techs</Link> 
            </div>
         </div>
 

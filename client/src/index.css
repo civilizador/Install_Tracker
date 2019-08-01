@@ -157,7 +157,7 @@ div.card img {
 @media screen and (max-width: 720px) {
 
   a.btn{
-      font-size: 1.2vw!important;
+      font-size: 1.6vw!important;
   }
   a.nav-link{
       font-size: 1.6vw!important;
@@ -166,9 +166,9 @@ div.card img {
 @media screen and (max-width: 480px) {
 
     a.btn{
-        font-size: 1vw!important;
+        font-size: 2.6vw!important;
     }
     a.nav-link{
-        font-size: 1.4vw!important;
+        font-size: 2vw!important;
     }
 }

@@ -2,7 +2,11 @@ const passport  = require("passport");
 const User      = require("../../models/User");
 const bcrypt = require('bcryptjs');
 const moment = require("moment")
-const today = new Date().getDate().toString()
+const fastcsv = require('fast-csv');
+const fs = require('fs');
+const ws = fs.createWriteStream("out.txt");
+
+
 const today1 = moment().format("YYYY-MM-Do").slice(0,-2);  
 console.log('Today DATE: ',today1)
 // Passing express to our routes function
@@ -39,7 +43,23 @@ module.exports = (app) => {
         }
     });
 
-
+     app.post("/api/genReport",async(req,res)=>{
+         const user = await User.findById(req.body.userId,(err,user)=>{if(err){console.log(err)}else return user} )
+         const allProjects =  user.projects.map((project)=>{return{
+          		    name: project.projectName,
+          		    startDate: project.projectStartDate,
+          		    id: project.projectId, 
+           		    LastStatus: project.status[project.status.length-1].projectStatus,
+           		    LastCoordinatesLat: project.status[project.status.length-1].location.lat,
+           		     LastCoordinatesLng: project.status[project.status.length-1].location.lng
+          	        }}
+                )
+            console.log(allProjects);
+            fastcsv
+              .write(allProjects, { headers: true })
+              .pipe(ws);
+                        res.send(allProjects)
+    })
    	
     // LOGIN ROUTE   
 
@@ -114,20 +134,35 @@ module.exports = (app) => {
     
     // UPDATE USER ACCOUNT INFO
     
-    app.put('/api/update_user', async (req,res) => {
-        let password = req.body.password
+    app.post('/api/update_user',  (req,res) => {
+        let password  = req.body.password
+        let password2 = req.body.password2
             if(req.user) {
-                bcrypt.hash(password, (hash) => {
-                    req.body.password = hash
-                    User.findByIdAndUpdate(req.user._id,req.body.updatedUser,(err, user)=>{
-                         if(err) {throw err}
-                         else{ res.send(req.user) }
-                     })
-                  })
-            }
-            else{res.send(false)}
-    })
-    
+                if (password == password2){
+                        const newUser = {
+                      		    name: req.body.name, 
+                      		    email: req.body.email,
+                      		    directManagerName: req.body.directManagerName,
+                      		    directManagerEmail: req.body.directManagerName,
+                      		    status: "No status set",
+                      		    username: req.body.username,
+                      		    password: req.body.password,
+                      		    phone: req.body.phone,
+                      		    region: req.body.region,
+                      		    projects: req.body.projects
+                      	}
+                bcrypt.hash(newUser.password,async (hash) => {
+                     newUser.password = hash
+                     User.findByIdAndUpdate(req.user._id,
+                        { "$set": { newUser } },
+                        (err) => {
+                            if (err) throw err;
+                            else{
+                            }
+                        })       
+                } )
+            }}
+    });
     
     // UPDATE USER LOCATION
     

@@ -18,13 +18,14 @@ class UsersList extends React.Component {
         this.props.fetchAllUsers()
         
     }
-    
+  
     renderAllTechs= (region)=>{
         if(this.props.store.allUsers)
          alltechs =  this.props.store.allUsers.filter((user)=>{return user.region==region})
          if(alltechs.length>0)
             
         return  alltechs.map((user)=>{
+            
             if(user.projects.filter((project)=>{return project.projectStartDate == fullTodaysDate}).length > 0){
                          const jobForToday = user.projects.filter((project)=>{return project.projectStartDate == fullTodaysDate}) 
                          user.projectForToday = jobForToday

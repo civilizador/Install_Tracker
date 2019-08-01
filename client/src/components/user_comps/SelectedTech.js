@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {getSelectedUser,addProjectToTech,removeJob,fetchAllUsers} from '../../actions'
+import {getSelectedUser,addProjectToTech,removeJob,fetchAllUsers,genReport} from '../../actions'
 import {Link,Redirect} from 'react-router-dom';
 const year = new Date().getFullYear()
         const month = ()=>{ if(new Date().getMonth()<10) {return "0" + (new Date().getMonth()+1) } else {return new Date().getMonth()+1 } }
@@ -10,7 +10,9 @@ class UserView extends React.Component {
   
   
     componentDidMount(){
-        
+        if (!this.props.store.allUsers.length) {
+            this.props.fetchAllUsers();
+        }
     }
       
     state={submitted:false,projectId:'',projectName: '',projectStartDate:'',projectStartTime:'',
@@ -28,7 +30,12 @@ class UserView extends React.Component {
         this.props.addProjectToTech(this.state,userId)
         this.setState({projectId:'',projectName: '',projectStartDate:'',projectStartTime:'',installAddress:''})
      }
- 
+    renderGenerateReportButton=(userId)=>{
+         if(this.props.store.auth && this.props.store.auth.admin){
+            return(<button className="btn btn-md btn-info" onClick={()=>{this.props.genReport(userId)}}>Generate Report</button>)
+         }else{
+         }
+    }      
     renderOrderHistory=(selectedUser)=>{
         if(this.state.orderHistory){
             return selectedUser.projects.map((project)=>{
@@ -96,7 +103,9 @@ class UserView extends React.Component {
             const todayProjects = ()=>{if(this.props.store.allUsers.find( (user)=>{return user._id===userId} ).projects.filter((project)=>{return project.projectStartDate === fullTodaysDate }).length>0){
                  
                         return(
-                            <div className="btn btn-outline-dark col-md-8 col-xs-12 col-lg-8">
+                            
+                            <div className="btn btn-outline-dark col-md-10 col-xs-12 col-lg-10">
+                               
                                 <h3> Installs for Today : {selectedUser.projectForToday.length}</h3><hr/>
                                             {
                                                 selectedUser.projectForToday.map((todaysProject)=>{
@@ -119,7 +128,7 @@ class UserView extends React.Component {
             }else{
                 
                         return(
-                            <div className="btn btn-outline-dark col-md-8 col-xs-12 col-lg-8">
+                            <div className="btn btn-outline-dark col-md-10 col-xs-12 col-lg-10">
                                 <h3> Installs for Today : 0</h3><hr/>
                                                         <div>
                                                             <h4 >Project ID#:   "No installs for today" </h4>
@@ -146,7 +155,11 @@ class UserView extends React.Component {
                             <h4 className="card-title"><i class="fas fa-globe-americas"></i>{selectedUser.region}</h4>                        
                         </div>
                     } </div>
-                      
+                       <div className="btn-group-vertical mr-2" role="group" aria-label="First group">
+                                
+                                    {this.renderGenerateReportButton(selectedUser._id )}
+                                    
+                                </div>
                       <div className="card-body ">
                             {todayProjects()}
                         <div class="list-group col-md-9 mx-auto" style={{marginTop:"2vh",marginBottom:"2vh"}}>
@@ -206,6 +219,8 @@ class UserView extends React.Component {
         }
         
         }else{ return <Redirect to='/'/> }
+        
+        return null;
     }
     
     onStatusChange=async(e)=>{
@@ -215,12 +230,12 @@ class UserView extends React.Component {
         console.log(this.state)
     }
     render(){
-        if(this.props.store.auth.admin)
-            return(this.renderTech())
+        if(this.props.store.auth.admin) return this.renderTech()
+        else return null;
             
     }
 }
 
 const mapStateToProps = (store) => ({store})
 
-export default connect(mapStateToProps,{getSelectedUser,addProjectToTech,removeJob,fetchAllUsers})(UserView)
+export default connect(mapStateToProps,{getSelectedUser,addProjectToTech,removeJob,fetchAllUsers,genReport})(UserView)

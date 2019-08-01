@@ -29,12 +29,22 @@ let wrongPass = false;
                 }
        }
     }
-  
+  export const genReport = (userId) => {
+      console.log("GEN REPORT userID: ", userId)
+      const userID = userId.toString()
+    return async(dispatch)=>{
+        const response = await  axios.post("/api/genReport",{userId: userID})
+       if(response.data) 
+          console.log("GENERETED REPORT : ",response.data)
+          dispatch({type:'GEN_REPORT', payload:response.data})  
+          
+     }
+  }
 
   // Update User Information
   export const updateUser = (updatedUser) => {
     return async(dispatch)=>{
-        const response = await  axios.put("/api/update_user", {
+        const response = await  axios.post("/api/update_user", {
            updatedUser
           })
        if(response.data) 

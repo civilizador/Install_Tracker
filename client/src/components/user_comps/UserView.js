@@ -14,16 +14,7 @@ class UserView extends React.Component {
         this.props.getCurrentUser()
         console.log(this.state)
     }
-    getColorOnStatus(){
-        switch(this.state.status){
-            case 'Running late':
-                return {border: "3px solid red", textAlign: "center"}
-            case 'Arrived to the site':
-                return {border: "3px solid #0ead0e3b", textAlign: "center"}
-            default :
-                return {border: "3px solid silver", textAlign: "center"}   
-        }
-    }
+     
     renderStatusButtons=(status,projectId)=>{
         console.log(status)
         switch(status){
@@ -63,7 +54,7 @@ class UserView extends React.Component {
            if(this.props.store.auth.projects.filter((project)=>{return project.projectStartDate == fullTodaysDate}).length > 0 ){
                console.log('WE HAVE PROJECTS for TODAY')
                 return this.props.store.auth.projects.filter((project)=>{return project.projectStartDate == fullTodaysDate}).map((project)=>{return (
-                            <div className="btn btn-outline-dark col-md-8 col-xs-12 col-lg-8">  
+                            <div className="btn btn-outline-dark col-md-12 col-xs-12 col-lg-12">  
                                 <p >Project ID#:  {project.projectId} </p>
                                 <p >Project Name: {project.projectName} </p>
                                 <p className="card-text"><i class="fas fa-map-marked-alt"></i>{project.installAddress}</p>
@@ -73,7 +64,7 @@ class UserView extends React.Component {
                             </div>    
                         )})
            }else{
-               return( <div className="btn btn-outline-dark col-md-8 col-xs-12 col-lg-8">  
+               return( <div className="btn btn-outline-dark col-md-12 col-xs-12 col-lg-12">  
                                 <p >Project ID#:  "No installs for today" </p>
                                 <p >Project Name: "No installs for today"  </p>
                                 <p className="card-text"><i class="fas fa-map-marked-alt"></i>"No installs for today" </p>
@@ -85,10 +76,13 @@ class UserView extends React.Component {
     }
     
     render(){
-        if(this.props.store.auth)
+        if(!this.props.store.auth) return null;
         console.log(this.props.store.auth)
         return(
-                 <div key={this.props.store.auth._id} className="card mx-auto" style={this.getColorOnStatus()}>
+                 <div key={this.props.store.auth._id} className="card mx-auto" >
+                 <div className="btn-group-vertical mr-2" role="group" aria-label="First group">
+                    {this.renderGenerateReportButton( )}
+                 </div>
                     {this.props.store.auth.projectForToday.map((project)=>{return (
                        <div className='btn btn-lg btn-outline-info'>{project.projectName} -- {project.projectStartTime} </div>
                     )})}
