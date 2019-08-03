@@ -29,6 +29,11 @@ class UserView extends React.Component {
         console.log(userId)
         this.props.addProjectToTech(this.state,userId)
         this.setState({projectId:'',projectName: '',projectStartDate:'',projectStartTime:'',installAddress:''})
+          this.setState({submitted:true})
+     }
+     onSubmittedTrue=()=>{
+         if(this.state.submitted)
+        return(<Redirect to='/'/>)
      }
     renderGenerateReportButton=(userId)=>{
          if(this.props.store.auth && this.props.store.auth.admin){
@@ -53,8 +58,8 @@ class UserView extends React.Component {
             return
         }
     }
-     renderStatusButtons=(status,projectId)=>{
-        console.log(status)
+     renderStatusButtons=(status,projectId,userId)=>{
+        console.log(status,projectId,userId)
         switch(status){
               
             case "Arrived to the site":
@@ -85,7 +90,6 @@ class UserView extends React.Component {
     }
     renderTech= ()=>{
     if(this.props.store.allUsers){
-         
         const userId=   window.location.href.split('/').slice(-1)[0]
         const selectedUser =    this.props.store.allUsers.find( (user)=>{return user._id===userId} )
         
@@ -105,7 +109,8 @@ class UserView extends React.Component {
                         return(
                             
                             <div className="btn btn-outline-dark col-md-10 col-xs-12 col-lg-10">
-                               
+                                        {this.onSubmittedTrue()}
+
                                 <h3> Installs for Today : {selectedUser.projectForToday.length}</h3><hr/>
                                             {
                                                 selectedUser.projectForToday.map((todaysProject)=>{
@@ -115,7 +120,7 @@ class UserView extends React.Component {
                                                             <h5 >Project Name: {todaysProject.projectName} </h5>
                                                             <h5 className="card-text"><i class="fas fa-map-marked-alt"></i>Install Address: {todaysProject.installAddress}</h5>
                                                             <h5 >Project Start Time: {todaysProject.projectStartTime} </h5>
-                                                            { this.renderStatusButtons(todaysProject.status[todaysProject.status.length-1].projectStatus,todaysProject.projectId) }
+                                                            { this.renderStatusButtons( todaysProject.status[todaysProject.status.length-1].projectStatus,todaysProject.projectId,selectedUser._id ) }
                                                             <hr/>
                                                         </div>
                                                     )

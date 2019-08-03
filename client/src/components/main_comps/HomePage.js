@@ -9,7 +9,6 @@ import {Redirect} from 'react-router-dom';
   state = {view:'user', locationAllowed:''}
   
   componentDidMount() {
-        
         window.navigator.geolocation.getCurrentPosition(
             async (position) => {
               if(position.coords.latitude){
@@ -19,9 +18,7 @@ import {Redirect} from 'react-router-dom';
                     }
                   console.log(latlng)
                   await this.props.updateLatLng(latlng)
-                  await this.props.fetchAllUsers() 
-              }
-              
+               }
             },
             (err) => { 
                  this.setState({locationAllowed: err.message});
