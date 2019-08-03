@@ -1,13 +1,13 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {getSelectedUser,addProjectToTech,removeJob,fetchAllUsers,genReport} from '../../actions'
+import {getSelectedUser,addProjectToTech,removeJob,fetchAllUsers,genReport,changeProjectStatusAdmin} from '../../actions'
 import {Link,Redirect} from 'react-router-dom';
 const year = new Date().getFullYear()
         const month = ()=>{ if(new Date().getMonth()<10) {return "0" + (new Date().getMonth()+1) } else {return new Date().getMonth()+1 } }
         const day = ()=>{ if(new Date().getDate()<10) {return "0" + new Date().getDate() } else {return new Date().getDate() } }
         const fullTodaysDate = year + "-" + month() + "-" + day()
+
 class UserView extends React.Component {
-  
   
     componentDidMount(){
         if (!this.props.store.allUsers.length) {
@@ -45,12 +45,12 @@ class UserView extends React.Component {
         if(this.state.orderHistory){
             return selectedUser.projects.map((project)=>{
                                   return (
-                                      <button  class="list-group-item list-group-item-action btn btn-outline-dark">
+                                      <button  className="list-group-item list-group-item-action btn btn-outline-dark">
                                         <span className="float-left">{project.projectId} - {project.projectName}</span> 
                                         <br/> 
                                         <span className="float-left">{project.installAddress} </span>
                                         <span className="float-left">{project.projectStartDate} </span>
-                                        <i style={{fontSize:'22px'}} class="fas fa-times-circle float-right" onClick={()=>{this.props.removeJob(selectedUser._id,project.projectId)}}></i>
+                                        <i style={{fontSize:'22px'}} className="fas fa-times-circle float-right" onClick={()=>{this.props.removeJob(selectedUser._id,project.projectId)}}></i>
                                       </button>
                                    )
                                 })
@@ -61,32 +61,36 @@ class UserView extends React.Component {
      renderStatusButtons=(status,projectId,userId)=>{
         console.log(status,projectId,userId)
         switch(status){
-              
-            case "Arrived to the site":
+              case "Arrived to the site":
                 return (
-                    <div class="btn-group" role="group" aria-label="Basic example">
-                      <button type="button" class="btn btn-outline-secondary">Awaiting tech</button>
-                      <button type="button" class="btn btn-success">{status}</button>
-                      <button type="button" class="btn btn-outline-warning">Arriving Late</button>
+                    <div className="btn-group" role="group" aria-label="Basic example">
+                      <button onClick={()=>{this.onButtonClick('Awaiting tech',projectId,userId);this.setState({submitted:true})}} type="button" className="btn btn-outline-secondary">Awaiting tech</button>
+                      <button type="button" className="btn btn-success">{status}</button>
+                      <button onClick={()=>{this.onButtonClick('Arriving Late',projectId , userId);this.setState({submitted:true})}}  type="button" className="btn btn-outline-warning">Arriving Late</button>
                     </div>
                 )
             case "Arriving Late":
                 return (
-                    <div class="btn-group" role="group" aria-label="Basic example">
-                      <button type="button" class="btn btn-outline-secondary">Awaiting tech</button>
-                      <button type="button" class="btn btn-outline-success">Arrived to the site</button>
-                      <button type="button" class="btn btn-warning">{status}</button>
+                    <div className="btn-group" role="group" aria-label="Basic example">
+                      <button  type="button" className="btn btn-outline-secondary">Awaiting tech</button>
+                      <button type="button" className="btn btn-outline-success">Arrived to the site</button>
+                      <button type="button" className="btn btn-warning">{status}</button>
                     </div>
                 )    
             default :
-            return ( 
-                    <div class="btn-group" role="group" aria-label="Basic example">
-                      <button type="button" class="btn btn-secondary">{status}</button>
-                      <button type="button" class="btn btn-outline-success">Arrived to the site</button>
-                      <button type="button" class="btn btn-outline-warning">Arriving Late</button>
+            return (
+                    <div className="btn-group" role="group" aria-label="Basic example">
+                      <button type="button" className="btn btn-secondary">{status}</button>
+                      <button onClick={()=>{this.onButtonClick('Arrived to the site',projectId,userId);this.setState({submitted:true})}}  type="button" className="btn btn-outline-success">Arrived to the site</button>
+                      <button onClick={()=>{this.onButtonClick('Arriving Late',projectId,userId);this.setState({submitted:true})}} type="button" className="btn btn-outline-warning">Arriving Late</button>
                     </div>
                 )
+             
         }
+    }
+    onButtonClick=(value,projectId,userId)=>{
+        console.log(value,projectId)
+        this.props.changeProjectStatusAdmin(value,projectId,userId)
     }
     renderTech= ()=>{
     if(this.props.store.allUsers){
@@ -115,10 +119,10 @@ class UserView extends React.Component {
                                             {
                                                 selectedUser.projectForToday.map((todaysProject)=>{
                                                     return(
-                                                        <div>
+                                                        <div key={todaysProject.projectId} >
                                                             <h4 >Project ID#:  {todaysProject.projectId} </h4>
                                                             <h5 >Project Name: {todaysProject.projectName} </h5>
-                                                            <h5 className="card-text"><i class="fas fa-map-marked-alt"></i>Install Address: {todaysProject.installAddress}</h5>
+                                                            <h5 className="card-text"><i className="fas fa-map-marked-alt"></i>Install Address: {todaysProject.installAddress}</h5>
                                                             <h5 >Project Start Time: {todaysProject.projectStartTime} </h5>
                                                             { this.renderStatusButtons( todaysProject.status[todaysProject.status.length-1].projectStatus,todaysProject.projectId,selectedUser._id ) }
                                                             <hr/>
@@ -138,7 +142,7 @@ class UserView extends React.Component {
                                                         <div>
                                                             <h4 >Project ID#:   "No installs for today" </h4>
                                                             <h5 >Project Name:  "No installs for today" </h5>
-                                                            <h5 className="card-text"><i class="fas fa-map-marked-alt"></i>Install Address:  "No installs for today"</h5>
+                                                            <h5 className="card-text"><i className="fas fa-map-marked-alt"></i>Install Address:  "No installs for today"</h5>
                                                             <h5 >Project Start Time:  "No installs for today" </h5>
                                                             <hr/>
                                                         </div>
@@ -157,7 +161,7 @@ class UserView extends React.Component {
                     <div className='btn btn-lg btn-outline-info'>{
                         <div>
                             <h1>{selectedUser.name}</h1>
-                            <h4 className="card-title"><i class="fas fa-globe-americas"></i>{selectedUser.region}</h4>                        
+                            <h4 className="card-title"><i className="fas fa-globe-americas"></i>{selectedUser.region}</h4>                        
                         </div>
                     } </div>
                        <div className="btn-group-vertical mr-2" role="group" aria-label="First group">
@@ -165,7 +169,7 @@ class UserView extends React.Component {
                         </div>
                       <div className="card-body ">
                             {todayProjects()}
-                        <div class="list-group col-md-9 mx-auto" style={{marginTop:"2vh",marginBottom:"2vh"}}>
+                        <div className="list-group col-md-9 mx-auto" style={{marginTop:"2vh",marginBottom:"2vh"}}>
                         <button onClick={   
                                     ()  =>  {   
                                         if(!this.state.orderHistory){
@@ -173,48 +177,48 @@ class UserView extends React.Component {
                                         }else{this.setState({orderHistory:false})}
                                     }    
                                 } 
-                            className="col-md-12 col-sm-12 col-xs-12 btn btn-outline-dark">Show All Assigned Installs <i class="fas fa-arrow-circle-down"></i>
+                            className="col-md-12 col-sm-12 col-xs-12 btn btn-outline-dark">Show All Assigned Installs <i className="fas fa-arrow-circle-down"></i>
                         </button>
                               {this.renderOrderHistory(selectedUser)}
                         </div>
                          <ul className="list-group list-group-flush">
                             <li className="list-group-item" ><b> Arrival Status:  {selectedUser.status} </b></li>
                             <li className="list-group-item">Last Recorded Location: <br/> lat: {selectedUser.lat}, lng: {selectedUser.lng}</li>
-                            <li className="list-group-item"><i class="fas fa-phone"></i> : {selectedUser.phone}</li>
-                            <li className="list-group-item"><i class="fas fa-envelope-open"></i>: {selectedUser.email}</li>
+                            <li className="list-group-item"><i className="fas fa-phone"></i> : {selectedUser.phone}</li>
+                            <li className="list-group-item"><i className="fas fa-envelope-open"></i>: {selectedUser.email}</li>
                         </ul>
                         <button style={{marginTop:"2vh",marginBottom:"2vh"}}  className="col-md-12 col-sm-12 col-xs-12 btn btn-outline-dark">Assign new Project </button>
                         <form  className='col-md-10 col-sm-10 col-lg-10 mx-auto'>
                           <div className="form-group col-md-6 col-sm-6 col-xs-12 col-lg-6 float-left">
-                            Project ID: <input value={this.state.projectId} onChange={this.onInputChange} class="form-control" id="projectId" />
+                            Project ID: <input value={this.state.projectId} onChange={this.onInputChange} className="form-control" id="projectId" />
                            </div>
                           <div className="form-group col-md-6 col-sm-6 col-xs-12 col-lg-6 float-left">
-                            Project Name: <input value={this.state.projectName} onChange={this.onInputChange} class="form-control" id="projectName" />
+                            Project Name: <input value={this.state.projectName} onChange={this.onInputChange} className="form-control" id="projectName" />
                           </div>
                           <div className="form-group col-md-6 col-sm-6 col-xs-12 col-lg-6 float-left">
-                            Project Address: <input type='text' value={this.state.installAddress} onChange={this.onInputChange}  class="form-control" id="installAddress" />
+                            Project Address: <input type='text' value={this.state.installAddress} onChange={this.onInputChange}  className="form-control" id="installAddress" />
                           </div>
                           <div className="form-group col-md-6 col-sm-6 col-xs-12 col-lg-6 float-left">
-                            Start Date <input type='date' value={this.state.projectStartDate} onChange={this.onInputChange} class="form-control" id="projectStartDate"/>
+                            Start Date <input type='date' value={this.state.projectStartDate} onChange={this.onInputChange} className="form-control" id="projectStartDate"/>
                           </div>
                           <div className="form-group col-md-6 col-sm-6 col-xs-12 col-lg-6 float-left">
-                            Start Time <input type='time' value={this.state.projectStartTime} onChange={this.onInputChange}  class="form-control" id="projectStartTime" />
+                            Start Time <input type='time' value={this.state.projectStartTime} onChange={this.onInputChange}  className="form-control" id="projectStartTime" />
                           </div>
                           <div className="form-group col-md-6 col-sm-6 col-xs-12 col-lg-6 float-left">
-                            Lat : <input type='text' value={this.state.lat} onChange={this.onInputChange}  class="form-control" id="lat" />
-                            Lng : <input type='text' value={this.state.lng} onChange={this.onInputChange}  class="form-control" id="lng" />
+                            Lat : <input type='text' value={this.state.lat} onChange={this.onInputChange}  className="form-control" id="lat" />
+                            Lng : <input type='text' value={this.state.lng} onChange={this.onInputChange}  className="form-control" id="lng" />
                           </div>
                         </form>
-                        <button onClick={()=>{this.onFormSubmit(selectedUser._id)} } class="btn btn-outline-info col-md-8 col-sm-8 col-xs-12 col-lg-8 mx-auto">Assign Install</button>
+                        <button onClick={()=>{this.onFormSubmit(selectedUser._id)} } className="btn btn-outline-info col-md-8 col-sm-8 col-xs-12 col-lg-8 mx-auto">Assign Install</button>
 
 
                       </div>
                       
                      
                       <div className="card-body">
-                        <a href={`mailto: myPM@commscope.com?Subject=${'Issue with install : '}${selectedUser.projectId}${selectedUser.projectName}` } className="card-link"> Commscope Manager: <i class="far fa-envelope-open"></i> </a>
+                        <a href={`mailto: myPM@commscope.com?Subject=${'Issue with install : '}${selectedUser.projectId}${selectedUser.projectName}` } className="card-link"> Commscope Manager: <i className="far fa-envelope-open"></i> </a>
                         <a href={`mailto: ${selectedUser.directManagerEmail}?Subject=${'Issue with install : '}${selectedUser.projectId}${selectedUser.projectName}` } className="card-link">
-                            Direct Manager: <i class="far fa-envelope-open"></i> {selectedUser.directManagerName}</a>
+                            Direct Manager: <i className="far fa-envelope-open"></i> {selectedUser.directManagerName}</a>
                       </div>
                 </div>
             
@@ -241,4 +245,4 @@ class UserView extends React.Component {
 
 const mapStateToProps = (store) => ({store})
 
-export default connect(mapStateToProps,{getSelectedUser,addProjectToTech,removeJob,fetchAllUsers,genReport})(UserView)
+export default connect(mapStateToProps,{getSelectedUser,addProjectToTech,removeJob,fetchAllUsers,genReport,changeProjectStatusAdmin})(UserView)

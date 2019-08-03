@@ -33,22 +33,22 @@ class UsersList extends React.Component {
                         return (
                             <div key={user._id} className="card col-lg-4 col-md-4 col-sm-12 col-xs-12"  >
                                 <center>{this.renderLink(user.name,user._id)}</center>
-                                <h5 className="card-title mx-auto"> <i class="fas fa-globe-americas"></i> {" "}{user.region}</h5>
+                                <h5 className="card-title mx-auto"> <i className="fas fa-globe-americas"></i> {" "}{user.region}</h5>
                                 <div className='btn btn-md btn-outline-info'>
                                    {
                                         user.projects.filter((project)=>{return project.projectStartDate == fullTodaysDate}).map((project)=>{
                                             switch(project.status[project.status.length-1].projectStatus){
                                                 case "Awaiting tech":
-                                                return <p>{project.projectId} -- {project.projectStartTime}  <br/> <button className='btn btn-outline-secondary'>{project.status[project.status.length-1].projectStatus}</button> </p>
+                                                return <p key={project.projectId}>{project.projectId} -- {project.projectStartTime}  <br/> <button className='btn btn-outline-secondary'>{project.status[project.status.length-1].projectStatus}</button> </p>
                                                 case "Arrived to the site":
-                                                return <p>{project.projectId} -- {project.projectStartTime}   <br/> <button className='btn btn-outline-success'>{project.status[project.status.length-1].projectStatus}</button> </p>
+                                                return <p key={project.projectId}>{project.projectId} -- {project.projectStartTime}   <br/> <button className='btn btn-outline-success'>{project.status[project.status.length-1].projectStatus}</button> </p>
                                                 case "Arriving Late":
-                                                return <p>{project.projectId} -- {project.projectStartTime}   <br/> <button className='btn btn-outline-warning'>{project.status[project.status.length-1].projectStatus}</button> </p>
+                                                return <p key={project.projectId}>{project.projectId} -- {project.projectStartTime}   <br/> <button className='btn btn-outline-warning'>{project.status[project.status.length-1].projectStatus}</button> </p>
                                             }
                                         })
                                    }
                                 </div>
-                                      <div className="card-body">
+                                      <div  className="card-body">
                                         <p ><b>Project ID#:</b>  {user.projectForToday[0].projectId} </p>
                                         <p ><b>Project Name:</b> {user.projectForToday[0].projectName} </p>
                                         <p ><b>Install Address:</b> {user.projectForToday[0].installAddress} </p>
@@ -67,7 +67,7 @@ class UsersList extends React.Component {
                    return (
                             <div key={user._id} className="card col-lg-4 col-md-4 col-sm-12 col-xs-12"  >
                                 <center>{this.renderLink(user.name,user._id)}</center>
-                                <h5 className="card-title mx-auto"> <i class="fas fa-globe-americas"></i> {" "}{user.region}</h5>
+                                <h5 className="card-title mx-auto"> <i className="fas fa-globe-americas"></i> {" "}{user.region}</h5>
                                 <div className='btn btn-md btn-outline-info'>
                                    {
                                         user.projects.filter((project)=>{return project.projectStartDate == fullTodaysDate}).map((project)=>{
@@ -83,7 +83,7 @@ class UsersList extends React.Component {
                                    }
                                           
                                 </div>
-                                      <div className="card-body">
+                                      <div key={user._id}  className="card-body">
                                         <p ><b>Project ID#:</b>  "No installs for today" </p>
                                         <p ><b>Project Name:</b> "No installs for today" </p>
                                         <p ><b>Install Address:</b> "No installs for today"  </p>

@@ -107,6 +107,16 @@ let wrongPass = false;
          }
     }
     
+    export const changeProjectStatusAdmin =(value,projectId,userId) => async (dispatch) => {
+        console.log('changeProjectStatus:  ',value,projectId,userId)
+        const response = await axios.post('/api/changeProjectStatusAdmin',{value,projectId,userId})
+       if( response.data ){
+              dispatch({type:'GET_ALL_USERS',payload:response.data})
+         }else if( response.status !== 200) {
+             
+         }
+    }
+    
   // Get current User DATA helper function
   async function getProfileData() {
        const data =  await axios.get(`/api/current_user`)

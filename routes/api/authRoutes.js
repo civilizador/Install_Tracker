@@ -108,8 +108,7 @@ module.exports = (app) => {
                               })
                          }
                     }) 
-                console.log('FILTERED USERS: ',allUsersNoAdmin)
-                res.send(allUsersNoAdmin)    
+                 res.send(allUsersNoAdmin)    
             } else{res.send(false)}
     })
     
@@ -363,6 +362,50 @@ module.exports = (app) => {
            
           }else{res.send(false)}
   
+    })
+    
+    app.post('/api/changeProjectStatusAdmin',async(req,res)=>{
+         if(req.user.admin) {
+            
+            const projectId = req.body.projectId
+            const userToUpdate =  await User.findById(req.body.userId,(err,user)=>{
+                if(err){console.log("Failed to look up a user by ID")}
+                else{return user}
+            })
+            console.log("USER USER USER USER TO TO TO UPDATE STATUS AS ADMIN", userToUpdate)
+            userToUpdate.projects.find((project)=>{
+                        return project.projectId == projectId
+                    }).status.push(
+                            {
+                                projectStatus: req.body.value,
+                                timeStamp: new Date()
+                             }
+                        )
+                        
+            await User.findOneAndUpdate(
+                                { _id: req.body.userId  },
+                                { $set: { projects: userToUpdate.projects } },
+                                function(err,user){
+                                    if(err){console.log(err)}
+                                    else{console.log('success',user.projects)}
+                                }
+                            );
+            await User.save
+            const allUsers = await User.find({},
+                (err,users)=>{
+                    if(err){
+                        console.log("removeJob route. Failed to fetch all users after removing job")
+                    }else{
+                        return users
+                    }
+                }) 
+            res.send(allUsers)
+        
+             
+         }else{
+            res.send('Not_an_admin')
+        }
+            
     })
 
 }
