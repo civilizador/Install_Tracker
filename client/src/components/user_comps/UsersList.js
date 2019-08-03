@@ -13,30 +13,27 @@ import {fetchAllUsers,updateUserStatus} from '../../actions'
 class UsersList extends React.Component {
     
     state={status: this.props.store.auth.status ,alltechs:[]}
-
     componentDidMount(){
         this.props.fetchAllUsers()
-        
     }
-  
     renderAllTechs= (region)=>{
         if(this.props.store.allUsers)
-         alltechs =  this.props.store.allUsers.filter((user)=>{return user.region==region})
+         alltechs =  this.props.store.allUsers.filter((user)=>{return user.region===region})
          if(alltechs.length>0)
             
         return  alltechs.map((user)=>{
             
-            if(user.projects.filter((project)=>{return project.projectStartDate == fullTodaysDate}).length > 0){
-                         const jobForToday = user.projects.filter((project)=>{return project.projectStartDate == fullTodaysDate}) 
+            if(user.projects.filter((project)=>{return project.projectStartDate === fullTodaysDate}).length > 0){
+                         const jobForToday = user.projects.filter((project)=>{return project.projectStartDate === fullTodaysDate}) 
                          user.projectForToday = jobForToday
-                        console.log(jobForToday)
+                        // console.log(jobForToday)
                         return (
                             <div key={user._id} className="card col-lg-4 col-md-4 col-sm-12 col-xs-12"  >
                                 <center>{this.renderLink(user.name,user._id)}</center>
                                 <h5 className="card-title mx-auto"> <i className="fas fa-globe-americas"></i> {" "}{user.region}</h5>
                                 <div className='btn btn-md btn-outline-info'>
                                    {
-                                        user.projects.filter((project)=>{return project.projectStartDate == fullTodaysDate}).map((project)=>{
+                                        user.projects.filter((project)=>{return project.projectStartDate === fullTodaysDate}).map((project)=>{
                                             switch(project.status[project.status.length-1].projectStatus){
                                                 case "Awaiting tech":
                                                 return <p key={project.projectId}>{project.projectId} -- {project.projectStartTime}  <br/> <button className='btn btn-outline-secondary'>{project.status[project.status.length-1].projectStatus}</button> </p>
@@ -70,7 +67,7 @@ class UsersList extends React.Component {
                                 <h5 className="card-title mx-auto"> <i className="fas fa-globe-americas"></i> {" "}{user.region}</h5>
                                 <div className='btn btn-md btn-outline-info'>
                                    {
-                                        user.projects.filter((project)=>{return project.projectStartDate == fullTodaysDate}).map((project)=>{
+                                        user.projects.filter((project)=>{return project.projectStartDate === fullTodaysDate}).map((project)=>{
                                             switch(project.status[project.status.length-1].projectStatus){
                                                 case "Awaiting tech":
                                                 return <p>{project.projectId} -- {project.projectStartTime}  <br/> <button className='btn btn-outline-secondary'>{project.status[project.status.length-1].projectStatus}</button> </p>

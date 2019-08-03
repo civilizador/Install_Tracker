@@ -30,12 +30,12 @@ let wrongPass = false;
        }
     }
   export const genReport = (userId) => {
-      console.log("GEN REPORT userID: ", userId)
+    //   console.log("GEN REPORT userID: ", userId)
       const userID = userId.toString()
     return async(dispatch)=>{
         const response = await  axios.post("/api/genReport",{userId: userID})
        if(response.data) 
-          console.log("GENERETED REPORT : ",response.data)
+        //   console.log("GENERETED REPORT : ",response.data)
           dispatch({type:'GEN_REPORT', payload:response.data})  
           
      }
@@ -54,7 +54,7 @@ let wrongPass = false;
   
   // Update User LatLng
   export const updateLatLng = (latlng) => async (dispatch) => {
-     console.log('UpdateLat Long trigerred', latlng)
+    //  console.log('UpdateLat Long trigerred', latlng)
         const response = await  axios.post("/api/updateLatLng", {
            latlng
           })
@@ -64,7 +64,7 @@ let wrongPass = false;
 
   // Update User Status
     export const updateUserStatus = (status) => async (dispatch) => {
-        console.log('Update User Status trigerred', status)
+        // console.log('Update User Status trigerred', status)
             const response = await  axios.post("/api/updateUserStatus", {
                 status
             })
@@ -74,7 +74,7 @@ let wrongPass = false;
   
   // Add New Project to User
     export const addProjectToTech = (project,userId) => async (dispatch) => {
-     console.log('Add project to User Action was  triggered with #: ', project)
+    //  console.log('Add project to User Action was  triggered with #: ', project)
     //  const newProject = await delete project["submitted"]
      const dataToSend= {project:project,userId:userId}
         const response = await  axios.post("/api/addProjectToTech", {
@@ -86,7 +86,7 @@ let wrongPass = false;
     
     // Remove Job from the tech
     export const removeJob = (userId,projectId) => async (dispatch) => {
-     console.log('Add project to User Action was  triggered with #: ', projectId,"for user with ID:",userId)
+    //  console.log('Add project to User Action was  triggered with #: ', projectId,"for user with ID:",userId)
       const dataToSend= {projectId:projectId,userId:userId}
         const response = await  axios.post("/api/removeJob", {
            dataToSend
@@ -97,18 +97,18 @@ let wrongPass = false;
 
     // Update status on Project
     export const changeProjectStatus =(value,projectId) => async (dispatch) => {
-        console.log('changeProjectStatus:  ',value,projectId)
+        // console.log('changeProjectStatus:  ',value,projectId)
         const response = await axios.post('/api/updateProjectStatus',{value,projectId})
-        if(response.data == 'Location information is missing'){
+        if(response.data === 'Location information is missing'){
             dispatch({type:'FAILED_UPDATE_PROJ_STATUS',payload:'Location information is missing'})
-        }else if(response.data == 'Your location is out of range'){dispatch({type:'FAILED_UPDATE_PROJ_STATUS',payload:'Your location is out of range'})}
+        }else if(response.data === 'Your location is out of range'){dispatch({type:'FAILED_UPDATE_PROJ_STATUS',payload:'Your location is out of range'})}
          else if( response.data ){
               dispatch({type:'GET_USER_DATA',payload:response.data})
          }
     }
     
     export const changeProjectStatusAdmin =(value,projectId,userId) => async (dispatch) => {
-        console.log('changeProjectStatus:  ',value,projectId,userId)
+        // console.log('changeProjectStatus:  ',value,projectId,userId)
         const response = await axios.post('/api/changeProjectStatusAdmin',{value,projectId,userId})
        if( response.data ){
               dispatch({type:'GET_ALL_USERS',payload:response.data})
@@ -128,7 +128,7 @@ let wrongPass = false;
        return async function(dispatch,getState) {
          await axios.get("/api/logout")
          dispatch(getCurrentUser());
-        console.log('this message from action USER_LOGOUT');
+        // console.log('this message from action USER_LOGOUT');
           dispatch({ type: 'LOGOUT',  payload: false })
        }
   }
@@ -141,7 +141,7 @@ let wrongPass = false;
           data: { username, password }
         })
           if(loginResponse.data){
-            console.log("RESPOOOOONSEEEEE",loginResponse.data)
+            // console.log("RESPOOOOONSEEEEE",loginResponse.data)
               dispatch( getCurrentUser() );
             }
             else{
@@ -152,7 +152,7 @@ let wrongPass = false;
 
     export const fetchAllUsers = (category) => async (dispatch,getState) => {
         const res = await axios.get("/api/getAllUsers")
-        console.log('Updated Response',res.data)
+        // console.log('Updated Response',res.data)
             dispatch( {type: "GET_ALL_USERS", payload: res.data} )
      }
 
@@ -172,11 +172,11 @@ let wrongPass = false;
       // console.log(response.data)
         if(response.data.length >0){
           dispatch( {type: "SEARCH_RESULT", payload: response.data} )
-          console.log(response.status,response.data)
+        //   console.log(response.status,response.data)
         }
         else{
           dispatch( {type: "SEARCH_RESULT_FALSE", payload: 'NothingFound'} )
-          console.log('NothingFound')
+        //   console.log('NothingFound')
         }
 
      }

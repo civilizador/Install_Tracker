@@ -22,11 +22,11 @@ class UserView extends React.Component {
  
     onInputChange=(e)=>{
         this.setState({[e.target.id]:e.target.value})
-        console.log(this.state)
+        // console.log(this.state)
     }
     
     onFormSubmit=(userId)=>{
-        console.log(userId)
+        // console.log(userId)
         this.props.addProjectToTech(this.state,userId)
         this.setState({projectId:'',projectName: '',projectStartDate:'',projectStartTime:'',installAddress:''})
           this.setState({submitted:true})
@@ -45,7 +45,7 @@ class UserView extends React.Component {
         if(this.state.orderHistory){
             return selectedUser.projects.map((project)=>{
                                   return (
-                                      <button  className="list-group-item list-group-item-action btn btn-outline-dark">
+                                      <button key={project.projectId} className="list-group-item list-group-item-action btn btn-outline-dark">
                                         <span className="float-left">{project.projectId} - {project.projectName}</span> 
                                         <br/> 
                                         <span className="float-left">{project.installAddress} </span>
@@ -59,7 +59,7 @@ class UserView extends React.Component {
         }
     }
      renderStatusButtons=(status,projectId,userId)=>{
-        console.log(status,projectId,userId)
+        // console.log(status,projectId,userId)
         switch(status){
               case "Arrived to the site":
                 return (
@@ -89,7 +89,7 @@ class UserView extends React.Component {
         }
     }
     onButtonClick=(value,projectId,userId)=>{
-        console.log(value,projectId)
+        // console.log(value,projectId)
         this.props.changeProjectStatusAdmin(value,projectId,userId)
     }
     renderTech= ()=>{
@@ -234,7 +234,7 @@ class UserView extends React.Component {
         const value= e.target.value
         await this.setState({status:value})
         await this.props.updateUserStatus(value)
-        console.log(this.state)
+        // console.log(this.state)
     }
     render(){
         if(this.props.store.auth.admin) return this.renderTech()

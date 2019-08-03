@@ -16,7 +16,7 @@ import {Redirect} from 'react-router-dom';
                         latitude: position.coords.latitude,
                         longitude: position.coords.longitude,
                     }
-                  console.log(latlng)
+                  // console.log(latlng)
                   await this.props.updateLatLng(latlng)
                }
             },
