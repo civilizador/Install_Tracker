@@ -48,11 +48,15 @@ class UserView extends React.Component {
             return selectedUser.projects.map((project)=>{
                                   return (
                                       <button key={project.projectId} className="list-group-item list-group-item-action btn btn-outline-dark">
-                                        <span className="float-left">{project.projectId} - {project.projectName}</span> 
-                                        <br/> 
-                                        <span className="float-left">{project.installAddress} </span>
-                                        <span className="float-left">{project.projectStartDate} </span>
-                                        <i style={{fontSize:'22px'}} className="fas fa-times-circle float-right" onClick={()=>{this.props.removeJob(selectedUser._id,project.projectId)}}></i>
+                                        <span style={{width:"100%"}} className="btn btn-outline-dark">
+                                            {project.projectStartDate} <br/> 
+                                             <span className="float-left">{project.projectId} - {project.projectName}</span> 
+                                            <br/> 
+                                            <span className="float-left">{project.installAddress} </span>
+                                            
+                                        <i style={{fontSize:'22px', color: "red"}} className="fas fa-times-circle float-right" onClick={()=>{this.props.removeJob(selectedUser._id,project.projectId)}}></i>
+                                        </span>
+                                           
                                       </button>
                                    )
                                 })
@@ -179,7 +183,7 @@ class UserView extends React.Component {
                                         }else{this.setState({orderHistory:false})}
                                     }    
                                 } 
-                            className="col-md-12 col-sm-12 col-xs-12 btn btn-outline-dark">Show All Assigned Installs <i className="fas fa-arrow-circle-down"></i>
+                            className="col-md-12 col-sm-12 col-xs-12 btn btn-outline-dark">Show All Assigned Installs <i style={{color: "#62a2b8"}} className="fas fa-arrow-circle-down"></i>
                         </button>
                               {this.renderOrderHistory(selectedUser)}
                         </div>
