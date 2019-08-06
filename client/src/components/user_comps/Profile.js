@@ -18,17 +18,16 @@ class Profile extends Component {
       this.email = React.createRef(); this.password = React.createRef(); this.submit = React.createRef();
   }
   componentDidMount(){
-     console.log(this.props.store)
-  }
+   }
   onLeftMenuClick = (status) => {
     this.setState({currentSection:status})
   }
   onSubmit=(e)=>{
     e.preventDefault()
-    const updatedUser1 = this.state
-    console.log(updatedUser1)
-    this.props.updateUser(updatedUser1)
-    this.setState({submitted:true})
+           if(this.state.password==this.state.password2){
+            this.props.updateUser(this.state)
+            this.setState({submitted:true})
+          }else{alert('Passwords are not matching')}
   }
   onChange=(e)=>{
         this.setState({ [e.target.id]: e.target.value });
@@ -43,8 +42,6 @@ class Profile extends Component {
          return <Redirect to='/'/>;
     }
   }
-  
-
   profileComponent=()=>{ 
     return(
       <div className="row container mx-auto" style={{ padding: "120px"  }}>

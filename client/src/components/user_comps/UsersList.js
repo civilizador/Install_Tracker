@@ -50,9 +50,7 @@ class UsersList extends React.Component {
                                         <p ><b>Project Name:</b> {user.projectForToday[0].projectName} </p>
                                         <p ><b>Install Address:</b> {user.projectForToday[0].installAddress} </p>
                                        </div>
-                                      <ul className="list-group list-group-flush">
-                                        <li className="list-group-item btn btn-outline-info" >{user.status}</li> 
-                                      </ul>
+                              
                                       <div className="card-body">
                                         <a href={`mailto: ${user.email}?Subject=${'Issue with install : '}${this.props.store.auth.projectId}${this.props.store.auth.projectName}` } className="card-link"> Email Tech: <i className="far fa-envelope-open"></i> </a>
                                         <a href={`mailto: ${this.props.store.auth.directManagerEmail}?Subject=${'Issue with install : '}${this.props.store.auth.projectId}${this.props.store.auth.projectName}` } className="card-link">
@@ -85,10 +83,7 @@ class UsersList extends React.Component {
                                         <p ><b>Project Name:</b> "No installs for today" </p>
                                         <p ><b>Install Address:</b> "No installs for today"  </p>
                                        </div>
-                                      <ul className="list-group list-group-flush">
-                                        <li className="list-group-item btn btn-outline-info" >{user.status}</li> 
-                                      
-                                      </ul>
+                                 
                                       <div className="card-body">
                                         <a href={`mailto: ${user.email}?Subject=${'Issue with install : '}${this.props.store.auth.projectId}${this.props.store.auth.projectName}` } className="card-link"> Email Tech: <i className="far fa-envelope-open"></i> </a>
                                         <a href={`mailto: ${this.props.store.auth.directManagerEmail}?Subject=${'Issue with install : '}${this.props.store.auth.projectId}${this.props.store.auth.projectName}` } className="card-link">

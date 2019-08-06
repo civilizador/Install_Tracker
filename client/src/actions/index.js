@@ -42,15 +42,12 @@ let wrongPass = false;
   }
 
   // Update User Information
-  export const updateUser = (updatedUser) => {
-    return async(dispatch)=>{
-        const response = await  axios.post("/api/update_user", {
-           updatedUser
-          })
-       if(response.data) 
+  export const updateUser = (updatedUser) => async(dispatch)=>{
+        const response = await  axios.put("/api/update_user",  { updatedUser } )
+        if(response.data) 
           dispatch({type:'GET_USER_DATA', payload:response.data})  
      }
-  }
+  
   
   // Update User LatLng
   export const updateLatLng = (latlng) => async (dispatch) => {

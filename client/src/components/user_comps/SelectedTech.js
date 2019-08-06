@@ -21,12 +21,14 @@ class UserView extends React.Component {
     }
  
     onInputChange=(e)=>{
+        
         this.setState({[e.target.id]:e.target.value})
-        // console.log(this.state)
+      
     }
     
     onFormSubmit=(userId)=>{
         // console.log(userId)
+        
         this.props.addProjectToTech(this.state,userId)
         this.setState({projectId:'',projectName: '',projectStartDate:'',projectStartTime:'',installAddress:''})
           this.setState({submitted:true})

@@ -79,13 +79,13 @@ class UserView extends React.Component {
         if(!this.props.store.auth) return null;
         // console.log(this.props.store.auth)
         return(
-                 <div  key={Math.random()*100+"sde"} className="card mx-auto" >
+                 <div  key={Math.random()*100+"sde"} className="card mx-auto" style={{marginTop:"18vh"}}>
                  <div className="btn-group-vertical mr-2" role="group" aria-label="First group">
                   </div>
                     {this.props.store.auth.projectForToday.map((project)=>{return (
                        <div key={Math.random()*100+"sde"} className='btn btn-lg btn-outline-info'>{project.projectName} -- {project.projectStartTime} </div>
                     )})}
-                      <h1>{this.props.store.auth.name}</h1>
+                      <h1 className="mx-auto">{this.props.store.auth.name}</h1>
                       <div className="card-body">
                         <h5 className="card-title"><i className="fas fa-globe-americas"></i>{this.props.store.auth.region}</h5>
                         

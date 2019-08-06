@@ -132,7 +132,21 @@ module.exports = (app) => {
     
     
     // UPDATE USER ACCOUNT INFO
-    
+    app.put('/api/update_user', async (req,res) => {
+        console.log("UPDATING USER: ", req.body.updatedUser)
+             if(req.user) {
+                const hash = await bcrypt.hash(req.body.updatedUser.password, 10, (err, hash)=>{
+                    req.body.updatedUser.password = hash
+                    console.log('USER AFTER PASSWORD HASH :   ',req.body.updatedUser)
+                        User.findByIdAndUpdate(req.user._id,req.body.updatedUser,(err, user)=>{
+                             if(err) {console.log(err)}
+                             else{ res.send(req.user) }
+                        })
+                })
+            }
+            else{res.send(false)}
+    })
+     
     app.post('/api/update_user',  (req,res) => {
         let password  = req.body.password
         let password2 = req.body.password2
@@ -150,17 +164,24 @@ module.exports = (app) => {
                       		    region: req.body.region,
                       		    projects: req.body.projects
                       	}
-                bcrypt.hash(newUser.password,async (hash) => {
-                     newUser.password = hash
-                     User.findByIdAndUpdate(req.user._id,
-                        { "$set": { newUser } },
-                        (err) => {
-                            if (err) throw err;
-                            else{
+                      	console.log("UPDATED USER: ",newUser)
+                        bcrypt.hash(newUser.password, (hash) => {
+                                newUser.password = hash
+                                User.findByIdAndUpdate(req.user._id,
+                                  { newUser } ,
+                                    (err) => {
+                                        if (err) console.log(err);
+                                }) 
+                               User.save
+                            res.send(req.user)
+                        } )
+                }else{
+                    console.log(' Password mistmatch ')
+                    res.send(' Password mistmatch ')
                             }
-                        })       
-                } )
-            }}
+            }else{
+                res.send('No User is logged in')
+            }
     });
     
     // UPDATE USER LOCATION
@@ -172,62 +193,15 @@ module.exports = (app) => {
                 { "$set": { "lat": latlng.latitude, "lng":latlng.longitude } },
                 function(err) {
                     if (err) throw err;
-                    else{
-                        const projectsForToday  =  req.user.projects.filter(  (project)   => {    return project.projectStartDate == today1}    )   
-                            if(projectsForToday.length>0){
-                                const updatedUser = req.user ;
-                                    updatedUser.projectForToday = projectsForToday
-                                    res.send(updatedUser)
-                            }else{
-                                const updatedUser = req.user ;
-                                    updatedUser.projectForToday = [{
-                                        projectId : "Nothing for today",
-                                        projectName : "Nothing for today",
-                                        projectStartDate : "Nothing for today",
-                                        projectStartTime : "Nothing for today",
-                                        installAddress : "Nothing for today",
-                                    }]
-                                    res.send(updatedUser)
+                    else{ 
+                          res.send(req.user)
                             }
                     }
-                });
+                )
         }else{
             res.send('noUserLoggedIn')
         }
     })
-    
-    
-    // // UPDATE USER STATUS. 
-    
-    // app.post('/api/updateUserStatus', async(req,res)=>{
-    //     if(req.user){
-    //           User.findByIdAndUpdate(req.user._id,
-    //             { "$set": { "status": req.body.status } },
-    //             function(err) {
-    //                 if (err) throw err;
-    //                 else{
-    //                     const projectsForToday  =  req.user.projects.filter(  (project)   => {    return project.projectStartDate == today1}    )   
-    //                         if(projectsForToday.length>0){
-    //                             const updatedUser = req.user ;
-    //                                 updatedUser.projectForToday = projectsForToday
-    //                                 res.send(updatedUser)
-    //                         }else{
-    //                             const updatedUser = req.user ;
-    //                                 updatedUser.projectForToday = [{
-    //                                     projectId : "Nothing for today",
-    //                                     projectName : "Nothing for today",
-    //                                     projectStartDate : "Nothing for today",
-    //                                     projectStartTime : "Nothing for today",
-    //                                     installAddress : "Nothing for today",
-    //                                 }]
-    //                                 res.send(updatedUser)
-    //                         }
-    //                 }
-    //             });
-    //     }else{
-    //         res.send('noUserLoggedIn')
-    //     }
-    // })
     
     
     // ADD PROJECT. Pushing a new project into the array with all projects
