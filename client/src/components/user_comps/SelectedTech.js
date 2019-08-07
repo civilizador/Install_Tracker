@@ -188,7 +188,6 @@ class UserView extends React.Component {
                               {this.renderOrderHistory(selectedUser)}
                         </div>
                          <ul className="list-group list-group-flush">
-                            <li className="list-group-item" ><b> Arrival Status:  {selectedUser.status} </b></li>
                             <li className="list-group-item">Last Recorded Location: <br/> lat: {selectedUser.lat}, lng: {selectedUser.lng}</li>
                             <li className="list-group-item"><i className="fas fa-phone"></i> : {selectedUser.phone}</li>
                             <li className="list-group-item"><i className="fas fa-envelope-open"></i>: {selectedUser.email}</li>
